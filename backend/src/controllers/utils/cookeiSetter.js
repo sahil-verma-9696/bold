@@ -9,7 +9,7 @@ export function setCookie(res) {
         httpOnly: true, // prevent XSS attacks, cross-site script injection
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict", // prevent cross-site request forgery  CSRF
-        maxAge: 15 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
       });
     },
     setRefreshToken: function (refreshToken) {

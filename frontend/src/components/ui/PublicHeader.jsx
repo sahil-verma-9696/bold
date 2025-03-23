@@ -1,8 +1,9 @@
+import { UserRoundPlus } from "lucide-react";
 import { Link } from "react-router-dom";
 
 function PublicHeader() {
   return (
-    <header className="z-50 sticky top-0 w-full p-4 dark:text-white border-b border-white/10 rounded-br-lg rounded-bl-lg flex items-center justify-between bg-white/10 backdrop-blur-md shadow-lg">
+    <header className="z-50 fixed top-0 w-full p-4 dark:text-white border-b border-white/10 rounded-br-lg rounded-bl-lg flex items-center justify-between bg-white/10 backdrop-blur-md shadow-lg">
       {/* Left Side Navigation */}
       <Link to={"/"}>
         <h1 className="text-2xl font-bold ">Bold</h1>
@@ -24,9 +25,10 @@ function PublicHeader() {
       {/* Right Side Get Started Button */}
       <Link
         to="/dashboard"
-        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex gap-2"
       >
-        Get Started
+        <UserRoundPlus />
+        Signup
       </Link>
     </header>
   );
