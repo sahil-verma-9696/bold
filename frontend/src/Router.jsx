@@ -7,18 +7,19 @@ import ProtectedLayout from "./components/layout/ProtectedLayout";
 import About from "./pages/public/About";
 import ErrorPage from "./components/util/ErrorPage";
 import Contact from "./pages/public/Contact";
-// import Contact from "./pages/public/Contact";
+import Signup from "./pages/public/Signup";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <PublicLayout />,
-    errorElement: <ErrorPage />, // Show custom error UI
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },
       { path: "login", element: <Login /> },
+      { path: "signup", element: <Signup /> },
       { path: "about", element: <About /> },
-      { path: "contact", element: <Contact /> }, // Added Contact Us page
+      { path: "contact", element: <Contact /> },
     ],
   },
   {

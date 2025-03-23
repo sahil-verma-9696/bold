@@ -9,6 +9,7 @@ import { logError, logSuccess } from "./utils/logger.js";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { connectDB } from "./lib/database.js";
+import cors from "cors";
 // import { setupSockets } from "./sockets/index.js";
 
 config();
@@ -18,6 +19,14 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, { cors: { origin: "*" } });
 
+// ✅ Enable CORS for Frontend (Adjust origin as needed)
+app.use(
+  cors({
+    origin: "http://localhost:5173", // don't use "*"
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
