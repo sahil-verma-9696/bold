@@ -9,27 +9,12 @@ export async function signup(req, res) {
   try {
     const { name, email, password, role, avatar } = req.body;
 
-    if (!name || !email || !password) {
-      logError(import.meta.url, "Please provide all the required fields");
-      res.status(STATUS_CODES.BAD_REQUEST).json({
-        type: RESPONSE_TYPES.ERROR,
-        message: "Please provide all the required fields",
-        payload: null,
-      });
-      return;
-    }
+    if (!name || !email || !password)
+      throw new Error("Missing: required fields: name, email, or password.");
 
     const userExists = await User.findOne({ email });
 
-    if (userExists) {
-      logError(import.meta.url, "User already exists");
-      res.status(STATUS_CODES.BAD_REQUEST).json({
-        type: RESPONSE_TYPES.ERROR,
-        message: "User already exists",
-        payload: null,
-      });
-      return;
-    }
+    if (userExists) throw new Error("Exists: User already exists.");
 
     const user = await User.create({
       name,
@@ -42,7 +27,7 @@ export async function signup(req, res) {
     const { accessToken, refreshToken } = generateTokens(user._id);
 
     setCookie(res).setAccessToken(accessToken);
-    setCookie(res).setRefreshToken(refreshToken);
+    // setCookie(res).setRefreshToken(refreshToken);
 
     res.status(STATUS_CODES.OK).json({
       type: RESPONSE_TYPES.SUCCESS,
@@ -59,7 +44,12 @@ export async function signup(req, res) {
     });
   } catch (error) {
     logError(import.meta.url, error.message);
-    res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+    const statusCode =
+      error.message.includes("Missing") || error.message.includes("Exists")
+        ? STATUS_CODES.BAD_REQUEST
+        : STATUS_CODES.INTERNAL_SERVER_ERROR;
+
+    res.status(statusCode).json({
       type: RESPONSE_TYPES.ERROR,
       message: error.message,
       payload: null,
@@ -72,31 +62,19 @@ export async function login(req, res) {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      logError(import.meta.url, "Please provide email and password");
-      res.status(STATUS_CODES.BAD_REQUEST).json({
-        type: RESPONSE_TYPES.ERROR,
-        message: "Please provide email and password",
-        payload: null,
-      });
-      return;
+      throw new Error("Missing required fields: credentials");
     }
 
     const user = await User.findOne({ email });
 
     if (!user || !(await user.comparePassword(password))) {
-      logError(import.meta.url, "Invalid credentials");
-      res.status(STATUS_CODES.BAD_REQUEST).json({
-        type: RESPONSE_TYPES.ERROR,
-        message: "Invalid credentials",
-        payload: null,
-      });
-      return;
+      throw new Error("Invalid credentials");
     }
 
     const { accessToken, refreshToken } = generateTokens(user._id);
 
     setCookie(res).setAccessToken(accessToken);
-    setCookie(res).setRefreshToken(refreshToken);
+    // setCookie(res).setRefreshToken(refreshToken);
 
     logSuccess(import.meta.url, `USER: ${user._id} Logged in successfully`);
 
@@ -115,7 +93,12 @@ export async function login(req, res) {
     });
   } catch (error) {
     logError(import.meta.url, error.message);
-    res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+    const statusCode =
+      error.message.includes("Missing") || error.message.includes("Invalid")
+        ? STATUS_CODES.BAD_REQUEST
+        : STATUS_CODES.INTERNAL_SERVER_ERROR;
+
+    res.status(statusCode).json({
       type: RESPONSE_TYPES.ERROR,
       message: error.message,
       payload: null,
@@ -141,43 +124,61 @@ export async function logout(req, res) {
   }
 }
 
-export async function refreshToken(req, res) {
+// export async function refreshToken(req, res) {
+//   try {
+//     const refreshToken = req.cookies[COOKIE_CONST.REFRESH_TOKEN]; // Get refresh token from cookies
+//     if (!refreshToken) throw new Error("Missing: refresh token");
+
+//     // ✅ Verify Refresh Token
+//     const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+//     if (!decoded || !decoded.userId) throw new Error("Invalid: refresh token");
+
+//     // ✅ Check if user exists
+//     const user = await User.findById(decoded.userId);
+//     if (!user) throw new Error("NotFound: User does not exist");
+
+//     // ✅ Generate New Access Token
+//     const { accessToken: newAccessToken } = generateTokens(user._id);
+
+//     // ✅ Set new access token in cookies
+//     setCookie(res).setAccessToken(newAccessToken);
+
+//     logSuccess(import.meta.url, "New access token generated successfully.");
+//     res.status(STATUS_CODES.OK).json({
+//       type: RESPONSE_TYPES.SUCCESS,
+//       message: "New access token generated",
+//       payload: { accessToken: newAccessToken },
+//     });
+//   } catch (error) {
+//     logError(import.meta.url, error.message);
+
+//     const statusCode =
+//       error.message.includes("Missing") ||
+//       error.message.includes("Invalid") ||
+//       error.message.includes("NotFound")
+//         ? STATUS_CODES.UNAUTHORIZED
+//         : STATUS_CODES.INTERNAL_SERVER_ERROR;
+
+//     res.status(statusCode).json({
+//       type: RESPONSE_TYPES.ERROR,
+//       message: error.message,
+//       payload: {},
+//     });
+//   }
+// }
+
+export function checkAuth(req, res) {
   try {
-    const refreshToken = req.cookies[COOKIE_CONST.REFRESH_TOKEN]; // Get refresh token from cookies
-    if (!refreshToken)
-      return res.status(STATUS_CODES.BAD_REQUEST).json({
-        type: RESPONSE_TYPES.ERROR,
-        message: "No refresh token",
-        payload: null,
-      });
-    console.log(refreshToken);
-
-    // ✅ Verify Refresh Token
-    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-
-    console.log(decoded);
-
-    const isUserExists = await User.findById(decoded.userId);
-    if (!isUserExists)
-      return res.status(STATUS_CODES.NOT_FOUND).json({
-        type: RESPONSE_TYPES.ERROR,
-        message: "User not found",
-        payload: null,
-      });
-
-    // ✅ Generate New Access Token
-    const { accessToken: newAccessToken } = generateTokens(decoded.userId);
-
-    // ✅ Set new access token in cookies
-    setCookie(res).setAccessToken(newAccessToken);
-
     res.status(STATUS_CODES.OK).json({
       type: RESPONSE_TYPES.SUCCESS,
-      message: "New access token generated",
-      payload: { accessToken: newAccessToken },
+      message: "User authenticated successfully",
+      payload: {
+        user: req.user,
+      },
     });
   } catch (error) {
-    return res.status(STATUS_CODES.UNAUTHORIZED).json({
+    logError(import.meta.url, error.message);
+    res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       type: RESPONSE_TYPES.ERROR,
       message: error.message,
       payload: null,

@@ -5,6 +5,7 @@ export const ROUTES = {
     LOGIN: "/login",
     LOGOUT: "/logout",
     REFRESH: "/refresh-token",
+    CHECK: "/check",
   },
 
   USER: {

@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import { ROUTES } from "./routes/constants.js";
 import { router as authRouter } from "./routes/auth.routes.js";
-// import { router as userRouter } from "./routes/user.routes.js";
+import { router as userRouter } from "./routes/user.routes.js";
 // import { router as teamRouter } from "./routes/team.routes.js";
 import { logError, logSuccess } from "./utils/logger.js";
 import { createServer } from "http";
@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(ROUTES.AUTH.BASE, authRouter);
-// app.use(ROUTES.USER.BASE, userRouter);
+app.use(ROUTES.USER.BASE, userRouter);
 // app.use(ROUTES.TEAM.BASE, teamRouter);
 
 app.get("/", function (req, res) {
