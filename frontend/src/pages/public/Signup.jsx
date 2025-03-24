@@ -74,7 +74,6 @@ export default function Signup() {
             login
           </Link>
         </p>
-        <button onClick={notify}>Make me a toast</button>
       </div>
     </div>
   );

@@ -24,7 +24,7 @@ function PublicHeader() {
 
       {/* Right Side Get Started Button */}
       <Link
-        to="/dashboard"
+        to="/signup"
         className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex gap-2"
       >
         <UserRoundPlus />
