@@ -8,6 +8,7 @@ import About from "./pages/public/About";
 import ErrorPage from "./components/util/ErrorPage";
 import Contact from "./pages/public/Contact";
 import Signup from "./pages/public/Signup";
+import Profile from "./pages/protected/Profile";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,10 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: <ProtectedLayout />,
     errorElement: <ErrorPage />, // Show custom error UI
-    children: [{ index: true, element: <Dashboard /> }],
+    children: [
+      { index: true, element: <Dashboard /> },
+      { path: "profile", element: <Profile /> },
+    ],
   },
   {
     path: "*",
