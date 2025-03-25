@@ -10,7 +10,7 @@ export default function Home() {
             <p className="py-6">
               Welcome to Bold
             </p>
-            <Link to="/dashboard" className="btn btn-primary">Get Started</Link>
+            <Link to="/auth" className="btn btn-primary">Get Started</Link>
           </div>
         </div>
       </div>
