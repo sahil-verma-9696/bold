@@ -77,7 +77,7 @@ export default function About() {
         </p>
 
         <Link
-          to="/dashboard"
+          to="/auth"
           className="mt-4 inline-block px-6 py-3 bg-blue-600 text-white font-bold rounded-lg shadow-lg hover:bg-blue-700 transition"
         >
           Get Started

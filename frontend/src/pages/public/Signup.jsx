@@ -48,8 +48,8 @@ export default function Signup() {
       }
       toast.success(data.message || "Account created successfully!");
 
-      // navigate to dashboard
-      navigate("/dashboard");
+      // navigate to auth
+      navigate("/auth");
     } catch (error) {
       // Remove loading toast before showing error
       toast.dismiss();

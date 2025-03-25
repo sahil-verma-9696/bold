@@ -1,4 +1,11 @@
-import { ArrowLeft, ArrowRight, LogOut } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  LogOut,
+  Settings,
+  UserCheck,
+  UserPen,
+} from "lucide-react";
 import React from "react";
 import { useSelector } from "react-redux";
 import Menubar from "./Menubar";
@@ -22,12 +29,12 @@ function PrivateHeader() {
         throw new Error(data.message || "Signup failed. Please try again.");
       }
       toast.success(data.message || "Account created successfully!");
-      navigate("/")
+      navigate("/");
     } catch (error) {}
     console.log("logout");
   }
   return (
-    <div className="sticky top-0 flex justify-between">
+    <div className="sticky top-4 flex justify-between">
       <nav>
         {/* TODO: logic */}
         <ul className="flex gap-2">
@@ -42,11 +49,32 @@ function PrivateHeader() {
 
       <Menubar
         options={[
-          { label: user.name, type: "text" },
           {
             label: (
-              <p className="flex justify-between text-red-400">
-                Logout <LogOut />
+              <p className="flex justify-between">
+                <UserCheck />
+                {user.name}
+              </p>
+            ),
+            type: "text",
+          },
+          {
+            label: (
+              <p className="flex justify-between cursor-pointer">
+                <UserPen />
+                Profile
+              </p>
+            ),
+            type: "button",
+            action: function () {
+              navigate("/auth/profile");
+            },
+          },
+          {
+            label: (
+              <p className="flex justify-between text-red-400 cursor-pointer">
+                <LogOut />
+                Logout
               </p>
             ),
             type: "button",
@@ -54,8 +82,10 @@ function PrivateHeader() {
           },
         ]}
       >
-        <div className="size-12 bg-white rounded-full overflow-hidden">
-          <img className="size-full object-cover" src={user.avatar} alt="" />
+        <div className="avatar avatar-online">
+          <div className="w-12 rounded-full">
+            <img src={user.avatar} />
+          </div>
         </div>
       </Menubar>
     </div>

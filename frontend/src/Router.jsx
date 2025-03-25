@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/dashboard",
+    path: "/auth",
     element: <ProtectedLayout />,
     errorElement: <ErrorPage />, // Show custom error UI
     children: [

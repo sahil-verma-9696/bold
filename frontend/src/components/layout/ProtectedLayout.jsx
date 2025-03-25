@@ -8,7 +8,7 @@ function ProtectedLayout() {
     <div className="min-h-screen flex">
       <aside className="w-64 p-4 bg-gray-800 text-white">Sidebar</aside>
       <main className="flex-grow p-4">
-        <Toaster/>
+        <Toaster />
         <PrivateHeader />
         <Outlet />
       </main>
