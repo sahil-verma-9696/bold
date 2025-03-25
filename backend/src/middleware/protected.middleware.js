@@ -4,7 +4,7 @@ import {
 } from "../controllers/utils/constants.js";
 import { COOKIE_CONST } from "../controllers/utils/cookeiSetter.js";
 import { User } from "../models/user.models.js";
-import { logError } from "../utils/logger.js";
+import { logError, logInfo } from "../utils/logger.js";
 import jwt from "jsonwebtoken";
 
 export async function isProtected(req, res, next) {
@@ -35,6 +35,8 @@ export async function isProtected(req, res, next) {
     }
 
     req.user = isExist;
+
+    logInfo(import.meta.url, "User passed middleware");
 
     next();
   } catch (error) {
