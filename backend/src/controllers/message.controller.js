@@ -58,6 +58,10 @@ export async function sendMessage(req, res) {
     const { id: receiverId } = req.params;
     const senderId = req.user._id;
 
+    if(!text && !image){
+      throw new Error("Missing required fields: text or image");
+    }
+
     let imageUrl;
     if (image) {
       // Upload base64 image to cloudinary

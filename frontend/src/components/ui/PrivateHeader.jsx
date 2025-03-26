@@ -2,6 +2,7 @@ import {
   ArrowLeft,
   ArrowRight,
   LogOut,
+  Mail,
   Settings,
   UserCheck,
   UserPen,
@@ -54,6 +55,15 @@ function PrivateHeader() {
               <p className="flex justify-between">
                 <UserCheck />
                 {user.name}
+              </p>
+            ),
+            type: "text",
+          },
+          {
+            label: (
+              <p className="flex justify-between">
+                <Mail />
+                {user.email.split("@")[0]}
               </p>
             ),
             type: "text",
