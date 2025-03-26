@@ -3,10 +3,13 @@ import EmailInput from "../../components/ui/EmailInput";
 import PasswordInput from "../../components/ui/PasswordInput";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { io } from "socket.io-client";
+import { useDispatch } from "react-redux";
+import { setOnlineUser, setSocket } from "./../../redux/slices/authSlice";
 
 export default function Login() {
   const navigate = useNavigate(); // ✅ Correct way to use navigation
-
+  const dispatch = useDispatch();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
@@ -44,7 +47,22 @@ export default function Login() {
         throw new Error(data.message || "Login failed. Please try again.");
       }
       toast.success(data.message || "Account created successfully!");
-
+      console.log(data);
+      // console.log(data?.payload?._id);
+      const socket = io("http://localhost:5000", {
+        withCredentials: true,
+        query: {
+          userId: data?.payload?.user.id,
+        },
+      });
+      // connecting with socket
+      socket.on("connect", () => {
+        console.log("Successfully connected to " + socket.id); // x8WIv7-mJelg7on_ALbx
+      });
+      socket.on("getOnlineUsers", (userIds) => {
+        dispatch(setOnlineUser(userIds));
+      });
+      dispatch(setSocket(socket));
       // navigate to auth
       navigate("/auth");
     } catch (error) {

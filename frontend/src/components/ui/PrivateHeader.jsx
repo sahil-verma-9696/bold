@@ -8,14 +8,16 @@ import {
   UserPen,
 } from "lucide-react";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Menubar from "./Menubar";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { clearSocket } from "../../redux/slices/authSlice";
 
 function PrivateHeader() {
-  const user = useSelector((store) => store.auth.user);
+  const { user, socket } = useSelector((store) => store.auth);
   const navigate = useNavigate(); // ✅ Correct way to use navigation
+  const dispatch = useDispatch();
 
   async function handleLogout() {
     try {
@@ -30,6 +32,12 @@ function PrivateHeader() {
         throw new Error(data.message || "Signup failed. Please try again.");
       }
       toast.success(data.message || "Account created successfully!");
+
+      if (socket) {
+        socket.removeAllListeners();
+        socket.disconnect();
+      }
+      dispatch(clearSocket());
       navigate("/");
     } catch (error) {}
     console.log("logout");

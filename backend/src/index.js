@@ -10,14 +10,13 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import { connectDB } from "./lib/database.js";
 import cors from "cors";
-// import { setupSockets } from "./sockets/index.js";
+import { httpServer, app, io } from "./lib/socket.js";
 
 config();
 
 const PORT = process.env.PORT || 5000;
-const app = express();
-const httpServer = createServer(app);
-const io = new Server(httpServer, { cors: { origin: "*" } });
+// const app = express();
+// const httpServer = createServer(app);
 
 // ✅ Enable CORS for Frontend (Adjust origin as needed)
 app.use(
