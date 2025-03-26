@@ -19,6 +19,7 @@ export const ROUTES = {
   MESSAGE: {
     BASE: "/api/messages",
     GET_MESSAGE: "/:id",
+    POST_MESSAGE: "/:id",
     GET_SIDEBAR_USERS: "/users",
   },
 };
