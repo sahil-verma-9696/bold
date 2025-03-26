@@ -1,3 +1,4 @@
+import { getReceiverSocketId, io } from "../lib/socket.js";
 import Message from "../models/message.models.js";
 import { User } from "../models/user.models.js";
 import { logSuccess,logError } from "../utils/logger.js";
@@ -79,6 +80,11 @@ export async function sendMessage(req, res) {
     await newMessage.save();
 
     // TODO : socket
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    console.log(receiverSocketId)
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     res.status(STATUS_CODES.OK).json({
       type: RESPONSE_TYPES.SUCCESS,

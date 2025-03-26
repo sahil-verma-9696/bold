@@ -6,6 +6,7 @@ import ChatBubble from "../../components/ui/ChatBubble";
 
 function Dashboard() {
   const selectedUser = useSelector((store) => store.chat.selectedUser);
+  const socket = useSelector(store=>store.auth.socket)
   const [message, setMessage] = useState("");
 
   const [messages, setMessages] = useState([]);
@@ -25,16 +26,25 @@ function Dashboard() {
             "Content-Type": "application/json",
           },
           credentials: "include", // required to send cookie to backend
-          body: JSON.stringify({ text:message.trim() }),
+          body: JSON.stringify({ text: message.trim() }),
         }
       );
       const data = await response.json();
       console.log(data);
+
+
+      socket.on("newMessage", (newMessage) => {
+        const isMessageSentFromSelectedUser =
+          newMessage.senderId === selectedUser._id;
+        if (!isMessageSentFromSelectedUser) return;
+
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+      });
+
       // Clear input field
       setMessage("");
     } catch (error) {
       console.error("Error sending message:", error);
-
     }
   }
 
@@ -103,7 +113,10 @@ function Dashboard() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button onClick={handleSendMessages} className="bg-blue-500 px-4 py-2 rounded-lg text-white hover:bg-blue-600">
+        <button
+          onClick={handleSendMessages}
+          className="bg-blue-500 px-4 py-2 rounded-lg text-white hover:bg-blue-600"
+        >
           Send
         </button>
       </div>
