@@ -1,19 +1,19 @@
-import { User } from "../models/user.models.js";
-import { logError } from "../utils/logger.js";
-import { COOKIE_CONST } from "./utils/cookeiSetter.js";
-import jwt from "jsonwebtoken";
+import { logError, logInfo, logSuccess } from "../utils/logger.js";
 import dotenv from "dotenv";
-import { RESPONSE_TYPES, STATUS_CODES } from "./utils/constants.js";
+import { RESPONSE_TYPES, STATUS_CODES, MESSAGES } from "./utils/constants.js";
 dotenv.config();
 
 export async function userProfile(req, res) {
+  logInfo(import.meta.url, MESSAGES.LOGS.PROFILE_HIT);
   try {
     const user = req.user;
-    if (!user) throw new Error("Notfound: User does not exist");
+    if (!user) throw new Error(MESSAGES.RESPONSE.USER_NOT_FOUND);
+
+    logSuccess(import.meta.url, MESSAGES.LOGS.PROFILE_FETCHED.format(user._id));
 
     res.status(STATUS_CODES.OK).json({
       type: RESPONSE_TYPES.SUCCESS,
-      message: "User profile fetched successfully",
+      message: MESSAGES.RESPONSE.PROFILE_FETCHED,
       payload: { user },
     });
   } catch (error) {
@@ -33,9 +33,10 @@ export async function userProfile(req, res) {
 }
 
 export async function updateProfileByUser(req, res) {
+  logInfo(import.meta.url, MESSAGES.LOGS.PROFILE_UPDATE_HIT);
   try {
     const user = req.user;
-    if (!user) throw new Error("Notfound: User does not exist");
+    if (!user) throw new Error(MESSAGES.RESPONSE.USER_NOT_FOUND);
 
     // ✅ Update Only Changed Fields
     const { name, avatar } = req.body;
@@ -45,10 +46,11 @@ export async function updateProfileByUser(req, res) {
     // ✅ Save Updated User
     await user.save();
 
-    logSuccess(import.meta.url, "Profile updated successfully.");
+    logSuccess(import.meta.url, MESSAGES.LOGS.PROFILE_UPDATED.format(user._id));
+
     res.status(STATUS_CODES.OK).json({
       type: RESPONSE_TYPES.SUCCESS,
-      message: "Profile updated successfully",
+      message: MESSAGES.RESPONSE.PROFILE_UPDATED,
       payload: {
         name: user.name,
         avatar: user.avatar,
@@ -66,4 +68,11 @@ export async function updateProfileByUser(req, res) {
 }
 
 // TODO: Implement Search Users pending due to skill model not created
-export async function searchUsers(req, res) {}
+export async function searchUsers(req, res) {
+  logInfo(import.meta.url, MESSAGES.LOGS.SEARCH_USERS_HIT);
+  res.status(STATUS_CODES.NOT_IMPLEMENTED).json({
+    type: RESPONSE_TYPES.ERROR,
+    message: MESSAGES.RESPONSE.FEATURE_NOT_IMPLEMENTED,
+    payload: null,
+  });
+}

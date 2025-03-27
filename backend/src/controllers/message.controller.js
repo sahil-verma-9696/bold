@@ -1,32 +1,35 @@
 import { getReceiverSocketId, io } from "../lib/socket.js";
 import Message from "../models/message.models.js";
 import { User } from "../models/user.models.js";
-import { logSuccess,logError } from "../utils/logger.js";
-import { RESPONSE_TYPES, STATUS_CODES } from "./utils/constants.js";
+import { logSuccess, logError, logInfo } from "../utils/logger.js";
+import { MESSAGES, RESPONSE_TYPES, STATUS_CODES } from "./utils/constants.js";
 
 export async function getUsersForSidebar(req, res) {
+  logInfo(import.meta.url, MESSAGES.LOGS.GET_USERS_HIT);
   try {
     const loggedInUserId = req.user._id;
     const filteredUsers = await User.find({
       _id: { $ne: loggedInUserId },
     }).select("-password");
 
+    logSuccess(import.meta.url, MESSAGES.LOGS.GET_USERS_SUCCESS);
     res.status(STATUS_CODES.OK).json({
       type: RESPONSE_TYPES.SUCCESS,
-      message: "Users fetched successfully",
+      message: MESSAGES.RESPONSE.GET_USERS_SUCCESS,
       payload: filteredUsers,
     });
   } catch (error) {
     logError(import.meta.url, error.message);
     res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       type: RESPONSE_TYPES.ERROR,
-      message: error.message,
+      message: MESSAGES.RESPONSE.GENERIC_ERROR,
       payload: null,
     });
   }
 }
 
 export async function getMessage(req, res) {
+  logInfo(import.meta.url, MESSAGES.LOGS.GET_MESSAGES_HIT);
   try {
     const { id: userToChatId } = req.params;
     const myId = req.user._id;
@@ -38,36 +41,40 @@ export async function getMessage(req, res) {
       ],
     });
 
+    logSuccess(import.meta.url, MESSAGES.LOGS.GET_MESSAGES_SUCCESS);
     res.status(STATUS_CODES.OK).json({
       type: RESPONSE_TYPES.SUCCESS,
-      message: "Messages fetched successfully",
+      message: MESSAGES.RESPONSE.GET_MESSAGES_SUCCESS,
       payload: messages,
     });
   } catch (error) {
     logError(import.meta.url, error.message);
     res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       type: RESPONSE_TYPES.ERROR,
-      message: error.message,
+      message: MESSAGES.RESPONSE.GENERIC_ERROR,
       payload: null,
     });
   }
 }
-
 export async function sendMessage(req, res) {
+  logInfo(import.meta.url, MESSAGES.LOGS.SEND_MESSAGE_HIT);
   try {
     const { text, image } = req.body;
     const { id: receiverId } = req.params;
     const senderId = req.user._id;
 
-    if(!text && !image){
-      throw new Error("Missing required fields: text or image");
-    }
+    if (!text && !image) throw new Error(MESSAGES.RESPONSE.MESSAGE_EMPTY);
 
-    let imageUrl;
+    let imageUrl = null;
     if (image) {
-      // Upload base64 image to cloudinary
-      const uploadResponse = await cloudinary.uploader.upload(image);
-      imageUrl = uploadResponse.secure_url;
+      try {
+        const uploadResponse = await cloudinary.uploader.upload(image);
+        imageUrl = uploadResponse.secure_url;
+        logSuccess(import.meta.url, MESSAGES.LOGS.IMAGE_UPLOADED);
+      } catch (uploadError) {
+        logError(import.meta.url, MESSAGES.RESPONSE.IMAGE_UPLOAD_FAILED);
+        throw new Error(MESSAGES.RESPONSE.IMAGE_UPLOAD_FAILED);
+      }
     }
 
     const newMessage = new Message({
@@ -76,19 +83,21 @@ export async function sendMessage(req, res) {
       text,
       image: imageUrl,
     });
-
     await newMessage.save();
+    logSuccess(import.meta.url, MESSAGES.LOGS.MESSAGE_SAVED);
 
-    // TODO : socket
     const receiverSocketId = getReceiverSocketId(receiverId);
-    console.log(receiverSocketId)
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);
+      logSuccess(
+        import.meta.url,
+        MESSAGES.LOGS.MESSAGE_EMITTED.replace("{}", receiverId)
+      );
     }
 
     res.status(STATUS_CODES.OK).json({
       type: RESPONSE_TYPES.SUCCESS,
-      message: "Message sent successfully",
+      message: MESSAGES.RESPONSE.MESSAGE_SENT,
       payload: newMessage,
     });
   } catch (error) {

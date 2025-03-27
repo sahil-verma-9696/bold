@@ -2,7 +2,7 @@ import {
   RESPONSE_TYPES,
   STATUS_CODES,
 } from "../controllers/utils/constants.js";
-import { COOKIE_CONST } from "../controllers/utils/cookeiSetter.js";
+import { COOKIE_CONST } from "../controllers/utils/cookieSetter.js";
 import { User } from "../models/user.models.js";
 import { logError, logInfo } from "../utils/logger.js";
 import jwt from "jsonwebtoken";
@@ -36,7 +36,7 @@ export async function isProtected(req, res, next) {
 
     req.user = isExist;
 
-    logInfo(import.meta.url, "User passed middleware");
+    logInfo(import.meta.url, "👤 User passed middleware ✔️");
 
     next();
   } catch (error) {
