@@ -1,92 +1,58 @@
-import React, { useRef } from "react";
-import EmailInput from "../../components/ui/EmailInput";
-import PasswordInput from "../../components/ui/PasswordInput";
+import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { io } from "socket.io-client";
 import { useDispatch } from "react-redux";
-import { setOnlineUser, setSocket } from "./../../redux/slices/authSlice";
+import { LoginForm } from "../../components/forms/LoginForm";
+import { apiRequest } from "../../utils/apiHelper";
+
+const DEBUG = true; // ✅ Toggle for debugging logs
 
 export default function Login() {
   const navigate = useNavigate(); // ✅ Correct way to use navigation
-  const dispatch = useDispatch();
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  async function submitHandler(event) {
-    event.preventDefault();
+  async function submitHandler(formData) {
+    const { email, password } = formData;
 
-    const email = emailRef.current?.value;
-    const password = passwordRef.current?.value;
+    console.log(formData);
 
     if (!email || !password) {
       toast.error("Please fill in all fields.");
       return;
     }
-
     try {
-      // Show loading toast
-      const loadingToast = toast.loading("Login in...");
+      if (DEBUG) console.log("Sending API request to signup..."); // ✅ Debug log
+      const response = await apiRequest("/api/auth/login", "POST", formData);
 
-      const response = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // important to recieve cookie from server
-        body: JSON.stringify({ email, password, name }),
-      });
+      if (DEBUG) console.log("Login Response:", response); // ✅ Debug log
+      toast.success("Account created successfully!");
+      localStorage.setItem("userId", response.payload.user.id); // Save userId
 
-      const data = await response.json();
-      //   console.log(data); // Debugging
-
-      // Remove loading toast before showing success/error
-      toast.dismiss(loadingToast);
-
-      if (!response.ok || data.type === "error") {
-        throw new Error(data.message || "Login failed. Please try again.");
-      }
-      toast.success(data.message || "Account created successfully!");
-      console.log(data);
-      // console.log(data?.payload?._id);
-      const socket = io("http://localhost:5000", {
-        withCredentials: true,
-        query: {
-          userId: data?.payload?.user.id,
-        },
-      });
-      // connecting with socket
-      socket.on("connect", () => {
-        console.log("Successfully connected to " + socket.id); // x8WIv7-mJelg7on_ALbx
-      });
-      socket.on("getOnlineUsers", (userIds) => {
-        dispatch(setOnlineUser(userIds));
-      });
-      dispatch(setSocket(socket));
-      // navigate to auth
       navigate("/auth");
     } catch (error) {
-      // Remove loading toast before showing error
-      toast.dismiss();
+      console.error("Login failed:", error); // ✅ Always log errors
       toast.error(error.message || "Login failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   }
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <div>
-        <form onSubmit={submitHandler} className="flex flex-col gap-4">
-          <EmailInput ref={emailRef} name={"email"} />
-          <PasswordInput ref={passwordRef} name={"password"} />
-          <button className="btn btn-active">Login</button>
-        </form>
-        <p className="pt-4">
-          Not have an account ?{" "}
-          <Link to={"/signup"} className="link link-primary">
-            {" "}
-            Signup{" "}
-          </Link>
-        </p>
+        <LoginForm submitHandler={submitHandler} isSubmitting={isSubmitting} />
+        <SignupPrompt />
       </div>
     </div>
+  );
+}
+
+function SignupPrompt() {
+  return (
+    <p className="pt-4">
+      Already have an account?{" "}
+      <Link to="/signup" className="link link-primary">
+        Signup
+      </Link>
+    </p>
   );
 }

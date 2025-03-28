@@ -13,6 +13,7 @@ import Menubar from "./Menubar";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { clearSocket } from "../../redux/slices/authSlice";
+import { apiRequest } from "../../utils/apiHelper";
 
 function PrivateHeader() {
   const { user, socket } = useSelector((store) => store.auth);
@@ -22,13 +23,9 @@ function PrivateHeader() {
   async function handleLogout() {
     try {
       const loadingToast = toast.loading("Loging out...");
-      const response = await fetch("http://localhost:5000/api/auth/logout", {
-        method: "GET",
-        credentials: "include",
-      });
-      const data = await response.json();
+      const data = apiRequest("/api/auth/logout", "GET");
       toast.dismiss(loadingToast);
-      if (!response.ok || data.type === "error") {
+      if (data.type === "error") {
         throw new Error(data.message || "Signup failed. Please try again.");
       }
       toast.success(data.message || "Account created successfully!");
@@ -38,6 +35,8 @@ function PrivateHeader() {
         socket.disconnect();
       }
       dispatch(clearSocket());
+      localStorage.removeItem("userId"); // Remove userId
+      window.location.reload(); // Refresh to disconnect socket
       navigate("/");
     } catch (error) {}
     console.log("logout");

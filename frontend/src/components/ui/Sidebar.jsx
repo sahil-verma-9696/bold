@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from "react";
 import SidebarUserCard from "./SidebarUserCard";
 import { useDispatch } from "react-redux";
+import { apiRequest } from "../../utils/apiHelper";
 
 function Sidebar() {
   const [users, setUsers] = useState([]);
-  
 
   useEffect(function () {
     async function fetchUsers() {
-      const response = await fetch("http://localhost:5000/api/messages/users", {
-        credentials: "include", // required to send cookie to backend
-      });
-      const data = await response.json();
-
+      const data = await apiRequest("/api/messages/users", "GET");
       setUsers(data?.payload);
-    //   console.log(data);
     }
 
     fetchUsers();
