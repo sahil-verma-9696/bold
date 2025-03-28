@@ -87,11 +87,23 @@ export async function sendMessage(req, res) {
     logSuccess(import.meta.url, MESSAGES.LOGS.MESSAGE_SAVED);
 
     const receiverSocketId = getReceiverSocketId(receiverId);
+    const senderSocketId = getReceiverSocketId(senderId); // Get sender's socket ID
+    console.log(`\nreceiverId: ${receiverId}\n socketId: ${receiverSocketId}`);
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);
       logSuccess(
         import.meta.url,
         MESSAGES.LOGS.MESSAGE_EMITTED.replace("{}", receiverId)
+      );
+    }
+
+    // ✅ Emit message to sender too
+    if (senderSocketId) {
+      io.to(senderSocketId).emit("newMessage", newMessage);
+      console.log("\nsocket id: " + senderSocketId + "\n");
+      logSuccess(
+        import.meta.url,
+        MESSAGES.LOGS.MESSAGE_EMITTED.replace("{}", senderId)
       );
     }
 
