@@ -10,6 +10,14 @@ import Contact from "./pages/public/Contact";
 import Signup from "./pages/public/Signup";
 import Profile from "./pages/protected/Profile";
 
+export const ROUTES = {
+  PUBLIC : {
+    ROOT : "/",
+    LOGIN: "/login"
+    //TODO
+  }
+}
+
 const router = createBrowserRouter([
   {
     path: "/",

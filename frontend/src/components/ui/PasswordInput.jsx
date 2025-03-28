@@ -1,6 +1,6 @@
 import React from "react";
 
-function PasswordInput({ ref, name }) {
+function PasswordInput({ ...props }) {
   return (
     <div>
       <label className="input validator">
@@ -21,8 +21,7 @@ function PasswordInput({ ref, name }) {
           </g>
         </svg>
         <input
-          ref={ref}
-          name={name}
+          {...props}
           type="password"
           required
           placeholder="Password"
