@@ -15,9 +15,9 @@ import {
 // Sidebar configuration with availability
 const sidebarConfig = {
   navigation: [
-    { name: "Chat", icon: MessageCircle, to: "/chat", isAvailable: true },
     { name: "Home", icon: Home, to: "/", isAvailable: true },
-    { name: "Users", icon: Users, to: "/users", isAvailable: false }, // Disabled feature
+    { name: "Chat", icon: MessageCircle, to: "/auth/chat", isAvailable: true },
+    // { name: "Users", icon: Users, to: "/users", isAvailable: false }, // Disabled feature
   ],
   bottomActions: [
     { name: "Settings", icon: Settings, to: "/settings", isAvailable: false },

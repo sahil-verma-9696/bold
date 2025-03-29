@@ -10,34 +10,44 @@ import Profile from "./pages/protected/Profile";
 import { PublicLayout } from "./layout/public/layout";
 import { ProtectedLayoutWithAuth } from "./layout/private/layout";
 
+// Centralized route paths
 export const ROUTES = {
   PUBLIC: {
     ROOT: "/",
-    LOGIN: "/login",
-    //TODO
+    LOGIN: "login",
+    SIGNUP: "signup",
+    ABOUT: "about",
+    CONTACT: "contact",
+  },
+  PROTECTED: {
+    ROOT: "/auth", // Base path for protected routes
+    DASHBOARD: "", // Empty means it matches `/auth`
+    CHAT: "chat",
+    PROFILE: "profile",
   },
 };
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: ROUTES.PUBLIC.ROOT,
     element: <PublicLayout />,
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },
-      { path: "login", element: <Login /> },
-      { path: "signup", element: <Signup /> },
-      { path: "about", element: <About /> },
-      { path: "contact", element: <Contact /> },
+      { path: ROUTES.PUBLIC.LOGIN, element: <Login /> },
+      { path: ROUTES.PUBLIC.SIGNUP, element: <Signup /> },
+      { path: ROUTES.PUBLIC.ABOUT, element: <About /> },
+      { path: ROUTES.PUBLIC.CONTACT, element: <Contact /> },
     ],
   },
   {
-    path: "/auth",
+    path: ROUTES.PROTECTED.ROOT,
     element: <ProtectedLayoutWithAuth />,
-    errorElement: <ErrorPage />, // Show custom error UI
+    errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <Dashboard /> },
-      { path: "profile", element: <Profile /> },
+      { index: true, element: <Dashboard /> }, // Matches `/auth`
+      { path: ROUTES.PROTECTED.CHAT, element: <Dashboard /> }, // Matches `/auth/chat`
+      { path: ROUTES.PROTECTED.PROFILE, element: <Profile /> }, // Matches `/auth/profile`
     ],
   },
   {
