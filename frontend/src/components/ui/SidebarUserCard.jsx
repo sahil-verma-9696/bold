@@ -1,6 +1,5 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedUser } from "../../redux/slices/chatSlice";
 
 function SidebarUserCard({ user }) {
   const dispatch = useDispatch();
@@ -9,7 +8,7 @@ function SidebarUserCard({ user }) {
   return (
     <div className="bg-base-100 p-4 shadow-sm">
       <li
-        onClick={() => dispatch(setSelectedUser(user))}
+        onClick={function () {}}
         className={`w-full flex gap-4 items-center  p-2 rounded-md hover:bg-base-100 cursor-pointer ${
           user?._id === selectedUser?._id ? "bg-base-100" : ""
         }`}

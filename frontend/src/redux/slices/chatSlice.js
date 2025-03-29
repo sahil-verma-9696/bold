@@ -5,6 +5,8 @@ const chatSlice = createSlice({
   initialState: {
     selectedUser: null,
     messages: [],
+    onlineUser: [],
+    allUsers: [],
   },
   reducers: {
     setSelectedUser: (state, action) => {
@@ -16,9 +18,16 @@ const chatSlice = createSlice({
     settingFetchedMessages: (state, action) => {
       state.messages = action.payload;
     },
+    setAllUsers: (state, action) => {
+      state.allUsers = action.payload;
+    },
   },
 });
 
-export const { setSelectedUser, setMessages, settingFetchedMessages } =
-  chatSlice.actions;
+export const {
+  setSelectedUser,
+  setMessages,
+  settingFetchedMessages,
+  setAllUsers,
+} = chatSlice.actions;
 export default chatSlice.reducer;

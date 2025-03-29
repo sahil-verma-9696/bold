@@ -2,12 +2,12 @@ import { useState } from "react";
 import { apiRequest } from "../../utils/apiHelper";
 import ChatInput from "./ChatInput";
 
-export default function ChatInputHandler({selectedUser}) {
+export default function ChatInputHandler({ selectedUserId }) {
   const [message, setMessage] = useState("");
   async function handleSendMessages() {
     if (!message.trim()) return;
     try {
-      await apiRequest(`/api/messages/${selectedUser._id}`, "POST", {
+      await apiRequest(`/api/messages/${selectedUserId}`, "POST", {
         text: message.trim(),
       });
       setMessage("");

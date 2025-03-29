@@ -3,14 +3,13 @@ import { useDispatch } from "react-redux";
 import { io } from "socket.io-client";
 import { setMessages } from "../redux/slices/chatSlice";
 
-const SocketContext = createContext(null);
-
-export function SocketProvider({ children }) {
+export function useSocket() {
   const [socket, setSocket] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const userId = localStorage.getItem("userId"); // Get userId
+    console.log("socket : ", userId);
 
     if (userId) {
       const newSocket = io("http://localhost:5000", {
@@ -32,7 +31,6 @@ export function SocketProvider({ children }) {
 
       newSocket.on("newMessage", (message) => {
         console.log("newMessage event triggered: ", message);
-        console.log(message);
         dispatch(setMessages(message));
       });
 
@@ -42,12 +40,7 @@ export function SocketProvider({ children }) {
         newSocket.disconnect();
       };
     }
-  }, []);
+  }, [dispatch]);
 
-  return (
-    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
-  );
+  return socket;
 }
-
-// ✅ Make sure useContext is imported correctly
-export const useSocket = () => useContext(SocketContext);

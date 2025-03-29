@@ -4,6 +4,7 @@ import { setUser, clearUser } from "../../redux/slices/authSlice";
 import { Navigate } from "react-router-dom";
 import { toast } from "react-hot-toast"; // ✅ Import react-hot-toast
 import { apiRequest } from "../../utils/apiHelper";
+import { useSocket } from "../../context/SocketContext";
 
 export function Protected(Component) {
   return function ProtectedComponent(props) {
@@ -13,6 +14,9 @@ export function Protected(Component) {
     useEffect(() => {
       const checkAuth = async () => {
         try {
+          const userId = localStorage.getItem("userId"); // Get userId
+          if (!userId) throw new Error("No userId found.");
+          
           const data = await apiRequest("/api/auth/check", "GET");
           if (data.type === "error") throw new Error(data.message);
           if (data.type === "success") {
@@ -32,6 +36,15 @@ export function Protected(Component) {
 
       checkAuth();
     }, [dispatch]);
+
+    // ✅ Initialize socket *only after authentication is confirmed*
+    const socket = useSocket();
+    useEffect(() => {
+      if (isAuthenticated) {
+        console.log("🔌 Initializing socket after authentication...");
+        socket?.connect(); // Ensure socket connection
+      }
+    }, [isAuthenticated, socket]);
 
     if (isAuthenticated === null) return <p>Loading...</p>; // ✅ Prevent flickering
 

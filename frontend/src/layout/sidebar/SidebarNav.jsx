@@ -10,24 +10,48 @@ import {
   Settings,
   Sun,
   Moon,
+  LogOut,
 } from "lucide-react";
-
-// Sidebar configuration with availability
-const sidebarConfig = {
-  navigation: [
-    { name: "Home", icon: Home, to: "/", isAvailable: true },
-    { name: "Chat", icon: MessageCircle, to: "/auth/chat", isAvailable: true },
-    // { name: "Users", icon: Users, to: "/users", isAvailable: false }, // Disabled feature
-  ],
-  bottomActions: [
-    { name: "Settings", icon: Settings, to: "/settings", isAvailable: false },
-    { name: "Profile", icon: User, to: "/auth/profile", isAvailable: true },
-  ],
-};
+import { useLogout } from "../../hooks/useLogout";
 
 export function SidebarNav() {
   const [isExpanded, setIsExpanded] = useState(false);
   const location = useLocation();
+  const { logoutHandler } = useLogout();
+  const sidebarConfig = {
+    navigation: [
+      { name: "Home", icon: Home, to: "/", isAvailable: true },
+      {
+        name: "Chat",
+        icon: MessageCircle,
+        to: "/auth/chat",
+        isAvailable: true,
+      },
+      // { name: "Users", icon: Users, to: "/users", isAvailable: false }, // Disabled feature
+    ],
+    bottomActions: [
+      {
+        name: "Settings",
+        icon: Settings,
+        to: "/settings",
+        isAvailable: false,
+      },
+      {
+        name: "Profile",
+        icon: User,
+        to: "/auth/profile",
+        isAvailable: true,
+      },
+    ],
+    buttons: [
+      {
+        name: "Logout",
+        icon: LogOut,
+        isAvailable: true,
+        action: logoutHandler,
+      },
+    ],
+  };
 
   return (
     <aside
@@ -76,12 +100,29 @@ export function SidebarNav() {
 
       {/* Profile & Settings */}
       <div className="mt-auto flex flex-col gap-2 p-2">
+        {sidebarConfig.buttons.map(
+          ({ name, icon: Icon, isAvailable, action }) => (
+            <button
+              key={name}
+              className={`flex items-center gap-4 p-2 rounded-lg transition-all ${
+                isAvailable
+                  ? "hover:bg-gray-300 dark:hover:bg-gray-800 cursor-pointer"
+                  : "opacity-50 cursor-not-allowed"
+              }`}
+              onClick={action}
+            >
+              <Icon className="w-6 h-6" />
+              {isExpanded && <span>{name}</span>}
+            </button>
+          )
+        )}
         {sidebarConfig.bottomActions.map(
           ({ name, icon: Icon, to, isAvailable }) => (
             <div key={to} className="relative">
               {isAvailable ? (
                 <Link
                   to={to}
+                  title={name}
                   className={`flex items-center gap-4 p-2 rounded-lg transition-all ${
                     location.pathname === to
                       ? "bg-gray-300 dark:bg-gray-700"

@@ -20,27 +20,7 @@ function PrivateHeader() {
   const navigate = useNavigate(); // ✅ Correct way to use navigation
   const dispatch = useDispatch();
 
-  async function handleLogout() {
-    try {
-      const loadingToast = toast.loading("Loging out...");
-      const data = apiRequest("/api/auth/logout", "GET");
-      toast.dismiss(loadingToast);
-      if (data.type === "error") {
-        throw new Error(data.message || "Signup failed. Please try again.");
-      }
-      toast.success(data.message || "Account created successfully!");
 
-      if (socket) {
-        socket.removeAllListeners();
-        socket.disconnect();
-      }
-      dispatch(clearSocket());
-      localStorage.removeItem("userId"); // Remove userId
-      window.location.reload(); // Refresh to disconnect socket
-      navigate("/");
-    } catch (error) {}
-    console.log("logout");
-  }
   return (
     <div className="sticky top-4 flex justify-between">
       <nav>

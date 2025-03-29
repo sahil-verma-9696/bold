@@ -2,18 +2,21 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, MessageSquare, User } from "lucide-react";
 import { apiRequest } from "../../utils/apiHelper";
+import { useDispatch, useSelector } from "react-redux";
+import { setAllUsers } from "../../redux/slices/chatSlice";
+import { ChatListItem } from "./ChatListItem";
+import { useAllUsers } from "../../hooks/useAllUsers";
 
 // Chat List Component
 export function ChatList({ onSelectUser }) {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    async function fetchUsers() {
-      const data = await apiRequest("/api/messages/users", "GET");
-      setUsers(data?.payload || []);
-    }
-    fetchUsers();
-  }, []);
+  const dispatch = useDispatch();
+  const users = useSelector((store) => store.chat.allUsers);
+  const selectedUser = useSelector((store) =>
+    store.chat.allUsers.find(
+      (user) => user._id === window.localStorage.getItem("selectedUserId")
+    )
+  );
+  useAllUsers();
 
   return (
     <div className="w-80 border-r border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-base-100 h-screen p-4">
@@ -22,26 +25,7 @@ export function ChatList({ onSelectUser }) {
       </h2>
       <ul className="space-y-2">
         {users.map((user) => (
-          <li
-            key={user.id}
-            onClick={() => onSelectUser(user)}
-            className="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 transition"
-          >
-            <div className="w-10 h-10 bg-gray-400 dark:bg-gray-600 rounded-full flex items-center justify-center">
-              {user.avatar ? (
-                <img
-                  src={user.avatar}
-                  alt={user.name}
-                  className="w-full h-full rounded-full object-cover"
-                />
-              ) : (
-                <User className="w-6 h-6 text-gray-700 dark:text-gray-300" />
-              )}
-            </div>
-            <span className="text-gray-900 dark:text-gray-100">
-              {user.name}
-            </span>
-          </li>
+          <ChatListItem key={user._id} user={user} />
         ))}
       </ul>
     </div>
