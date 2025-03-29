@@ -32,7 +32,7 @@ export function ChatList({ onSelectUser }) {
                 <img
                   src={user.avatar}
                   alt={user.name}
-                  className="w-full h-full rounded-full"
+                  className="w-full h-full rounded-full object-cover"
                 />
               ) : (
                 <User className="w-6 h-6 text-gray-700 dark:text-gray-300" />
