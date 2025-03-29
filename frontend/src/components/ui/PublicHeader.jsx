@@ -1,7 +1,7 @@
 import { UserRoundPlus } from "lucide-react";
 import { Link } from "react-router-dom";
 
-function PublicHeader() {
+export function PublicHeader() {
   return (
     <header className="z-50 fixed top-0 w-full p-4 dark:text-white border-b border-white/10 rounded-br-lg rounded-bl-lg flex items-center justify-between bg-white/10 backdrop-blur-md shadow-lg">
       {/* Left Side Navigation */}
@@ -34,4 +34,3 @@ function PublicHeader() {
   );
 }
 
-export default PublicHeader;

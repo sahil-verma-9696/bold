@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
 import { toast } from "react-hot-toast"; // ✅ Import react-hot-toast
 import { apiRequest } from "../../utils/apiHelper";
 
-export default function Protected(Component) {
+export function Protected(Component) {
   return function ProtectedComponent(props) {
     const dispatch = useDispatch();
     const [isAuthenticated, setIsAuthenticated] = useState(null); // ✅ Tracks authentication status

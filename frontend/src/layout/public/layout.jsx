@@ -1,8 +1,7 @@
 import { Link, Outlet } from "react-router-dom";
-import PublicHeader from "../ui/PublicHeader";
 import { Toaster } from "react-hot-toast";
-
-export default function PublicLayout() {
+import { PublicHeader } from "./../../components/ui/PublicHeader";
+export function PublicLayout() {
   return (
     <div className="min-h-screen flex flex-col">
       <Toaster />
