@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
-import Protected from "../auth/Protected";
-import PrivateHeader from "../ui/PrivateHeader";
 import { Toaster } from "react-hot-toast";
-import Sidebar from "../ui/Sidebar";
 import { SocketProvider } from "../../context/SocketContext";
+import PrivateHeader from "../../components/ui/PrivateHeader";
+import { Protected } from "../../components/auth/Protected";
+import { Sidebar } from "../sidebar/Sidebar";
 
 function ProtectedLayout() {
   return (
@@ -20,4 +20,5 @@ function ProtectedLayout() {
   );
 }
 
-export default Protected(ProtectedLayout);
+const ProtectedLayoutWithAuth = Protected(ProtectedLayout);
+export { ProtectedLayoutWithAuth };
