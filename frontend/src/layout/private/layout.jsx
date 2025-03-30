@@ -2,16 +2,19 @@ import { Outlet } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { Protected } from "../../components/auth/Protected";
 import { Sidebar } from "../sidebar/Sidebar";
+import { SocketProvider } from "../../context/SocketContext";
 
 function ProtectedLayout() {
   return (
-    <div className="min-h-screen flex">
-      <Sidebar />
-      <main className="flex-grow">
-        <Toaster />
-        <Outlet />
-      </main>
-    </div>
+    <SocketProvider>
+      <div className="min-h-screen flex">
+        <Sidebar />
+        <main className="flex-grow">
+          <Toaster />
+          <Outlet />
+        </main>
+      </div>
+    </SocketProvider>
   );
 }
 

@@ -4,7 +4,7 @@ import { setSelectedUser } from "../../redux/slices/chatSlice";
 import { useEffect } from "react";
 import Avatar from "../../components/ui/Avatar";
 
-export function ChatListItem({ user }) {
+export function ChatListItem({online, user }) {
   const selectedUserId = useSelector((store) => store.chat.selectedUser);
   const dispatch = useDispatch();
 
@@ -30,7 +30,7 @@ export function ChatListItem({ user }) {
     >
       <div className="size-12 bg-gray-400 dark:bg-gray-600 rounded-full flex items-center justify-center">
         {user.avatar ? (
-          <Avatar online={true} avatar={user.avatar} />
+          <Avatar online={online} avatar={user.avatar} />
         ) : (
           <User className="w-6 h-6 text-gray-700 dark:text-gray-300" />
         )}

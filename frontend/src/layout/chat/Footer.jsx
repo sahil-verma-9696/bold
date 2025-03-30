@@ -1,6 +1,6 @@
 import { File, ImageIcon, Send, Smile } from "lucide-react";
 import React, { useState } from "react";
-import ChatInput from "./ChatInput";
+import ChatInput from "../../components/ui/inputs/ChatInput";
 import { apiRequest } from "../../utils/apiHelper";
 
 function Footer({ sender }) {

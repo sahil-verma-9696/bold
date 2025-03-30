@@ -6,17 +6,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAllUsers } from "../../redux/slices/chatSlice";
 import { ChatListItem } from "./ChatListItem";
 import { useAllUsers } from "../../hooks/useAllUsers";
+import { useSocket } from "../../context/SocketContext";
 
 // Chat List Component
 export function ChatList({ onSelectUser }) {
   const dispatch = useDispatch();
-  const users = useSelector((store) => store.chat.allUsers);
-  const selectedUser = useSelector((store) =>
-    store.chat.allUsers.find(
-      (user) => user._id === window.localStorage.getItem("selectedUserId")
-    )
-  );
   useAllUsers();
+  const users = useSelector((store) => store.chat.allUsers);
+  const onlineUsersId = useSelector((store) => store.chat.onlineUser);
+
+  const onlineUsers = users.filter((user) => onlineUsersId.includes(user._id));
+
+  console.log(onlineUsers);
 
   return (
     <div className="w-80 border-r border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-base-100 h-screen p-4">
@@ -24,8 +25,12 @@ export function ChatList({ onSelectUser }) {
         Chats
       </h2>
       <ul className="space-y-2">
-        {users.map((user) => (
-          <ChatListItem key={user._id} user={user} />
+        {users?.map((user) => (
+          <ChatListItem
+            online={onlineUsersId.includes(user._id)}
+            key={user._id}
+            user={user}
+          />
         ))}
       </ul>
     </div>

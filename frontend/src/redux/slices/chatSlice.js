@@ -21,6 +21,9 @@ const chatSlice = createSlice({
     setAllUsers: (state, action) => {
       state.allUsers = action.payload;
     },
+    setOnlineUser: (state, action) => {
+      state.onlineUser = action.payload;
+    },
   },
 });
 
@@ -29,5 +32,6 @@ export const {
   setMessages,
   settingFetchedMessages,
   setAllUsers,
+  setOnlineUser,
 } = chatSlice.actions;
 export default chatSlice.reducer;
