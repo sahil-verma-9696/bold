@@ -7,7 +7,7 @@ function ProtectedLayout() {
   return (
     <div className="min-h-screen flex">
       <Sidebar />
-      <main className="flex-grow p-4">
+      <main className="flex-grow">
         <Toaster />
         <Outlet />
       </main>

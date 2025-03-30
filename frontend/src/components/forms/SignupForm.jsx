@@ -1,6 +1,6 @@
-import UsernameInput from "../../components/ui/UsernameInput";
-import EmailInput from "../../components/ui/EmailInput";
-import PasswordInput from "../../components/ui/PasswordInput";
+import UsernameInput from "../../components/ui/inputs/UsernameInput";
+import EmailInput from "../../components/ui/inputs/EmailInput";
+import PasswordInput from "../../components/ui/inputs/PasswordInput";
 import { useState } from "react";
 export function SignupForm({ submitHandler, isSubmitting }) {
   const [email, setEmail] = useState("");
