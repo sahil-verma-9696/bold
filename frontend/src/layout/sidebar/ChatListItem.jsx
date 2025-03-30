@@ -2,18 +2,19 @@ import { User } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUser } from "../../redux/slices/chatSlice";
 import { useEffect } from "react";
+import Avatar from "../../components/ui/Avatar";
 
 export function ChatListItem({ user }) {
   const selectedUserId = useSelector((store) => store.chat.selectedUser);
   const dispatch = useDispatch();
-  
+
   // Load selectedUserId from localStorage on mount
   useEffect(() => {
     const storedUserId = window.localStorage.getItem("selectedUserId");
     if (storedUserId) {
       dispatch(setSelectedUser(storedUserId));
     }
-  }, [dispatch]);
+  }, [dispatch, selectedUserId]);
 
   function onSelectUser(userId) {
     window.localStorage.setItem("selectedUserId", userId);
@@ -27,18 +28,19 @@ export function ChatListItem({ user }) {
         selectedUserId === user._id ? "bg-gray-200 dark:bg-gray-800" : ""
       }`}
     >
-      <div className="w-10 h-10 bg-gray-400 dark:bg-gray-600 rounded-full flex items-center justify-center">
+      <div className="size-12 bg-gray-400 dark:bg-gray-600 rounded-full flex items-center justify-center">
         {user.avatar ? (
-          <img
-            src={user.avatar}
-            alt={user.name}
-            className="w-full h-full rounded-full object-cover"
-          />
+          <Avatar online={true} avatar={user.avatar} />
         ) : (
           <User className="w-6 h-6 text-gray-700 dark:text-gray-300" />
         )}
       </div>
-      <span className="text-gray-900 dark:text-gray-100">{user.name}</span>
+      <div>
+        <h2 className="font-bold text-lg">{user.name}</h2>
+        <p className="font-thin textarea-sm">
+          last seen:<time> 2 hours ago</time>
+        </p>
+      </div>
     </li>
   );
 }

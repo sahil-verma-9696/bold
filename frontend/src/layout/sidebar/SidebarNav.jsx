@@ -11,22 +11,25 @@ import {
   Sun,
   Moon,
   LogOut,
+  Bell,
 } from "lucide-react";
 import { useLogout } from "../../hooks/useLogout";
 
-export function SidebarNav() {
+export function SidebarNav({ toggleChatList }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const location = useLocation();
   const { logoutHandler } = useLogout();
   const sidebarConfig = {
     navigation: [
-      { name: "Home", icon: Home, to: "/", isAvailable: true },
       {
         name: "Chat",
         icon: MessageCircle,
         to: "/auth/chat",
+        action: () => toggleChatList((prev) => !prev),
         isAvailable: true,
       },
+      { name: "Notification", icon: Bell, to: "/", isAvailable: true },
+
       // { name: "Users", icon: Users, to: "/users", isAvailable: false }, // Disabled feature
     ],
     bottomActions: [
@@ -70,10 +73,11 @@ export function SidebarNav() {
       {/* Navigation Links */}
       <nav className="flex flex-col flex-grow gap-2 p-2">
         {sidebarConfig.navigation.map(
-          ({ name, icon: Icon, to, isAvailable }) => (
+          ({ name, icon: Icon, to, isAvailable, action }) => (
             <div key={to} className="relative">
               {isAvailable ? (
                 <Link
+                  onClick={action || null}
                   to={to}
                   className={`flex items-center gap-4 p-2 rounded-lg transition-all ${
                     location.pathname === to

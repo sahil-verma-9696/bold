@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "./pages/public/Home";
 import Login from "./pages/public/Login";
-import Dashboard from "./pages/protected/Dashboard";
 import About from "./pages/public/About";
 import ErrorPage from "./components/util/ErrorPage";
 import Contact from "./pages/public/Contact";
@@ -9,6 +8,7 @@ import Signup from "./pages/public/Signup";
 import Profile from "./pages/protected/Profile";
 import { PublicLayout } from "./layout/public/layout";
 import { ProtectedLayoutWithAuth } from "./layout/private/layout";
+import Chat from "./pages/protected/Chat";
 
 // Centralized route paths
 export const ROUTES = {
@@ -45,8 +45,8 @@ const router = createBrowserRouter([
     element: <ProtectedLayoutWithAuth />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <Dashboard /> }, // Matches `/auth`
-      { path: ROUTES.PROTECTED.CHAT, element: <Dashboard /> }, // Matches `/auth/chat`
+      { index: true, element: <Chat /> }, // Matches `/auth`
+      { path: ROUTES.PROTECTED.CHAT, element: <Chat /> }, // Matches `/auth/chat`
       { path: ROUTES.PROTECTED.PROFILE, element: <Profile /> }, // Matches `/auth/profile`
     ],
   },

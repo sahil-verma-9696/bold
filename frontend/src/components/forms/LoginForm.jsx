@@ -1,5 +1,5 @@
-import EmailInput from "../../components/ui/EmailInput";
-import PasswordInput from "../../components/ui/PasswordInput";
+import EmailInput from "../../components/ui/inputs/EmailInput";
+import PasswordInput from "../../components/ui/inputs/PasswordInput";
 import { useState } from "react";
 export function LoginForm({ submitHandler, isSubmitting }) {
   const [email, setEmail] = useState("");
