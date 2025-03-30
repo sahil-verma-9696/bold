@@ -1,24 +1,31 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { io } from "socket.io-client";
-import { setMessages } from "../redux/slices/chatSlice";
+import { setMessages, setOnlineUser } from "../redux/slices/chatSlice";
 
-export function useSocket() {
+const SocketContext = createContext(null);
+
+export function SocketProvider({ children }) {
   const [socket, setSocket] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId"); // Get userId
-    console.log("socket : ", userId);
+    const userId = localStorage.getItem("userId");
 
     if (userId) {
+      const existingSocketId = localStorage.getItem("socketId"); // Restore previous session ID
+
       const newSocket = io("http://localhost:5000", {
         withCredentials: true,
         query: { userId },
+        reconnection: true, // Enable auto-reconnect
+        reconnectionAttempts: 10, // Retry 10 times
+        reconnectionDelay: 2000, // Wait 2 seconds before retrying
       });
 
       newSocket.on("connect", () => {
-        console.log("✅ Socket connected with ID:", newSocket.id);
+        console.log("✅ Reconnected with Socket ID:", newSocket.id);
+        localStorage.setItem("socketId", newSocket.id); // Store new socket ID
       });
 
       newSocket.on("disconnect", () => {
@@ -30,8 +37,13 @@ export function useSocket() {
       });
 
       newSocket.on("newMessage", (message) => {
-        console.log("newMessage event triggered: ", message);
+        console.log("📩 New Message:", message);
         dispatch(setMessages(message));
+      });
+
+      newSocket.on("getOnlineUsers", (onlineUsers) => {
+        // console.log("Online users:", onlineUsers);
+        dispatch(setOnlineUser(onlineUsers));
       });
 
       setSocket(newSocket);
@@ -42,5 +54,11 @@ export function useSocket() {
     }
   }, [dispatch]);
 
-  return socket;
+  return (
+    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
+  );
+}
+
+export function useSocket() {
+  return useContext(SocketContext);
 }

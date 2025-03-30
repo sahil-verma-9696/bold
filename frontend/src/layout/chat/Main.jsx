@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import ChatBubble from "./ChatBubble";
-import { MessageSquare } from "lucide-react";
 import { useSelector } from "react-redux";
 import { EmptyChat } from "../../components/ui/EmptyChat";
 import { useLoadMessage } from "../../hooks/useLoadMessage";
-import useSelectedUser from "../../hooks/useSelectedUser";
 
 function Main({ sender }) {
   const messages = useSelector((store) => store.chat.messages);
@@ -19,7 +17,7 @@ function Main({ sender }) {
     return <EmptyChat />;
   }
   return (
-    <div className="flex-1 p-4 rounded-tl-2xl bg-base-100">
+    <div className="flex-1 p-4 rounded-tl-2xl bg-base-100 overflow-auto">
       {messages?.map((message) => (
         <ChatBubble
           key={message._id}

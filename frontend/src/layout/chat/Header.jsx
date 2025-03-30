@@ -13,14 +13,14 @@ function Header({ sender }) {
   );
 }
 
-function UserPlaceholder({sender}) {
+function UserPlaceholder({ sender }) {
   return (
     <div className="flex gap-4">
       <div className="logo-wrapper size-12 rounded-full overflow-hidden">
         <img className="size-full object-cover " src={sender?.avatar} alt="" />
       </div>
       <div>
-        <h2 className="font-bold text-lg">Sahil Verma</h2>
+        <h2 className="font-bold text-lg">{sender?.name}</h2>
         <p className="font-thin textarea-sm">
           last seen:<time> 2 hours ago</time>
         </p>
