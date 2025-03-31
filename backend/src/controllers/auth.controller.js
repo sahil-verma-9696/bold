@@ -3,9 +3,11 @@ import { User } from "../models/user.models.js";
 import { COOKIE_CONST, setCookie } from "./utils/cookieSetter.js";
 import { generateTokens } from "./utils/tokenGenerator.js";
 import { STATUS_CODES, RESPONSE_TYPES, MESSAGES } from "./utils/constants.js";
-
+import { cloudinary } from "../lib/cloudinary.js";
+import { DEFAULT_AVATAR } from "../models/constants.js";
 export async function signup(req, res) {
   logInfo(import.meta.url, MESSAGES.LOGS.SIGNUP_HIT);
+
   try {
     const { name, email, password, role, avatar } = req.body;
 
@@ -22,12 +24,13 @@ export async function signup(req, res) {
       throw new Error(MESSAGES.LOGS.USER_EXISTS.replace("{}", email));
     }
 
+    // ✅ Create user
     const user = await User.create({
       name: name.trim(),
       email: email.trim().toLowerCase(),
       password: password.trim(),
       role,
-      avatar,
+      avatar: avatar === "" ? DEFAULT_AVATAR : avatar,
     });
 
     const { accessToken } = generateTokens(user._id);
@@ -74,9 +77,9 @@ export async function login(req, res) {
   logInfo(import.meta.url, MESSAGES.LOGS.LOGIN_HIT);
   try {
     const { email, password } = req.body;
-    
+
     const user = await User.findOne({ email: email.trim().toLowerCase() });
-    
+
     if (!user || !user.password || !(await user.comparePassword(password))) {
       throw new Error(MESSAGES.RESPONSE.INVALID_CREDENTIALS);
     }

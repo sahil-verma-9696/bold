@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUser } from "../../redux/slices/chatSlice";
 import { useEffect } from "react";
 import Avatar from "../../components/ui/Avatar";
+import { useNavigate } from "react-router-dom";
 
 export function ChatListItem({online, user }) {
   const selectedUserId = useSelector((store) => store.chat.selectedUser);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Load selectedUserId from localStorage on mount
   useEffect(() => {
@@ -18,6 +20,7 @@ export function ChatListItem({online, user }) {
 
   function onSelectUser(userId) {
     window.localStorage.setItem("selectedUserId", userId);
+    navigate("/auth/chat")
     dispatch(setSelectedUser(userId));
   }
   return (
