@@ -3,10 +3,10 @@ import { Cloudinary } from "@cloudinary/url-gen";
 import { AdvancedImage, responsive, placeholder } from "@cloudinary/react";
 import CloudinaryUploadWidget from "./CloudinaryUploadWidget";
 
-function CloudinaryPreview({setAvatar}) {
+function CloudinaryPreview({ setAvatar }) {
   // Configuration
-  const cloudName = "hzxyensd5";
-  const uploadPreset = "aoh4fpwm";
+  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
   // State
   const [publicId, setPublicId] = useState("");
@@ -53,7 +53,11 @@ function CloudinaryPreview({setAvatar}) {
           <p className="text-center">Preview you profile</p>
         </div>
       )}
-      <CloudinaryUploadWidget uwConfig={uwConfig} setPublicId={setPublicId} setAvatar={setAvatar} />
+      <CloudinaryUploadWidget
+        uwConfig={uwConfig}
+        setPublicId={setPublicId}
+        setAvatar={setAvatar}
+      />
     </div>
   );
 }
