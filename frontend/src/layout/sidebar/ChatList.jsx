@@ -20,7 +20,7 @@ export function ChatList({ onSelectUser }) {
   console.log(onlineUsers);
 
   return (
-    <div className="w-80 border-r border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-base-100 h-screen p-4">
+    <div className="w-80 border-r border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-base-100 h-screen p-4 overflow-y-scroll">
       <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
         Chats
       </h2>

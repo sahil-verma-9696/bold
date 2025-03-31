@@ -3,6 +3,7 @@ import Message from "../models/message.models.js";
 import { User } from "../models/user.models.js";
 import { logSuccess, logError, logInfo } from "../utils/logger.js";
 import { MESSAGES, RESPONSE_TYPES, STATUS_CODES } from "./utils/constants.js";
+import { cloudinary } from "../lib/cloudinary.js";
 
 export async function getUsersForSidebar(req, res) {
   logInfo(import.meta.url, MESSAGES.LOGS.GET_USERS_HIT);
