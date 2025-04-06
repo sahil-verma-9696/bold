@@ -1,5 +1,7 @@
 import { Search } from "lucide-react";
 import React from "react";
+import { formatMongoTime } from "../../utils/utility";
+import { useSelector } from "react-redux";
 
 function Header({ sender }) {
   const headerConfig = {};
@@ -14,6 +16,8 @@ function Header({ sender }) {
 }
 
 function UserPlaceholder({ sender }) {
+  const [lastSeenObj] = useSelector((store) => store.chat.lastSeen);
+  console.log(lastSeenObj?.lastSeen)
   return (
     <div className="flex gap-4">
       <div className="logo-wrapper size-12 rounded-full overflow-hidden">
@@ -22,7 +26,14 @@ function UserPlaceholder({ sender }) {
       <div>
         <h2 className="font-bold text-lg">{sender?.name}</h2>
         <p className="font-thin textarea-sm">
-          last seen:<time> 2 hours ago</time>
+          last seen:
+          <time>
+            {!lastSeenObj ? (
+              <span className="text-green-300 font-bold">online</span>
+            ) : (
+              formatMongoTime(lastSeenObj?.lastSeen)
+            )}
+          </time>
         </p>
       </div>
     </div>

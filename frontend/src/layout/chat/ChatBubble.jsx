@@ -1,15 +1,9 @@
 import { Check, CheckCheck } from "lucide-react";
 import React from "react";
+import { formatMongoTime } from "../../utils/utility";
 
 const ChatBubble = ({ right, message, senderAvatar, myAvatar }) => {
-  function formatMongoTime(createdAt) {
-    const date = new Date(createdAt);
-    return date.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-  }
+  
   return (
     <div
       className={`flex items-end gap-2 my-4 ${

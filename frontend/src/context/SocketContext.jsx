@@ -1,7 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { io } from "socket.io-client";
-import { setMessages, setOnlineUser } from "../redux/slices/chatSlice";
+import {
+  setLastSeen,
+  setMessages,
+  setOnlineUser,
+} from "../redux/slices/chatSlice";
+import { data } from "react-router-dom";
 
 const SocketContext = createContext(null);
 
@@ -42,8 +47,11 @@ export function SocketProvider({ children }) {
       });
 
       newSocket.on("getOnlineUsers", (onlineUsers) => {
-        // console.log("Online users:", onlineUsers);
         dispatch(setOnlineUser(onlineUsers));
+      });
+
+      newSocket.on("lastseen", (data) => {
+        dispatch(setLastSeen(data));
       });
 
       setSocket(newSocket);

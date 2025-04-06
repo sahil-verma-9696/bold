@@ -2,6 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { logInfo } from "../utils/logger.js";
+import { User } from "../models/user.models.js";
 
 const app = express();
 const httpServer = createServer(app);
@@ -16,18 +17,28 @@ export function getReceiverSocketId(userId) {
 // used to store online users
 const userSocketMap = {}; // {userId: socketId}
 
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
   logInfo(import.meta.url, "🔌🛜 User connected ID: " + socket.id);
   const userId = socket.handshake.query.userId;
+  if (userId) {
+    await User.findByIdAndUpdate(userId, { lastSeen: new Date() });
+  }
   if (userId) userSocketMap[userId] = socket.id;
 
   // io.emit() is used to send events to all the connected clients
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
-  socket.on("disconnect", function () {
+  socket.on("disconnect", async function () {
     logInfo(import.meta.url, "User disconnected ID: " + socket.id);
     delete userSocketMap[userId];
+    const lastSeen = new Date();
+
+    console.log("userId", userId);
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
+    io.emit("lastseen", [{ userId, lastSeen }]);
+    if (userId) {
+      await User.findByIdAndUpdate(userId, { lastSeen: lastSeen });
+    }
   });
 });
 
