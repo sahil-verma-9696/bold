@@ -102,6 +102,7 @@ export async function login(req, res) {
           email: user.email,
           role: user.role,
           avatar: user.avatar,
+          lastSeen: user.lastSeen,
         },
       },
     });

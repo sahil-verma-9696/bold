@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import { logError } from "../utils/logger.js";
-import { DEFAULT_AVATAR } from "./constants.js";
+import { DEFAULT_AVATAR } from "../constants/script.js";
 
 const UserSchema = new mongoose.Schema(
   {

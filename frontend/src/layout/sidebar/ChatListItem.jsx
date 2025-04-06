@@ -4,9 +4,12 @@ import { setSelectedUser } from "../../redux/slices/chatSlice";
 import { useEffect } from "react";
 import Avatar from "../../components/ui/Avatar";
 import { useNavigate } from "react-router-dom";
+import { formatMongoTime } from "../../utils/utility";
 
-export function ChatListItem({online, user }) {
+export function ChatListItem({ online, user }) {
   const selectedUserId = useSelector((store) => store.chat.selectedUser);
+  const [lastSeenObj] = useSelector((store) => store.chat.lastSeen);
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -20,7 +23,7 @@ export function ChatListItem({online, user }) {
 
   function onSelectUser(userId) {
     window.localStorage.setItem("selectedUserId", userId);
-    navigate("/auth/chat")
+    navigate("/auth/chat");
     dispatch(setSelectedUser(userId));
   }
   return (
@@ -41,7 +44,14 @@ export function ChatListItem({online, user }) {
       <div>
         <h2 className="font-bold text-lg">{user.name}</h2>
         <p className="font-thin textarea-sm">
-          last seen:<time> 2 hours ago</time>
+          last seen:
+          <time>
+            {online ? (
+              <span className="text-green-300 font-bold">online</span>
+            ) : (
+              formatMongoTime(lastSeenObj?.lastSeen)
+            )}
+          </time>
         </p>
       </div>
     </li>

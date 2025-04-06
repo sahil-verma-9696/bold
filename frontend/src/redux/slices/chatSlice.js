@@ -7,6 +7,7 @@ const chatSlice = createSlice({
     messages: [],
     onlineUser: [],
     allUsers: [],
+    lastSeen: [],
   },
   reducers: {
     setSelectedUser: (state, action) => {
@@ -24,6 +25,10 @@ const chatSlice = createSlice({
     setOnlineUser: (state, action) => {
       state.onlineUser = action.payload;
     },
+    setLastSeen: (state, action) => {
+      console.log(action.payload);
+      state.lastSeen = action.payload;
+    },
   },
 });
 
@@ -33,5 +38,6 @@ export const {
   settingFetchedMessages,
   setAllUsers,
   setOnlineUser,
+  setLastSeen,
 } = chatSlice.actions;
 export default chatSlice.reducer;
