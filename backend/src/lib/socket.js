@@ -2,7 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { logInfo } from "../utils/logger.js";
-import { User } from "../models/user.models.js";
+import { User } from "../modules/auth/user.model.js";
 
 const app = express();
 const httpServer = createServer(app);

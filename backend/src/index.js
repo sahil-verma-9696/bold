@@ -1,16 +1,14 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import { config } from "dotenv";
-import { ROUTES } from "./routes/constants.js";
-import { router as authRouter } from "./routes/auth.routes.js";
+import { ROUTES } from "./modules/auth/constants.js";
+import { router as authRouter } from "./modules/auth/user.routes.js";
 import { router as userRouter } from "./routes/user.routes.js";
 import { router as messageRouter } from "./routes/message.routes.js";
-import { logError, logSuccess } from "./utils/logger.js";
-import { createServer } from "http";
-import { Server } from "socket.io";
+import { logSuccess } from "./utils/logger.js";
 import { connectDB } from "./lib/database.js";
 import cors from "cors";
-import { httpServer, app, io } from "./lib/socket.js";
+import { httpServer, app } from "./lib/socket.js";
 
 config();
 
@@ -29,6 +27,7 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
+app.use(ROUTES.AUTH.BASE, authRouter);
 app.use(ROUTES.AUTH.BASE, authRouter);
 app.use(ROUTES.USER.BASE, userRouter);
 app.use(ROUTES.MESSAGE.BASE, messageRouter);

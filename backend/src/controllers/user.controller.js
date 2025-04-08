@@ -1,6 +1,7 @@
 import { logError, logInfo, logSuccess } from "../utils/logger.js";
 import dotenv from "dotenv";
 import { RESPONSE_TYPES, STATUS_CODES, MESSAGES } from "./utils/constants.js";
+
 dotenv.config();
 
 export async function userProfile(req, res) {
