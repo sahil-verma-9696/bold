@@ -1,10 +1,14 @@
-import { logError, logInfo, logSuccess } from "../utils/logger.js";
-import { User } from "../modules/auth/user.model.js";
-import { COOKIE_CONST, setCookie } from "./utils/cookieSetter.js";
-import { generateTokens } from "./utils/tokenGenerator.js";
-import { STATUS_CODES, RESPONSE_TYPES, MESSAGES } from "./utils/constants.js";
-import { cloudinary } from "../lib/cloudinary.js";
-import { DEFAULT_AVATAR } from "../models/constants.js";
+import { logError, logInfo, logSuccess } from "../../utils/logger.js";
+import { COOKIE_CONST, setCookie } from "../../utils/cookieSetter.js";
+import { generateTokens } from "../../utils/tokenGenerator.js";
+import {
+  DEFAULT_AVATAR,
+  STATUS_CODES,
+  RESPONSE_TYPES,
+  MESSAGES,
+} from "./constants.js";
+import { User } from "./user.model.js";
+
 export async function signup(req, res) {
   logInfo(import.meta.url, MESSAGES.LOGS.SIGNUP_HIT);
 
@@ -149,8 +153,8 @@ export async function logout(req, res) {
   }
 }
 
-export function checkAuth(req, res) {
-  logInfo(import.meta.url, MESSAGES.LOGS.CHECK_AUTH_HIT);
+export function getMe(req, res) {
+  logInfo(import.meta.url, MESSAGES.LOGS.Getme_AUTH_HIT);
   try {
     logSuccess(
       import.meta.url,

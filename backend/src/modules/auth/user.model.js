@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import { logError } from "../utils/logger.js";
-import { DEFAULT_AVATAR } from "../constants/script.js";
-
+import { logError } from "../../utils/logger.js";
+import { DEFAULT_AVATAR } from "./constants.js";
+ 
 const UserSchema = new mongoose.Schema(
   {
     name: {
@@ -26,10 +26,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       enum: ["user", "admin"],
       default: "user",
-    },
-    lastSeen: {
-      type: Date,
-      default: Date.now,
     },
     avatar: {
       type: String,
@@ -57,4 +53,4 @@ UserSchema.methods.comparePassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-export const User = mongoose.model("User", UserSchema);
+export const User = mongoose.models.User || mongoose.model("User", UserSchema);

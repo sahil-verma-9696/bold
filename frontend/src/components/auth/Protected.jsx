@@ -17,7 +17,7 @@ export function Protected(Component) {
           const userId = localStorage.getItem("userId"); // Get userId
           if (!userId) throw new Error("No userId found.");
           
-          const data = await apiRequest("/api/auth/check", "GET");
+          const data = await apiRequest("/api/auth/me", "GET");
           if (data.type === "error") throw new Error(data.message);
           if (data.type === "success") {
             dispatch(setUser(data.payload.user));

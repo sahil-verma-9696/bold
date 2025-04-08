@@ -1,6 +1,6 @@
 import { getReceiverSocketId, io } from "../lib/socket.js";
 import Message from "../models/message.models.js";
-import { User } from "../models/user.models.js";
+import { User } from "../modules/auth/user.model.js";
 import { logSuccess, logError, logInfo } from "../utils/logger.js";
 import { MESSAGES, RESPONSE_TYPES, STATUS_CODES } from "./utils/constants.js";
 import { cloudinary } from "../lib/cloudinary.js";

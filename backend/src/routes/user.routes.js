@@ -4,7 +4,7 @@ import {
   updateProfileByUser,
   userProfile,
 } from "../controllers/user.controller.js";
-import { isProtected } from "../middleware/protected.middleware.js";
+import { isProtected } from "../modules/auth/protected.middleware.js";
 import { isAdmin } from "../middleware/admin.middleware.js";
 
 export const router = Router();

@@ -1,10 +1,10 @@
 import {
   RESPONSE_TYPES,
   STATUS_CODES,
-} from "../controllers/utils/constants.js";
-import { COOKIE_CONST } from "../controllers/utils/cookieSetter.js";
-import { User } from "../models/user.models.js";
-import { logError, logInfo } from "../utils/logger.js";
+} from "../../controllers/utils/constants.js";
+import { COOKIE_CONST } from "../../controllers/utils/cookieSetter.js";
+import { User } from "./user.model.js";
+import { logError, logInfo } from "../../utils/logger.js";
 import jwt from "jsonwebtoken";
 
 // ✅ Local MESSAGES object for better structure
