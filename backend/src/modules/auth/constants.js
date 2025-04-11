@@ -40,7 +40,7 @@ export const MESSAGES = {
     LOGOUT_HIT: "Logout route hit",
     Getme_AUTH_HIT: "Getme route hit",
 
-    USER_EXISTS: "User already exists: {}",
+    USER_EXISTS: "User already Exists: {}",
     USER_CREATED: "User created successfully: {}",
     USER_LOGGED_IN: "User logged in successfully: {}",
     USER_LOGGED_OUT: "User logged out successfully",

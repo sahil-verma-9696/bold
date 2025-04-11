@@ -6,7 +6,7 @@ import {
   STATUS_CODES,
   RESPONSE_TYPES,
   MESSAGES,
-} from "./constants.js";
+} from "./constants.js"; 
 import { User } from "./user.model.js";
 
 export async function signup(req, res) {
