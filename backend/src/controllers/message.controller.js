@@ -1,9 +1,9 @@
 import { getReceiverSocketId, io } from "../lib/socket.js";
 import Message from "../models/message.models.js";
+import { DEFAULT_AVATAR } from "../modules/auth/constants.js";
 import { User } from "../modules/auth/user.model.js";
 import { logSuccess, logError, logInfo } from "../utils/logger.js";
 import { MESSAGES, RESPONSE_TYPES, STATUS_CODES } from "./utils/constants.js";
-import { cloudinary } from "../lib/cloudinary.js";
 
 export async function getUsersForSidebar(req, res) {
   logInfo(import.meta.url, MESSAGES.LOGS.GET_USERS_HIT);
@@ -66,23 +66,11 @@ export async function sendMessage(req, res) {
 
     if (!text && !image) throw new Error(MESSAGES.RESPONSE.MESSAGE_EMPTY);
 
-    let imageUrl = null;
-    if (image) {
-      try {
-        const uploadResponse = await cloudinary.uploader.upload(image);
-        imageUrl = uploadResponse.secure_url;
-        logSuccess(import.meta.url, MESSAGES.LOGS.IMAGE_UPLOADED);
-      } catch (uploadError) {
-        logError(import.meta.url, MESSAGES.RESPONSE.IMAGE_UPLOAD_FAILED);
-        throw new Error(MESSAGES.RESPONSE.IMAGE_UPLOAD_FAILED);
-      }
-    }
-
     const newMessage = new Message({
       senderId,
       receiverId,
       text,
-      image: imageUrl,
+      image: DEFAULT_AVATAR,
     });
     await newMessage.save();
     logSuccess(import.meta.url, MESSAGES.LOGS.MESSAGE_SAVED);
