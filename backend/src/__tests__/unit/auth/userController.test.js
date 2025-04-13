@@ -1,23 +1,29 @@
-import { jest } from "@jest/globals";
+import { jest } from '@jest/globals';
+import httpMocks from 'node-mocks-http';  // Import for mocking requests
+import bcrypt from 'bcryptjs';  // Import bcryptjs for password hashing
+// ✅ FIXED MOCK
+jest.unstable_mockModule('../../../modules/auth/user.model.js', () => ({
+  User: {
+    findOne: jest.fn(),
+    create: jest.fn(),
+  },
+}));
 
-import {
-  signup,
-  login,
-  logout,
-  getMe,
-} from "./../../../modules/auth/user.controller.js";
-import { User } from "./../../../modules/auth/user.model.js";
-import httpMocks from "node-mocks-http";
-import bcrypt from "bcryptjs";
+// 👇 Move all imports to after mocking
+let User, signup, login, logout, getMe;
 
-// Manual mock
-jest.mock("./../../../modules/auth/user.model.js", () => ({
-    User: {
-      findOne: jest.fn(),
-      create: jest.fn(),
-    }
-  }));
 describe("🧪 Unit Test - Auth Controllers", () => {
+  beforeAll(async () => {
+    // Dynamically import the necessary modules after mocking
+    const userModel = await import('../../../modules/auth/user.model.js');
+    const userController = await import('../../../modules/auth/user.controller.js');
+
+    User = userModel.User;
+    ({ signup, login, logout, getMe } = userController);
+
+    console.log("User.findOne is mocked?", jest.isMockFunction(User.findOne));
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -70,7 +76,7 @@ describe("🧪 Unit Test - Auth Controllers", () => {
       const passwordHash = await bcrypt.hash("pass123", 10);
       const req = httpMocks.createRequest({
         method: "POST",
-        body: { email: "test@example.com", password: "pass123" },
+        body: { email: "test@example.com", password: passwordHash },
       });
       const res = httpMocks.createResponse();
       const json = jest.fn();
