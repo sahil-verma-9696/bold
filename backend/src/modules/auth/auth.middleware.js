@@ -44,7 +44,7 @@ export async function isProtected(req, res, next) {
     }
 
     req.user = isExist;
-    logInfo(import.meta.url, MESSAGES.LOGS.USER_PASSED); // ✅ Log when user successfully passes
+    logInfo(import.meta.url, MESSAGES.LOGS.USER_PASSED);
     next();
   } catch (error) {
     logError(import.meta.url, error.message);

@@ -1,10 +1,10 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import { config } from "dotenv";
-import { ROUTES } from "./modules/auth/constants.js";
+import { ROUTES as AUTH_ROUTES } from "./modules/auth/constants.js";
+import { ROUTES as USER_ROUTES } from "./modules/user/constants.js";
 import { router as authRouter } from "./modules/auth/user.routes.js";
 import { router as userRouter } from "./modules/user/user.routes.js";
-import { router as messageRouter } from "./routes/message.routes.js";
 
 import cors from "cors";
 
@@ -24,9 +24,9 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(ROUTES.AUTH.BASE, authRouter);
-app.use(ROUTES.USER.BASE, userRouter);
-app.use(ROUTES.MESSAGE.BASE, messageRouter);
+app.use(AUTH_ROUTES.AUTH.BASE, authRouter);
+app.use(USER_ROUTES.USER.BASE, userRouter);
+// app.use(ROUTES.MESSAGE.BASE, messageRouter);
 // app.use(ROUTES.TEAM.BASE, teamRouter);
 
 app.get("/", function (req, res) {

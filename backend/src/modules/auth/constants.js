@@ -16,9 +16,7 @@ export const USER_ROLES = {
 export const DEFAULT_AVATAR =
   "https://res.cloudinary.com/dfqdx3ieb/image/upload/v1742281653/default_user.png";
 
-
-
-export const MESSAGES = {
+  export const MESSAGES = {
   LOGS: {
     // auth.controller.js
     SIGNUP_HIT: "Signup route hit",
@@ -91,14 +89,6 @@ export const ROUTES = {
     LOGIN: "/login",
     LOGOUT: "/logout",
     ME: "/me",
-  },
-
-  USER: {
-    BASE: "/api/user",
-    PROFILE: "/profile", // Get user profile ✅
-    UPDATE: "/update-profile", // Update user profile ✅
-    SEARCH: "/search", // Search users by name/skills
-    DELETE: "/delete-account", // Delete user account
   },
 
   MESSAGE: {
