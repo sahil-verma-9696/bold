@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import { logError } from "../../utils/logger.js";
 import { DEFAULT_AVATAR } from "./constants.js";
- 
+
 const UserSchema = new mongoose.Schema(
   {
     name: {
@@ -31,12 +31,13 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: DEFAULT_AVATAR,
     },
-    bio:{
+    bio: {
+      type: String,
+      default: "Hii there i am using ⚡ Bolt.",
+    },
+    username: {
       type: String,
     },
-    username:{
-      type: String,
-    }
   },
   { timestamps: true } // Auto-adds createdAt & updatedAt
 );
@@ -47,6 +48,14 @@ UserSchema.pre("save", async function (next) {
   try {
     const salt = await bcrypt.genSalt();
     this.password = await bcrypt.hash(this.password, salt);
+
+    // Set default username if not already set
+    if (!this.username) {
+      // Make sure _id exists (it should at pre-save time)
+      const idString = this._id.toString();
+      this.username = `user_${idString.slice(-6)}`; // example: user_123abc
+    }
+
     next();
   } catch (error) {
     logError("Error hashing password: " + error.message);

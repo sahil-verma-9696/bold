@@ -95,3 +95,19 @@ export async function getProfile(req, res) {
     });
   }
 }
+
+export async function updateProfile(req, res) {
+  logInfo(import.meta.url, MESSAGES.LOGS.UpdateProfile_HIT);
+  try {
+    const user = req.user;
+
+    const { bio, name } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(user._id, updateData, {
+      new: true,
+      runValidators: true,
+      context: "query",
+      select: "-password",
+    });
+  } catch (error) {}
+}
