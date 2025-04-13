@@ -31,6 +31,12 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: DEFAULT_AVATAR,
     },
+    bio:{
+      type: String,
+    },
+    username:{
+      type: String,
+    }
   },
   { timestamps: true } // Auto-adds createdAt & updatedAt
 );

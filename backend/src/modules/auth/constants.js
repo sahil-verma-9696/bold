@@ -16,21 +16,7 @@ export const USER_ROLES = {
 export const DEFAULT_AVATAR =
   "https://res.cloudinary.com/dfqdx3ieb/image/upload/v1742281653/default_user.png";
 
-export const STATUS_CODES = {
-  OK: 200,
-  CREATED: 201,
-  BAD_REQUEST: 400,
-  UNAUTHORIZED: 401,
-  FORBIDDEN: 403,
-  NOT_FOUND: 404,
-  INTERNAL_SERVER_ERROR: 500,
-  SERVICE_UNAVAILABLE: 503,
-};
-export const RESPONSE_TYPES = {
-  SUCCESS: "success",
-  ERROR: "error",
-  INFO: "info",
-};
+
 
 export const MESSAGES = {
   LOGS: {

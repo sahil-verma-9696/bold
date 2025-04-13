@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 import { ROUTES } from "./modules/auth/constants.js";
 import { router as authRouter } from "./modules/auth/user.routes.js";
-import { router as userRouter } from "./routes/user.routes.js";
+import { router as userRouter } from "./modules/user/user.routes.js";
 import { router as messageRouter } from "./routes/message.routes.js";
 
 import cors from "cors";
@@ -24,7 +24,6 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(ROUTES.AUTH.BASE, authRouter);
 app.use(ROUTES.AUTH.BASE, authRouter);
 app.use(ROUTES.USER.BASE, userRouter);
 app.use(ROUTES.MESSAGE.BASE, messageRouter);
