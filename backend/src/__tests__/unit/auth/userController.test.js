@@ -70,50 +70,67 @@ describe("🧪 Unit Test - Auth Controllers", () => {
       );
     });
   });
-
   describe("🔐 login", () => {
     test("✅ should log in successfully", async () => {
-      const passwordHash = await bcrypt.hash("pass123", 10);
+      const plainPassword = "pass123";
+      const hashedPassword = await bcrypt.hash(plainPassword, 10);
+  
       const req = httpMocks.createRequest({
         method: "POST",
-        body: { email: "test@example.com", password: passwordHash },
+        body: { email: "test@example.com", password: plainPassword },
       });
+  
       const res = httpMocks.createResponse();
       const json = jest.fn();
       res.status = jest.fn().mockReturnValue({ json });
       res.cookie = jest.fn();
-
+  
+      // mock comparePassword logic here
       User.findOne.mockResolvedValue({
         id: "1",
         email: "test@example.com",
-        comparePassword: async () => true,
+        password: hashedPassword,
+        comparePassword: async function (input) {
+          return await bcrypt.compare(input, this.password);
+        },
       });
-
+  
       await login(req, res);
       expect(res.status).toHaveBeenCalledWith(200);
       expect(json).toHaveBeenCalledWith(
         expect.objectContaining({ type: "success" })
       );
     });
-
+  
     test("🚫 should return error for invalid credentials", async () => {
+      const plainPassword = "wrong";
+      const hashedPassword = await bcrypt.hash("correctpass", 10);
+  
       const req = httpMocks.createRequest({
         method: "POST",
-        body: { email: "test@example.com", password: "wrong" },
+        body: { email: "test@example.com", password: plainPassword },
       });
+  
       const res = httpMocks.createResponse();
       const json = jest.fn();
       res.status = jest.fn().mockReturnValue({ json });
-
+  
       User.findOne.mockResolvedValue({
         email: "test@example.com",
-        comparePassword: async () => false,
+        password: hashedPassword,
+        comparePassword: async function (input) {
+          return await bcrypt.compare(input, this.password);
+        },
       });
-
+  
       await login(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
+      expect(json).toHaveBeenCalledWith(
+        expect.objectContaining({ type: "error" })
+      );
     });
   });
+  
 
   describe("🚪 logout", () => {
     test("✅ should clear accessToken cookie", async () => {
