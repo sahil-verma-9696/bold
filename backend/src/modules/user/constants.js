@@ -3,15 +3,18 @@ export const ROUTES = {
     BASE: "/api/user",
     ME: "/me",
     PROFILE: "/:id",
-    AVATAR: "/me/avatar",
   },
 };
 
 export const MESSAGES = {
   LOGS: {
     Getme_HIT: "getMe() route hit",
+    UpdateMe_HIT: "updateMe() route hit",
+    DeleteMe_HIT: "deleteMe() route hit",
+
     GetProfile_HIT: "getProfile() route hit",
-    UpdateProfile_HIT: "updateProfile() route hit",
+
+    
     USER_AUTH_SUCCESS: "User authenticated successfully: {}",
     ERROR_OCCURED: "Error occurred: {}",
     USER_FETCHED: "User with ID {} successfully fetched",

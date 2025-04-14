@@ -31,6 +31,82 @@ export function getMe(req, res) {
   }
 }
 
+// tested on POSTMAN ✅
+export async function updateMe(req, res) {
+  logInfo(import.meta.url, MESSAGES.LOGS.UpdateMe_HIT);
+
+  try {
+    const { name, bio } = req.body;
+    const file = req.file;
+    const user = req.user;
+
+    const updateData = {};
+
+    if (name) updateData.name = name;
+    if (bio) updateData.bio = bio;
+
+    if (file) {
+      const result = await uploadToCloudinary(file.buffer, file.size);
+      updateData.avatar = result.secure_url;
+      console.log(`✅ Avatar uploaded: ${result.secure_url}`);
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(user._id, updateData, {
+      new: true,
+      runValidators: true,
+      context: "query",
+    }).select("-password");
+
+    logSuccess(import.meta.url, `✅ User updated: ${updatedUser._id}`);
+
+    return res.status(STATUS_CODES.OK).json({
+      type: RESPONSE_TYPES.SUCCESS,
+      message: "Profile updated successfully",
+      payload: { user: updatedUser },
+    });
+  } catch (error) {
+    logError(
+      import.meta.url,
+      MESSAGES.LOGS.ERROR_OCCURED.replace("{}", error.message)
+    );
+
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      type: RESPONSE_TYPES.ERROR,
+      message: error.message || MESSAGES.RESPONSE.ERROR_OCCURED,
+      payload: null,
+    });
+  }
+}
+
+export async function deleteMe(req, res) {
+  logInfo(import.meta.url, MESSAGES.LOGS.DeleteMe_HIT);
+  try {
+    const { _id } = req.user;
+
+    const deletedUser = await User.findByIdAndDelete(_id);
+
+    if (!deletedUser) {
+      logError(import.meta.url, "failed to delete");
+      throw new Error("faild to delete the user");
+    }
+
+    logSuccess(import.meta.url, "successfully user deleted");
+
+    res.status(STATUS_CODES.OK).json({
+      type: RESPONSE_TYPES.SUCCESS,
+      message: "user deleted successfully",
+      payload: { user: deletedUser },
+    });
+  } catch (error) {
+    logError(import.meta.url, error.message);
+    res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      type: RESPONSE_TYPES.ERROR,
+      message: "failed to delete the user",
+      payload: null,
+    });
+  }
+}
+
 export async function getProfile(req, res) {
   logInfo(import.meta.url, MESSAGES.LOGS.GetProfile_HIT);
   try {
@@ -96,49 +172,3 @@ export async function getProfile(req, res) {
     });
   }
 }
-
-
-// tested on POSTMAN ✅
-export async function updateProfile(req, res) {
-  logInfo(import.meta.url, MESSAGES.LOGS.UpdateProfile_HIT);
-
-  try {
-    const { name, bio } = req.body;
-    const file = req.file;
-    const user = req.user;
-
-    const updateData = {};
-
-    if (name) updateData.name = name;
-    if (bio) updateData.bio = bio;
-
-    if (file) {
-      const result = await uploadToCloudinary(file.buffer, file.size);
-      updateData.avatar = result.secure_url;
-      console.log(`✅ Avatar uploaded: ${result.secure_url}`);
-    }
-
-    const updatedUser = await User.findByIdAndUpdate(user._id, updateData, {
-      new: true,
-      runValidators: true,
-      context: "query",
-    }).select("-password");
-
-    logSuccess(import.meta.url, `✅ User updated: ${updatedUser._id}`);
-
-    return res.status(STATUS_CODES.OK).json({
-      type: RESPONSE_TYPES.SUCCESS,
-      message: "Profile updated successfully",
-      payload: { user: updatedUser },
-    });
-  } catch (error) {
-    logError(import.meta.url, MESSAGES.LOGS.ERROR_OCCURED.replace("{}", error.message));
-
-    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
-      type: RESPONSE_TYPES.ERROR,
-      message: error.message || MESSAGES.RESPONSE.ERROR_OCCURED,
-      payload: null,
-    });
-  }
-}
-
