@@ -17,7 +17,7 @@ export function ChatList({ onSelectUser }) {
 
   const onlineUsers = users.filter((user) => onlineUsersId.includes(user._id));
 
-  console.log(onlineUsersId);
+  // console.log(onlineUsersId);
 
   return (
     <div className="w-80 border-r border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-base-100 h-screen p-4 overflow-y-scroll">

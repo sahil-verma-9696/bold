@@ -4,7 +4,7 @@ import { setUser, clearUser } from "../../redux/slices/authSlice";
 import { Navigate } from "react-router-dom";
 import { toast } from "react-hot-toast"; // ✅ Import react-hot-toast
 import { apiRequest } from "../../utils/apiHelper";
-import { useSocket } from "../../context/SocketContext";
+// import { useSocket } from "../../context/SocketContext";
 
 export function Protected(Component) {
   return function ProtectedComponent(props) {
@@ -17,12 +17,13 @@ export function Protected(Component) {
           const userId = localStorage.getItem("userId"); // Get userId
           if (!userId) throw new Error("No userId found.");
           
-          const data = await apiRequest("/api/auth/me", "GET");
+          const data = await apiRequest("/api/user/me", "GET");
+          
           if (data.type === "error") throw new Error(data.message);
           if (data.type === "success") {
             dispatch(setUser(data.payload.user));
             setIsAuthenticated(true); // ✅ Mark as authenticated
-          } else {
+          } else {  
             dispatch(clearUser());
             setIsAuthenticated(false); // ❌ Not authenticated
           }
@@ -38,13 +39,13 @@ export function Protected(Component) {
     }, [dispatch]);
 
     // ✅ Initialize socket *only after authentication is confirmed*
-    const socket = useSocket();
+    // const socket = useSocket();
     useEffect(() => {
       if (isAuthenticated) {
-        console.log("🔌 Initializing socket after authentication...");
-        socket?.connect(); // Ensure socket connection
+        // console.log("🔌 Initializing socket after authentication...");
+        // socket?.connect(); // Ensure socket connection
       }
-    }, [isAuthenticated, socket]);
+    }, [isAuthenticated]);
 
     if (isAuthenticated === null) return <p>Loading...</p>; // ✅ Prevent flickering
 

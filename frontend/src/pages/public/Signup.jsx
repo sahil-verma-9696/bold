@@ -13,7 +13,7 @@ export default function Signup() {
   async function submitHandler(formData) {
     if (DEBUG) console.log("Form Submitted:", formData); // ✅ Debug log
 
-    if (!formData.name || !formData.email || !formData.password) {
+    if (!formData.email || !formData.password) {
       if (DEBUG) console.warn("Validation failed: Missing fields"); // ✅ Debug log
       return toast.error("Please fill in all fields.");
     }

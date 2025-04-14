@@ -15,8 +15,8 @@ export function useLoadMessage() {
   async function handleGetMessages() {
     if (!selectedUserId) return;
     try {
-      const data = await apiRequest(`/api/messages/${selectedUserId}`, "GET");
-      dispatch(settingFetchedMessages(data.payload));
+      // const data = await apiRequest(`/api/messages/${selectedUserId}`, "GET");
+      dispatch(settingFetchedMessages(data?.payload||[]));
     } catch (error) {
       console.log(error.message);
     }

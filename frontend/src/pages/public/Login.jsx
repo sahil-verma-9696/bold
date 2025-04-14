@@ -4,6 +4,9 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { LoginForm } from "../../components/forms/LoginForm";
 import { apiRequest } from "../../utils/apiHelper";
+import { createSocketMiddleware } from "./../../redux/middlewares/socket";
+
+import { store } from "../../redux/store";
 
 const DEBUG = true; // ✅ Toggle for debugging logs
 
@@ -26,7 +29,13 @@ export default function Login() {
 
       if (DEBUG) console.log("Login Response:", response); // ✅ Debug log
       toast.success("Account created successfully!");
-      localStorage.setItem("userId", response.payload.user.id); // Save userId
+      localStorage.setItem("userId", response.payload.user._id);
+
+      const socketMiddleware = createSocketMiddleware(
+        "http://localhost:5000",
+        store
+      );
+      store.dispatch = socketMiddleware(store)(store.dispatch);
 
       navigate("/auth");
     } catch (error) {

@@ -9,13 +9,19 @@ export async function signup(req, res) {
   logInfo(import.meta.url, MESSAGES.LOGS.SIGNUP_HIT);
 
   try {
-    const { name, email, password, role, avatar } = req.body;
+    const { email, password, role, avatar } = req.body;
+    // const { name, email, password, role, avatar } = req.body;
 
-    if (!name || !email || !password) {
+    if (!email || !password) {
       throw new Error(
         MESSAGES.RESPONSE.MISSING_FIELDS.replace("{}", "name, email, password")
       );
     }
+    // if (!name || !email || !password) {
+    //   throw new Error(
+    //     MESSAGES.RESPONSE.MISSING_FIELDS.replace("{}", "name, email, password")
+    //   );
+    // }
 
     const userExists = await User.findOne({
       email: email.trim().toLowerCase(),
@@ -26,7 +32,7 @@ export async function signup(req, res) {
 
     // ✅ Create user
     const user = await User.create({
-      name: name.trim(),
+      name: email.trim().toLowerCase().split("@")[0],
       email: email.trim().toLowerCase(),
       password: password.trim(),
       role,
@@ -41,17 +47,15 @@ export async function signup(req, res) {
       MESSAGES.LOGS.USER_CREATED.replace("{}", user._id)
     );
 
+    // Convert Mongoose document to plain object
+    const userObj = user.toObject();
+    delete userObj.password;
+
     res.status(STATUS_CODES.OK).json({
       type: RESPONSE_TYPES.SUCCESS,
       message: MESSAGES.RESPONSE.USER_CREATED,
       payload: {
-        user: {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          avatar: user.avatar,
-        },
+        user: userObj,
       },
     });
   } catch (error) {
@@ -78,7 +82,9 @@ export async function login(req, res) {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email: email.trim().toLowerCase() });
+    const user = await User.findOne({
+      email: email.trim().toLowerCase(),
+    });
 
     if (!user || !user.password || !(await user.comparePassword(password))) {
       throw new Error(MESSAGES.RESPONSE.INVALID_CREDENTIALS);
@@ -92,18 +98,15 @@ export async function login(req, res) {
       MESSAGES.LOGS.USER_LOGGED_IN.replace("{}", user._id)
     );
 
+    // Convert Mongoose document to plain object
+    const userObj = user.toObject();
+    delete userObj.password;
+
     res.status(STATUS_CODES.OK).json({
       type: RESPONSE_TYPES.SUCCESS,
       message: MESSAGES.RESPONSE.LOGGED_IN,
       payload: {
-        user: {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          avatar: user.avatar,
-          lastSeen: user.lastSeen,
-        },
+        user: userObj,
       },
     });
   } catch (error) {

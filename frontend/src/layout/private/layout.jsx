@@ -6,15 +6,15 @@ import { SocketProvider } from "../../context/SocketContext";
 
 function ProtectedLayout() {
   return (
-    <SocketProvider>
-      <div className="min-h-screen flex">
-        <Sidebar />
-        <main className="flex-grow">
-          <Toaster />
-          <Outlet />
-        </main>
-      </div>
-    </SocketProvider>
+    // <SocketProvider>
+    <div className="min-h-screen flex">
+      <Sidebar />
+      <main className="flex-grow">
+        <Toaster />
+        <Outlet />
+      </main>
+    </div>
+    // </SocketProvider>
   );
 }
 

@@ -3,9 +3,8 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import { logInfo } from "../utils/logger.js";
 import { User } from "../modules/auth/user.model.js";
-import app from "./../app.js";
+import app from "../app.js";
 
-// const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: { origin: "http://localhost:5173", credentials: true },
@@ -16,7 +15,7 @@ export function getReceiverSocketId(userId) {
 }
 
 // used to store online users
-const userSocketMap = {}; // {userId: socketId}
+const userSocketMap = {};
 
 io.on("connection", async (socket) => {
   logInfo(import.meta.url, "🔌🛜 User connected ID: " + socket.id);
@@ -43,4 +42,4 @@ io.on("connection", async (socket) => {
   });
 });
 
-export { app, io, httpServer };
+export { httpServer };

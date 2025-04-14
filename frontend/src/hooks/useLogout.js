@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { apiRequest } from "../utils/apiHelper";
 import { clearSocket } from "../redux/slices/authSlice";
+import { disconnectSocket } from "../redux/middlewares/socket";
 
 export function useLogout() {
   const navigate = useNavigate(); // ✅ Call hooks at the top level
@@ -13,6 +14,7 @@ export function useLogout() {
     try {
       const loadingToast = toast.loading("Logging out...");
       const data = await apiRequest("/api/auth/logout", "GET");
+      disconnectSocket();
       toast.dismiss(loadingToast);
 
       if (data.type === "error") {

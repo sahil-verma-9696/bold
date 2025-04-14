@@ -8,10 +8,10 @@ import { EmptyChat } from "../../components/ui/EmptyChat";
 
 function Chat() {
   const sender = useSelectedUser();
-  const socket = useSocket();
-  socket?.on("newMessage", (message) => {
-    console.log("📩 New Message:", message);
-  });
+  // const socket = useSocket();
+  // socket?.on("newMessage", (message) => {
+  //   console.log("📩 New Message:", message);
+  // });
 
   if (!sender) {
     return <EmptyChat />;
