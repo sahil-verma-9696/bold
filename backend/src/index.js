@@ -1,7 +1,7 @@
 import { httpServer } from "./lib/socket.js";
 import dotenv from "dotenv";
 import { logSuccess } from "./utils/logger.js";
-import { connectDB } from "./lib/database.js";
+import { connectDB } from "./database/script.js";
 
 dotenv.config();
 
@@ -14,4 +14,4 @@ async function startServer() {
   });
 }
 
-startServer(); 
+startServer();

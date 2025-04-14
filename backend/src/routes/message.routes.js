@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { ROUTES } from "./constants.js";
-import { isProtected } from "../modules/auth/protected.middleware.js";
+import { isProtected } from "../modules/auth/auth.middleware.js";
 import {
   getMessage,
   getUsersForSidebar,

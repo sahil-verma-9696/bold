@@ -1,12 +1,8 @@
 import { logError, logInfo, logSuccess } from "../../utils/logger.js";
 import { COOKIE_CONST, setCookie } from "../../utils/cookieSetter.js";
 import { generateTokens } from "../../utils/tokenGenerator.js";
-import {
-  DEFAULT_AVATAR,
-  STATUS_CODES,
-  RESPONSE_TYPES,
-  MESSAGES,
-} from "./constants.js"; 
+import { DEFAULT_AVATAR, MESSAGES } from "./constants.js";
+import { STATUS_CODES, RESPONSE_TYPES } from "../../constants/script.js";
 import { User } from "./user.model.js";
 
 export async function signup(req, res) {
@@ -139,32 +135,6 @@ export async function logout(req, res) {
       type: RESPONSE_TYPES.SUCCESS,
       message: MESSAGES.RESPONSE.LOGGED_OUT,
       payload: null,
-    });
-  } catch (error) {
-    logError(
-      import.meta.url,
-      MESSAGES.LOGS.ERROR_OCCURED.replace("{}", error.message)
-    );
-    res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
-      type: RESPONSE_TYPES.ERROR,
-      message: error.message || MESSAGES.RESPONSE.ERROR_OCCURED,
-      payload: null,
-    });
-  }
-}
-
-export function getMe(req, res) {
-  logInfo(import.meta.url, MESSAGES.LOGS.Getme_AUTH_HIT);
-  try {
-    logSuccess(
-      import.meta.url,
-      MESSAGES.LOGS.USER_AUTH_SUCCESS.replace("{}", req.user?.id)
-    );
-
-    res.status(STATUS_CODES.OK).json({
-      type: RESPONSE_TYPES.SUCCESS,
-      message: MESSAGES.RESPONSE.AUTH_SUCCESS,
-      payload: { user: req.user },
     });
   } catch (error) {
     logError(

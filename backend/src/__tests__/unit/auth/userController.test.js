@@ -10,7 +10,7 @@ jest.unstable_mockModule('../../../modules/auth/user.model.js', () => ({
 }));
 
 // 👇 Move all imports to after mocking
-let User, signup, login, logout, getMe;
+let User, signup, login, logout;
 
 describe("🧪 Unit Test - Auth Controllers", () => {
   beforeAll(async () => {
@@ -19,7 +19,7 @@ describe("🧪 Unit Test - Auth Controllers", () => {
     const userController = await import('../../../modules/auth/user.controller.js');
 
     User = userModel.User;
-    ({ signup, login, logout, getMe } = userController);
+    ({ signup, login, logout } = userController);
 
     console.log("User.findOne is mocked?", jest.isMockFunction(User.findOne));
   });
@@ -70,6 +70,7 @@ describe("🧪 Unit Test - Auth Controllers", () => {
       );
     });
   });
+
   describe("🔐 login", () => {
     test("✅ should log in successfully", async () => {
       const plainPassword = "pass123";
@@ -131,7 +132,6 @@ describe("🧪 Unit Test - Auth Controllers", () => {
     });
   });
   
-
   describe("🚪 logout", () => {
     test("✅ should clear accessToken cookie", async () => {
       const req = httpMocks.createRequest();
@@ -146,20 +146,21 @@ describe("🧪 Unit Test - Auth Controllers", () => {
     });
   });
 
-  describe("👤 getMe", () => {
-    test("✅ should return user profile", async () => {
-      const req = httpMocks.createRequest({
-        user: { id: "1", email: "test@example.com", name: "Test" },
-      });
-      const res = httpMocks.createResponse();
-      const json = jest.fn();
-      res.status = jest.fn().mockReturnValue({ json });
+  // describe("👤 getMe", () => {
+  //   test("✅ should return user profile", async () => {
+  //     const req = httpMocks.createRequest({
+  //       user: { id: "1", email: "test@example.com", name: "Test" },
+  //     });
+  //     const res = httpMocks.createResponse();
+  //     const json = jest.fn();
+  //     res.status = jest.fn().mockReturnValue({ json });
 
-      await getMe(req, res);
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(json).toHaveBeenCalledWith(
-        expect.objectContaining({ type: "success" })
-      );
-    });
-  });
+  //     await getMe(req, res);
+  //     expect(res.status).toHaveBeenCalledWith(200);
+  //     expect(json).toHaveBeenCalledWith(
+  //       expect.objectContaining({ type: "success" })
+  //     );
+  //   });
+  // });
+
 });

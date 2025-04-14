@@ -1,13 +1,9 @@
-import {
-  RESPONSE_TYPES,
-  STATUS_CODES,
-} from "../../controllers/utils/constants.js";
+import { RESPONSE_TYPES, STATUS_CODES } from "../../constants/script.js";
 import { COOKIE_CONST } from "../../controllers/utils/cookieSetter.js";
 import { User } from "./user.model.js";
 import { logError, logInfo } from "../../utils/logger.js";
 import jwt from "jsonwebtoken";
 
-// ✅ Local MESSAGES object for better structure
 const MESSAGES = {
   RESPONSE: {
     NO_TOKEN: "Unauthorized - No token provided",
@@ -48,7 +44,25 @@ export async function isProtected(req, res, next) {
     }
 
     req.user = isExist;
-    logInfo(import.meta.url, MESSAGES.LOGS.USER_PASSED); // ✅ Log when user successfully passes
+    logInfo(import.meta.url, MESSAGES.LOGS.USER_PASSED);
+    next();
+  } catch (error) {
+    logError(import.meta.url, error.message);
+    next(error);
+  }
+}
+
+export function isAdmin(req, res, next) {
+  try {
+    const user = req.user;
+    if (user.roll !== USER_ROLES.ADMIN) {
+      return res.status(STATUS_CODES.FORBIDDEN).json({
+        type: RESPONSE_TYPES.ERROR,
+        message: "Only admin allow",
+        payload: null,
+      });
+    }
+
     next();
   } catch (error) {
     logError(import.meta.url, error.message);
