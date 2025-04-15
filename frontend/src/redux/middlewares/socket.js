@@ -3,9 +3,7 @@ import createSocketIoMiddleware from "redux-socket.io";
 
 let socket = null;
 
-const userId = window.localStorage.getItem("userId") || " ";
-
-export const createSocketMiddleware = (url, store) => {
+export const createSocketMiddleware = (url, store, userId) => {
   socket = io(url, {
     withCredentials: true,
     query: { userId },

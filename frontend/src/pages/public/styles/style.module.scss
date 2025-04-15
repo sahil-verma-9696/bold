@@ -1,0 +1,44 @@
+.page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5vw;
+
+    a {
+      h1 {
+        text-transform: uppercase;
+      }
+    }
+
+    nav {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .cta {
+      background-color: rgb(79, 79, 254);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      user-select: none;
+      &:focus {
+        scale: 0.95;
+      }
+    }
+  }
+  .publicMain {
+    flex: 1;
+    padding: 1rem 5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

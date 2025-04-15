@@ -1,0 +1,41 @@
+.page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.page header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 5vw;
+}
+.page header a h1 {
+  text-transform: uppercase;
+}
+.page header nav {
+  display: flex;
+  gap: 1rem;
+}
+.page header .cta {
+  background-color: rgb(79, 79, 254);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.page header .cta:focus {
+  scale: 0.95;
+}
+.page .publicMain {
+  flex: 1;
+  padding: 1rem 5vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}/*# sourceMappingURL=style.module.css.map */

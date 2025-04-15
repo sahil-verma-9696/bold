@@ -12,7 +12,7 @@ const io = new Server(httpServer, {
 
 export function getReceiverSocketId(userId) {
   return userSocketMap[userId];
-}
+} 
 
 // used to store online users
 const userSocketMap = {};
@@ -38,7 +38,7 @@ io.on("connection", async (socket) => {
     io.emit("lastseen", [{ userId, lastSeen }]);
     if (userId) {
       await User.findByIdAndUpdate(userId, { lastSeen: lastSeen });
-    }
+    } 
   });
 });
 
