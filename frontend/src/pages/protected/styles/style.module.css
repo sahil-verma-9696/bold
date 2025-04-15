@@ -1,0 +1,55 @@
+.protectedPage {
+  width: 100%;
+  height: 100vh;
+  background-color: #f9fafb;
+}
+.protectedPage .protectedMain {
+  display: grid;
+  grid-template-columns: 5vw 25vw 1fr;
+  height: 100%;
+  gap: 20px;
+  padding: 20px;
+}
+.protectedPage .protectedMain .part1 {
+  background-color: #1f2937;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 1rem;
+  border-right: 1px solid #e5e7eb;
+}
+.protectedPage .protectedMain .part1:hover {
+  background-color: #374151;
+  cursor: pointer;
+}
+.protectedPage .protectedMain .part1 {
+  border-radius: 8px;
+}
+.protectedPage .protectedMain .part2 {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+  overflow-y: auto;
+  height: 100%;
+}
+.protectedPage .protectedMain .part2 .header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+.protectedPage .protectedMain .part2 .content {
+  font-size: 1rem;
+  color: #333;
+}
+.protectedPage .protectedMain .part3 {
+  background-color: #f3f4f6;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 0px 6px rgba(0, 0, 0, 0.25);
+  overflow-y: auto;
+  height: 100%;
+}/*# sourceMappingURL=style.module.css.map */

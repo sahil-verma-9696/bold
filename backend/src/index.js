@@ -1,4 +1,4 @@
-import { httpServer } from "./lib/socket.js";
+import { httpServer } from "./services/socket.js";
 import dotenv from "dotenv";
 import { logSuccess } from "./utils/logger.js";
 import { connectDB } from "./database/script.js";
