@@ -1,13 +1,11 @@
-import { Toaster } from "react-hot-toast";
 import { Header } from "./components/Header";
-import css from "./styles/style.module.css";
 import { Outlet } from "react-router-dom";
 
 export function PublicLayout() {
   return (
-    <div className={css.page}>
+    <div className="min-h-screen flex flex-col bg-white text-gray-900">
       <Header />
-      <main className={css.publicMain}>
+      <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
         <Outlet />
       </main>
     </div>

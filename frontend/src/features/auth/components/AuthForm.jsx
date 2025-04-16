@@ -41,26 +41,45 @@ export default function AuthForm({ mode = "login", setIsLogin }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>{isLogin ? "Login" : "Signup"}</h2>
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md"
+    >
+      <h2 className="text-2xl font-semibold text-center mb-4">
+        {isLogin ? "Login" : "Signup"}
+      </h2>
 
       <Email value={formData.email} onChange={handleChange} />
       <Password value={formData.password} onChange={handleChange} />
 
-      <button type="submit" disabled={isSubmitting}>
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full mt-4 py-2 bg-blue-500 text-white rounded-md disabled:opacity-50"
+      >
         {isSubmitting ? "Please wait..." : isLogin ? "Login" : "Signup"}
       </button>
 
-      <div>
+      <div className="mt-4 text-center">
         {isLogin ? (
           <>
             Don’t have an account?{" "}
-            <span onClick={() => setIsLogin(false)}>Signup</span>
+            <span
+              onClick={() => setIsLogin(false)}
+              className="text-blue-500 cursor-pointer hover:underline"
+            >
+              Signup
+            </span>
           </>
         ) : (
           <>
             Already have an account?{" "}
-            <span onClick={() => setIsLogin(true)}>Login</span>
+            <span
+              onClick={() => setIsLogin(true)}
+              className="text-blue-500 cursor-pointer hover:underline"
+            >
+              Login
+            </span>
           </>
         )}
       </div>
