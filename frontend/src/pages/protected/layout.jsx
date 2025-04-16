@@ -1,11 +1,12 @@
 import { Outlet } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import css from "./styles/style.module.css";
 import { Protected } from "../../features/auth/components/Protected";
+
 function ProtectedLayout() {
   return (
-    <div className={css.protectedPage}>
-      <main className={css.protectedMain}>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <Toaster />
+      <main>
         <Outlet />
       </main>
     </div>
