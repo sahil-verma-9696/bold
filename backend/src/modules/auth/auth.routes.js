@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, logout, signup } from "./user.controller.js";
+import { login, logout, signup } from "./auth.controller.js";
 import { ROUTES } from "./constants.js";
 import { isProtected } from "./auth.middleware.js";
 

@@ -10,18 +10,11 @@ export async function signup(req, res) {
 
   try {
     const { email, password, role, avatar } = req.body;
-    // const { name, email, password, role, avatar } = req.body;
-
     if (!email || !password) {
       throw new Error(
         MESSAGES.RESPONSE.MISSING_FIELDS.replace("{}", "name, email, password")
       );
     }
-    // if (!name || !email || !password) {
-    //   throw new Error(
-    //     MESSAGES.RESPONSE.MISSING_FIELDS.replace("{}", "name, email, password")
-    //   );
-    // }
 
     const userExists = await User.findOne({
       email: email.trim().toLowerCase(),
