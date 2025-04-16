@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import { logError } from "../../utils/logger.js";
 import { DEFAULT_AVATAR } from "./constants.js";
+import { UserSettings } from "../user/models/userSetting.js";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -60,6 +61,17 @@ UserSchema.pre("save", async function (next) {
   } catch (error) {
     logError("Error hashing password: " + error.message);
     next(error);
+  }
+});
+
+// post-save hook to create user settings
+UserSchema.post("save", async function (doc, next) {
+  try {
+    await UserSettings.create({ userId: doc._id });
+    next();
+  } catch (err) {
+    console.error("Error creating user settings:", err);
+    next(err);
   }
 });
 
