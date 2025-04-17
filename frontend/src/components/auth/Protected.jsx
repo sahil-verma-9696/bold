@@ -1,12 +1,11 @@
-// components/ProtectedRoute.jsx
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
-import { clearUser, me } from "../authSlice";
-import { store } from "../../../redux/store";
-import { createSocketMiddleware } from "../../../redux/middlewares/socket";
+import { clearUser, me } from "../../features/auth/authSlice";
+import { store } from "../../redux/store";
+import { createSocketMiddleware } from "../../redux/middlewares/socket";
 
 export const ProtectedRoute = ({ children }) => {
   const dispatch = useDispatch();

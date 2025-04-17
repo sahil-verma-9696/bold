@@ -1,5 +1,5 @@
 import React from "react";
-import ChatArea from "./contextPannels/ChatArea";
+import ChatArea from "../chat/ChatArea";
 
 function Main() {
   return (

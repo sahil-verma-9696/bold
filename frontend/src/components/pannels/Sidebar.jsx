@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Home, LogOut, Settings } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import Me from "../../../features/user/components/Me";
-import { setSelectedChannel } from "../lobby/lobbySlice";
-import { disconnectSocket } from "../../../redux/middlewares/socket";
-import { logout } from "../../../features/auth/authSlice";
+import Me from "../user/Me";
+import { setSelectedChannel } from "../../pages/protected/lobby/lobbySlice";
+import { disconnectSocket } from "../../redux/middlewares/socket";
+import { logout } from "../../features/auth/authSlice";
 
 function Sidebar() {
   const { user } = useSelector((store) => store.auth);

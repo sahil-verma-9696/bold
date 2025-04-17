@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers } from "../../../../features/user/userSlice";
 import { Check, X } from "lucide-react";
-import { messages, setReceiver } from "../../../../features/chat/chatAreaSlice";
+import { getUsers } from "../../features/user/userSlice";
+import { messages, setReceiver } from "../../features/chat/chatAreaSlice";
 
 function Home() {
   const dispatch = useDispatch();

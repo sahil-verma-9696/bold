@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AuthForm from "../../../features/auth/components/AuthForm";
+import AuthForm from "../../../components/auth/AuthForm";
 
 export function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);

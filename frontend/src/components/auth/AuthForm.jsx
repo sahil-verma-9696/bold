@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { login, signup } from "../authSlice";
 import toast from "react-hot-toast";
-import Email from "../../../pages/public/components/Email";
-import Password from "../../../pages/public/components/Password";
-import validateAuthForm from "../../../utils/validateAuthForm";
+import { useDispatch } from "react-redux";
+import { login, signup } from "../../features/auth/authSlice";
+import Email from "../ui/Email"
+import Password from "../ui/Password"
+import validateAuthForm from "../../utils/validateAuthForm";
 import { useNavigate } from "react-router-dom";
 
 export default function AuthForm({ mode = "login", setIsLogin }) {
