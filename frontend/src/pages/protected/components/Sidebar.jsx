@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Home, Settings } from "lucide-react";
+import { Home, LogOut, Settings } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Me from "../../../features/user/components/Me";
 import { setSelectedChannel } from "../lobby/lobbySlice";
+import { disconnectSocket } from "../../../redux/middlewares/socket";
+import { logout } from "../../../features/auth/authSlice";
 
 function Sidebar() {
   const { user } = useSelector((store) => store.auth);
@@ -29,6 +31,15 @@ function Sidebar() {
     [
       {
         type: "button",
+        icon: <LogOut />,
+        label: "Logout",
+        onClick: () => {
+          disconnectSocket();
+          dispatch(logout());
+        },
+      },
+      {
+        type: "button",
         icon: <Settings />,
         label: "Settings",
         onClick: () => {
@@ -50,8 +61,8 @@ function Sidebar() {
     ],
   ];
   return (
-    <section className="flex flex-col justify-between w-20 bg-white dark:bg-gray-800 py-4 border-r">
-      {list.map((item,index) => {
+    <section className="flex flex-col justify-between bg-white dark:bg-gray-800 py-4 border-r border-gray-700">
+      {list.map((item, index) => {
         return (
           <ul key={index} className="flex flex-col gap-6">
             {item.map((item, index) => (

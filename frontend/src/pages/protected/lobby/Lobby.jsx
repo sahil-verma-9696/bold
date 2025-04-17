@@ -1,29 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Sidebar from "../components/Sidebar";
-import Context from "../components/contextPannels/Context";
-import { getSocket } from "../../../redux/middlewares/socket";
+import Context from "../components/Context";
+import { useDispatch } from "react-redux";
+import { getUsers } from "../../../features/user/userSlice";
+import Main from "../components/Main";
 
 function Lobby() {
-  const socket = getSocket();
-  console.log(socket);
-
-  socket.on("getOnlineUsers", function (data) {
-    console.log("backend", data);
-  });
-  function handleClick() {
-    socket.emit("getOnlineUsers", {
-      userId: socket.id,
-    });
-  }
-
   return (
-    <div className="min-h-screen flex bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen grid grid-cols-[5vw_20vw_75vw] bg-gray-50 dark:bg-gray-900">
       <Sidebar />
       <Context />
-      <section className="flex-1 p-4 bg-gray-100 dark:bg-gray-700">
-        part3
-        <button onClick={handleClick}>click me </button>
-      </section>
+      <Main/>
     </div>
   );
 }

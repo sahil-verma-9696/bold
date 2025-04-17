@@ -18,7 +18,7 @@ export function getReceiverSocketId(userId) {
 const userSocketMap = {};
 
 io.on("connection", async (socket) => {
-  logInfo(import.meta.url, "🔌🛜 User connected ID: " + socket.id);
+  logInfo(import.meta.url, "🔌✅  User connected ID: " + socket.id);
   const userId = socket.handshake.query.userId;
   if (userId) {
     await User.findByIdAndUpdate(userId, { lastSeen: new Date() });
@@ -32,7 +32,7 @@ io.on("connection", async (socket) => {
     console.log("frontend", data);
   });
   socket.on("disconnect", async function () {
-    logInfo(import.meta.url, "User disconnected ID: " + socket.id);
+    logInfo(import.meta.url, "🔌❌ User disconnected ID: " + socket.id);
     delete userSocketMap[userId];
     const lastSeen = new Date();
 

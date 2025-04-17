@@ -9,8 +9,10 @@ import { getProfile } from "./controllers/getProfile.js";
 import { getSettings } from "./controllers/getSetting.js";
 import { updateSettings } from "./controllers/updateSetting.js";
 import { getRelationshipsByStatus } from "./controllers/getRelationshipByStatus.js";
+import { getAllUsers } from "./controllers/getAllUsers.js";
 export const router = Router();
 
+router.get(ROUTES.USER.ALL, isProtected, getAllUsers);
 router.get(ROUTES.USER.ME, isProtected, getMe);
 router.patch(ROUTES.USER.ME, isProtected, upload.single("avatar"), updateMe);
 router.delete(ROUTES.USER.ME, isProtected, deleteMe);

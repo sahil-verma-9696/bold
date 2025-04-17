@@ -1,5 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUser, signupUser, getMe } from "./authService";
+import { loginUser, signupUser, getMe, logoutUser } from "./authService";
+
+export const logout = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await logoutUser();
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || "Login failed");
+    }
+  }
+);
 
 export const login = createAsyncThunk(
   "auth/login",
@@ -45,11 +57,6 @@ const authSlice = createSlice({
     error: null,
   },
   reducers: {
-    logout: (state) => {
-      state.user = null;
-      state.token = null;
-      localStorage.removeItem("token");
-    },
     setUser: (state, action) => {
       state.user = action.payload; // Store user details in Redux
     },
@@ -96,9 +103,22 @@ const authSlice = createSlice({
       .addCase(me.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(logout.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.loading = false;
+        state.user = null;
+        localStorage.removeItem("userId");
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export const { logout, setUser, clearUser } = authSlice.actions;
+export const { setUser, clearUser } = authSlice.actions;
 export default authSlice.reducer;
