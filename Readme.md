@@ -12,9 +12,12 @@ cd bolt
 ## 📁 Install Dependencies
 
 ```bash
+cd frontend
 npm install
-# or
-yarn install
+
+cd backend
+npm install
+
 ```
 
 ## ⚙️ Environment Variables
@@ -30,7 +33,25 @@ CLOUDINARY_API_SECRET=your_api_secret
 ```
 
 ---
+## 🚀 run project
+project
 
+- open terminal at project root c://...bolt>
+
+```bash
+cd backend
+npm run dev
+```
+
+- open another terminal at project root c://...bolt>
+
+```bash
+cd frontend
+npm run dev
+```
+---
+
+open browser with `http://localhost:5137/`
 # 🛠️ Project Roadmap: Bolt
 
 ## Backend
