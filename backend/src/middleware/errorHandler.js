@@ -1,3 +1,4 @@
+// error Handler middleware introduced
 import { logError } from "../utils/logger.js";
 
 export function errorHandler(err, req, res, next) {
