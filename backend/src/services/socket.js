@@ -4,6 +4,7 @@ import { Server } from "socket.io";
 import { logInfo } from "../utils/logger.js";
 import { User } from "../modules/auth/user.model.js";
 import app from "../app.js";
+import Message from "../modules/chat/message.models.js";
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -25,12 +26,29 @@ io.on("connection", async (socket) => {
   }
   if (userId) userSocketMap[userId] = socket.id;
 
-  // io.emit() is used to send events to all the connected clients
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
-  socket.on("getOnlineUsers", function (data) {
-    console.log("frontend", data);
+  socket.on("sendMessage", ({ senderId, receiverId, text, image }) => {
+    const messagePayload = {
+      senderId,
+      receiverId,
+      text,
+      image,
+      createdAt: new Date().toISOString(),
+    };
+
+    io.to(receiverId).emit("receiveMessage", messagePayload);
+
+    socket.emit("messageSent", messagePayload);
+
+    // 3. Save to database in the background (non-blocking)
+    Message.create(messagePayload).catch((err) => {
+      console.error("❌ Failed to save message:", err.message);
+
+      socket.emit("errorMessage", { message: "Failed to save message" });
+    });
   });
+
   socket.on("disconnect", async function () {
     logInfo(import.meta.url, "🔌❌ User disconnected ID: " + socket.id);
     delete userSocketMap[userId];
