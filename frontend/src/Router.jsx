@@ -20,6 +20,7 @@ export const ROUTES = {
   PROTECTED: {
     ROOT: "/",
     LOBBY: "lobby",
+    SETTINGS: "settings",
   },
 };
 
