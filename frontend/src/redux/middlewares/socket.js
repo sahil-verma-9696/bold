@@ -13,7 +13,7 @@ export const createSocketMiddleware = (url, store, userId) => {
   });
 
   socket.on("connect", () => {
-    console.log("✅ Socket connected after login");
+    console.log("✅ Socket connected");
     store.dispatch({ type: "socket/connected" });
   });
 

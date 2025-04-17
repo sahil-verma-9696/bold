@@ -51,12 +51,12 @@ function Sidebar() {
   ];
   return (
     <section className="flex flex-col justify-between w-20 bg-white dark:bg-gray-800 py-4 border-r">
-      {list.map((item) => {
+      {list.map((item,index) => {
         return (
-          <ul className="flex flex-col gap-6">
+          <ul key={index} className="flex flex-col gap-6">
             {item.map((item, index) => (
               <li
-                key={index}
+                key={item.label}
                 className="hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded-lg cursor-pointer"
               >
                 {item.type === "link" ? (

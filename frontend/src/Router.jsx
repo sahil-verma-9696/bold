@@ -9,6 +9,7 @@ import { AuthPage } from "./pages/public/authentication/AuthPage";
 
 import { PublicLayout } from "./pages/public/layout";
 import ProtectedLayout from "./pages/protected/layout";
+import { ProtectedRoute } from "./features/auth/components/Protected";
 
 export const ROUTES = {
   PUBLIC: {
@@ -40,7 +41,16 @@ const router = createBrowserRouter([
     path: ROUTES.PROTECTED.ROOT,
     element: <ProtectedLayout />,
     errorElement: <ErrorPage />,
-    children: [{ path: ROUTES.PROTECTED.LOBBY, element: <Lobby /> }],
+    children: [
+      {
+        path: ROUTES.PROTECTED.LOBBY,
+        element: (
+          <ProtectedRoute>
+            <Lobby />
+          </ProtectedRoute>
+        ),
+      },
+    ],
   },
   {
     path: "*",
