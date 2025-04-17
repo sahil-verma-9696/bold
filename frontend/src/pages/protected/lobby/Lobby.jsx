@@ -7,7 +7,7 @@ import Main from "../components/Main";
 
 function Lobby() {
   return (
-    <div className="min-h-screen grid grid-cols-[5vw_15vw_80vw] bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen grid grid-cols-[5vw_20vw_75vw] bg-gray-50 dark:bg-gray-900">
       <Sidebar />
       <Context />
       <Main/>

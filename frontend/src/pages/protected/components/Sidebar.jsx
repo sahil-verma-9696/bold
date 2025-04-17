@@ -61,7 +61,7 @@ function Sidebar() {
     ],
   ];
   return (
-    <section className="flex flex-col justify-between bg-white dark:bg-gray-800 py-4 border-r">
+    <section className="flex flex-col justify-between bg-white dark:bg-gray-800 py-4 border-r border-gray-700">
       {list.map((item, index) => {
         return (
           <ul key={index} className="flex flex-col gap-6">
