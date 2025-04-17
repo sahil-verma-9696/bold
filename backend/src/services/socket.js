@@ -12,7 +12,7 @@ const io = new Server(httpServer, {
 
 export function getReceiverSocketId(userId) {
   return userSocketMap[userId];
-} 
+}
 
 // used to store online users
 const userSocketMap = {};
@@ -28,6 +28,9 @@ io.on("connection", async (socket) => {
   // io.emit() is used to send events to all the connected clients
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
+  socket.on("getOnlineUsers", function (data) {
+    console.log("frontend", data);
+  });
   socket.on("disconnect", async function () {
     logInfo(import.meta.url, "User disconnected ID: " + socket.id);
     delete userSocketMap[userId];
@@ -38,7 +41,7 @@ io.on("connection", async (socket) => {
     io.emit("lastseen", [{ userId, lastSeen }]);
     if (userId) {
       await User.findByIdAndUpdate(userId, { lastSeen: lastSeen });
-    } 
+    }
   });
 });
 

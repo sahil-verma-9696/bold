@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import { Protected } from "../../features/auth/components/Protected";
 
 function ProtectedLayout() {
   return (
@@ -13,4 +12,4 @@ function ProtectedLayout() {
   );
 }
 
-export default Protected(ProtectedLayout);
+export default ProtectedLayout;

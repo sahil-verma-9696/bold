@@ -22,7 +22,6 @@ export default function AuthForm({ mode = "login", setIsLogin }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateAuthForm(formData)) return;
 
     setIsSubmitting(true);
@@ -43,9 +42,9 @@ export default function AuthForm({ mode = "login", setIsLogin }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md"
+      className="max-w-md mx-auto p-6 rounded-lg"
     >
-      <h2 className="text-2xl font-semibold text-center mb-4">
+      <h2 className="text-2xl font-semibold text-center mb-4 dark:text-white">
         {isLogin ? "Login" : "Signup"}
       </h2>
 
@@ -60,7 +59,7 @@ export default function AuthForm({ mode = "login", setIsLogin }) {
         {isSubmitting ? "Please wait..." : isLogin ? "Login" : "Signup"}
       </button>
 
-      <div className="mt-4 text-center">
+      <div className="mt-4 text-center dark:text-white">
         {isLogin ? (
           <>
             Don’t have an account?{" "}
