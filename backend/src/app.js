@@ -5,8 +5,9 @@ import { ROUTES as AUTH_ROUTES } from "./modules/auth/constants.js";
 import { ROUTES as USER_ROUTES } from "./modules/user/constants.js";
 import { router as authRouter } from "./modules/auth/auth.routes.js";
 import { router as userRouter } from "./modules/user/user.routes.js";
-
+import { router as chatRouter } from "./modules/chat/chat.routes.js";
 import cors from "cors";
+import { errorHandler } from "./middleware/errorHandler.js";
 
 config();
 
@@ -24,6 +25,9 @@ app.use(cookieParser());
 
 app.use(AUTH_ROUTES.AUTH.BASE, authRouter);
 app.use(USER_ROUTES.USER.BASE, userRouter);
+app.use("/api/message", chatRouter);
+
+app.use(errorHandler);
 
 app.get("/", function (req, res) {
   res.status(200).send(

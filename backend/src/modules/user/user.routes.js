@@ -23,6 +23,3 @@ router.get(ROUTES.USER.SETTING, isProtected, getSettings);
 router.post(ROUTES.USER.SETTING, isProtected, updateSettings);
 
 router.get(ROUTES.USER.RELATIONSHIP, isProtected, getRelationshipsByStatus);
-
-// router.get(ROUTES.USER.BLOCKED,isProtected);
-// router.get(ROUTES.USER.KNOWN,isProtected);

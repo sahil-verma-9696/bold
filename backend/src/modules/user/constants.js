@@ -19,7 +19,6 @@ export const MESSAGES = {
   LOGS: {
     Getme_HIT: "getMe() endpoint hit",
     UpdateMe_HIT: "updateMe() endpoint hit",
-    DeleteMe_HIT: "deleteMe() endpoint hit",
     GetSettings_HIT: "getSettings() endpoint hit",
     UpdateSettings_HIT: "✏️ updateSettings() HIT",
     GetProfile_HIT: "getProfile() endpoint hit",
@@ -30,7 +29,7 @@ export const MESSAGES = {
 
     GET_ALL_USERS_SUCCESS: "users fetched",
     SETTINGS_UPDATED: "✅ Settings updated for userId: {}",
-    USER_AUTH_SUCCESS: "User authenticated successfully: {}",
+    USER_AUTH_SUCCESS: "",
     ERROR_OCCURED: "Error occurred: {}",
     USER_FETCHED: "User with ID {} successfully fetched",
     SETTINGS_FETCHED: "User settings with ID {} successfully fetched",
