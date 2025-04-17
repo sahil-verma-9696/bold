@@ -12,7 +12,3 @@ export function AuthPage() {
     </div>
   );
 }
-
-// Optional: Setup socket middleware here if needed
-// const socketMiddleware = createSocketMiddleware("http://localhost:5000", store, response.user._id);
-// store.dispatch = socketMiddleware(store)(store.dispatch);

@@ -1,7 +1,7 @@
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { logInfo } from "../utils/logger.js";
+import { logInfo, logSuccess } from "../utils/logger.js";
 import { User } from "../modules/auth/user.model.js";
 import app from "../app.js";
 import Message from "../modules/chat/message.models.js";
@@ -29,6 +29,7 @@ io.on("connection", async (socket) => {
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
   socket.on("sendMessage", ({ senderId, receiverId, text, image }) => {
+    logSuccess(import.meta.url, "Message sent");
     const messagePayload = {
       senderId,
       receiverId,
@@ -37,7 +38,10 @@ io.on("connection", async (socket) => {
       createdAt: new Date().toISOString(),
     };
 
-    io.to(receiverId).emit("receiveMessage", messagePayload);
+    io.to(getReceiverSocketId(receiverId)).emit(
+      "receiveMessage",
+      messagePayload
+    );
 
     socket.emit("messageSent", messagePayload);
 

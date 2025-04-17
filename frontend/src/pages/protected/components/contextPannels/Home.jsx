@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers } from "../../../../features/user/userSlice";
-import { Check, Cross, X } from "lucide-react";
+import { Check, X } from "lucide-react";
+import { messages, setReceiver } from "../../../../features/chat/chatAreaSlice";
 
 function Home() {
   const dispatch = useDispatch();
@@ -9,6 +10,15 @@ function Home() {
     dispatch(getUsers());
   }, [dispatch]);
   const users = useSelector((store) => store.user.users);
+  const receiver = useSelector((store) => store.chat.receiver);
+  function handleSetReceiver(user) {
+    if (receiver?.email === user.email) {
+      dispatch(setReceiver(null)); // Deselect if already selected
+    } else {
+      dispatch(setReceiver(user)); // Select if not
+      dispatch(messages(user._id));
+    }
+  }
   return (
     <div className="py-4">
       <section className="bg-gray-700 px-2 py-1">
@@ -16,10 +26,17 @@ function Home() {
       </section>
       <ul className="">
         {users?.map((user) => {
+          const isSelected = receiver?.email === user.email;
+
           return (
             <li
-              key={user?.name}
-              className="flex justify-between items-center hover:bg-gray-700 p-2 rounded-md cursor-pointer active:scale-98 select-none"
+              onClick={() => handleSetReceiver(user)}
+              key={user?.email}
+              className={`flex justify-between items-center hover:bg-gray-700 p-2 rounded-md cursor-pointer select-none transition-all duration-200 ${
+                isSelected
+                  ? "border-l-4 border-l-gray-900 bg-gray-700"
+                  : "border-l-4 border-l-transparent"
+              }`}
             >
               <div className="flex gap-2">
                 <img
