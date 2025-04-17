@@ -1,54 +1,93 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Users } from "lucide-react";
+import { getSocket } from "../../../../redux/middlewares/socket";
+import {
+  setMessages,
+  settingFetchedMessages,
+} from "../../../../features/chat/chatAreaSlice";
+
+import { messages as getMessages } from "../../../../features/chat/chatAreaSlice";
+import ChatHeader from "../ChatHeader";
+import ChatMessages from "../ChatMessages";
+import ChatInput from "../ChatInput";
 
 function ChatArea() {
   const [message, setMessage] = useState("");
+  const socket = getSocket();
+  const dispatch = useDispatch();
+  const receiver = useSelector((state) => state.chat.receiver);
+  const messages = useSelector((state) => state.chat.messages);
+  const user = useSelector((state) => state.auth.user); // Assuming logged-in user info is in auth slice
+  const messagesEndRef = useRef(null);
 
-  const handleSend = () => {
-    if (message.trim() !== "") {
-      // send message logic here
-      console.log("Send:", message);
-      setMessage("");
-    }
+  // Scroll to latest message
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  // Listen for incoming messages
+  useEffect(() => {
+    if (receiver?._id) {
+    }
+
+    if (!socket) return;
+
+    const handleReceiveMessage = (data) => {
+      dispatch(setMessages(data));
+    };
+
+    socket.on("receiveMessage", handleReceiveMessage);
+
+    return () => {
+      socket.off("receiveMessage", handleReceiveMessage);
+    };
+  }, [socket, dispatch]);
+
+  // Handle send
+  const handleSend = () => {
+    if (message.trim() === "" || !receiver) return;
+
+    const payload = {
+      senderId: user._id,
+      receiverId: receiver._id,
+      text: message,
+      image: null, // You can integrate image upload later
+    };
+
+    socket.emit("sendMessage", payload);
+    dispatch(setMessages({ ...payload, createdAt: new Date().toISOString() }));
+
+    setMessage("");
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  if (!receiver) {
+    return (
+      <div className="flex flex-col h-full items-center justify-center text-center p-4">
+        <Users className="w-16 h-16 text-gray-400 dark:text-gray-500 mb-4" />
+        <h2 className="text-xl font-semibold text-gray-600 dark:text-gray-300">
+          No user selected
+        </h2>
+        <p className="text-gray-500 dark:text-gray-400">
+          Please select a user from the sidebar to start chatting.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full">
-      {/* Header */}
-      <div className="p-4 border-b border-gray-200 dark:text-white dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-lg font-semibold">
-        Chat Room
-      </div>
-
-      {/* Messages */}
-      <div className="flex-1 p-4 overflow-y-auto space-y-3">
-        {/* Example messages */}
-        <div className="text-left">
-          <div className="inline-block bg-blue-100 dark:bg-blue-800 text-black dark:text-white px-4 py-2 rounded-lg">
-            Hey there!
-          </div>
-        </div>
-        <div className="text-right">
-          <div className="inline-block bg-green-100 dark:bg-green-800 text-black dark:text-white px-4 py-2 rounded-lg">
-            Hello! 👋
-          </div>
-        </div>
-      </div>
-
-      {/* Input */}
-      <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex items-center gap-2">
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className="flex-1 p-2 rounded-md border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-black dark:text-white focus:outline-none"
-          placeholder="Type your message..."
-        />
-        <button
-          onClick={handleSend}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
-        >
-          Send
-        </button>
-      </div>
+      <ChatHeader receiver={receiver} />
+      <ChatMessages messages={messages} user={user} />
+      <ChatInput
+        message={message}
+        setMessage={setMessage}
+        handleSend={handleSend}
+      />
     </div>
   );
 }
