@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import Home from "./contextPannels/Home";
-import Setting from "./contextPannels/Setting";
+import Home from "../context/Home";
+import Setting from "../context/Setting";
 
 const componentsMap = {
   Home: <Home />,

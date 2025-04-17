@@ -1,16 +1,16 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Users } from "lucide-react";
-import { getSocket } from "../../../../redux/middlewares/socket";
+import { getSocket } from "../../redux/middlewares/socket";
 import {
   setMessages,
   settingFetchedMessages,
-} from "../../../../features/chat/chatAreaSlice";
+} from "../../features/chat/chatAreaSlice";
 
-import { messages as getMessages } from "../../../../features/chat/chatAreaSlice";
-import ChatHeader from "../ChatHeader";
-import ChatMessages from "../ChatMessages";
-import ChatInput from "../ChatInput";
+import { messages as getMessages } from "../../features/chat/chatAreaSlice";
+import ChatHeader from "./ChatHeader";
+import ChatMessages from "./ChatMessages";
+import ChatInput from "./ChatInput";
 
 function ChatArea() {
   const [message, setMessage] = useState("");
