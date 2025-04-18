@@ -34,7 +34,7 @@ function ChatArea() {
     if (!socket) return;
 
     const handleReceiveMessage = (data) => {
-      dispatch(setMessages(data));
+      dispatch(setMessages(data));// save to db
     };
 
     socket.on("receiveMessage", handleReceiveMessage);

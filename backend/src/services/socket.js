@@ -5,6 +5,7 @@ import { logInfo, logSuccess, logWarning } from "../utils/logger.js";
 import { User } from "../modules/auth/user.model.js";
 import app from "../app.js";
 import Message from "../modules/chat/message.models.js";
+import { injectIO } from "../middleware/socketInjection.js";
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -14,6 +15,8 @@ const io = new Server(httpServer, {
 export function getReceiverSocketId(userId) {
   return onlineUsers[userId];
 }
+
+app.use(injectIO(io)); // injects io to all routes
 
 // used to store online users
 const onlineUsers = {};
@@ -62,6 +65,20 @@ io.on("connection", async (socket) => {
 
       socket.emit("errorMessage", { message: "Failed to save message" });
     });
+  });``
+
+  socket.on("message:recived", async function (res) {
+    console.log(res);
+    const {senderId,receiverId} = res;
+    Message.updateMany(
+      { senderId, receiverId, isRead: false },
+      { $set: { isRead: true } }
+    ).catch((err) => {
+      console.error("❌ Failed to update message:", err.message);
+    });
+    socket.emit("message:readed",{
+      
+    })
   });
 
   socket.on("disconnect", async function () {

@@ -8,6 +8,7 @@ import { router as userRouter } from "./modules/user/user.routes.js";
 import { router as chatRouter } from "./modules/chat/chat.routes.js";
 import cors from "cors";
 import { errorHandler } from "./middleware/errorHandler.js";
+import { router as notificationRouter } from "./modules/notification/notification.routes.js";
 
 config();
 
@@ -26,6 +27,7 @@ app.use(cookieParser());
 app.use(AUTH_ROUTES.AUTH.BASE, authRouter);
 app.use(USER_ROUTES.USER.BASE, userRouter);
 app.use("/api/message", chatRouter);
+app.use("api/notification", notificationRouter);
 
 app.use(errorHandler);
 

@@ -33,7 +33,7 @@ function Home() {
     const socket = getSocket();
   
     socket.on("getOnlineUsers", (users) => {
-      console.log("online users ",users);
+      // console.log("online users ",users);
       
       dispatch(setOnlineUser(users)); 
     });
