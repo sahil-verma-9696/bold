@@ -1,7 +1,7 @@
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { logInfo, logSuccess } from "../utils/logger.js";
+import { logInfo, logSuccess, logWarning } from "../utils/logger.js";
 import { User } from "../modules/auth/user.model.js";
 import app from "../app.js";
 import Message from "../modules/chat/message.models.js";
@@ -12,21 +12,32 @@ const io = new Server(httpServer, {
 });
 
 export function getReceiverSocketId(userId) {
-  return userSocketMap[userId];
+  return onlineUsers[userId];
 }
 
 // used to store online users
-const userSocketMap = {};
+const onlineUsers = {};
 
 io.on("connection", async (socket) => {
   logInfo(import.meta.url, "🔌✅  User connected ID: " + socket.id);
   const userId = socket.handshake.query.userId;
-  if (userId) {
-    await User.findByIdAndUpdate(userId, { lastSeen: new Date() });
+  if (!userId) {
+    socket.disconnect();
+    return;
   }
-  if (userId) userSocketMap[userId] = socket.id;
 
-  io.emit("getOnlineUsers", Object.keys(userSocketMap));
+  // Check if this user is already connected
+  const existingSocketId = onlineUsers[userId];
+  if (existingSocketId && existingSocketId !== socket.id) {
+    logWarning(
+      import.meta.url,
+      `🟡 Duplicate socket detected for user ${userId}.`
+    );
+  }
+
+  if (userId) onlineUsers[userId] = socket.id;
+
+  io.emit("getOnlineUsers", Object.keys(onlineUsers));
 
   socket.on("sendMessage", ({ senderId, receiverId, text, image }) => {
     logSuccess(import.meta.url, "Message sent");
@@ -55,15 +66,34 @@ io.on("connection", async (socket) => {
 
   socket.on("disconnect", async function () {
     logInfo(import.meta.url, "🔌❌ User disconnected ID: " + socket.id);
-    delete userSocketMap[userId];
-    const lastSeen = new Date();
+
+    const userId = Object.keys(onlineUsers).find(
+      (key) => onlineUsers[key] === socket.id
+    );
+
+    delete onlineUsers[userId];
+
+    console.log(onlineUsers);
+
+    io.emit("getOnlineUsers", Object.keys(onlineUsers));
+
+    if (userId) {
+      const lastSeen = new Date();
+
+      User.findByIdAndUpdate(userId, {
+        lastSeen,
+      }).catch((err) => {
+        console.error("❌ Failed to update user:", err.message);
+      });
+
+      // Emit immediately (non-blocking)
+      io.emit("user:offline", {
+        userId,
+        lastSeen,
+      });
+    }
 
     console.log("userId", userId);
-    io.emit("getOnlineUsers", Object.keys(userSocketMap));
-    io.emit("lastseen", [{ userId, lastSeen }]);
-    if (userId) {
-      await User.findByIdAndUpdate(userId, { lastSeen: lastSeen });
-    }
   });
 });
 
