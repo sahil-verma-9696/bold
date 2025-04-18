@@ -50,6 +50,9 @@ cd frontend
 npm run dev
 ```
 ---
+## project doc [Doc link click me](https://docs.google.com/document/d/1KMCiy9pPE9w5rWlH_ixEmNZsRcJs2ZURbCPnKp8pcBo/edit?usp=sharing)
+
+---
 
 open browser with `http://localhost:5137/`
 # 🛠️ Project Roadmap: Bolt
