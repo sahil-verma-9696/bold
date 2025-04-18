@@ -39,8 +39,12 @@ const UserSchema = new mongoose.Schema(
     username: {
       type: String,
     },
+    lastSeen: {
+      type: Date,
+      default: Date.now,
+    },
   },
-  { timestamps: true } // Auto-adds createdAt & updatedAt
+  { timestamps: true } 
 );
 
 // pre-save hook to hash password before saving to database

@@ -21,7 +21,6 @@ const chatAreaSlice = createSlice({
   initialState: {
     receiver: null,
     messages: [],
-    onlineUser: [],
     allUsers: [],
     lastSeen: [],
     loadingMessages: false,
@@ -39,9 +38,6 @@ const chatAreaSlice = createSlice({
     },
     setAllUsers: (state, action) => {
       state.allUsers = action.payload;
-    },
-    setOnlineUser: (state, action) => {
-      state.onlineUser = action.payload;
     },
     setLastSeen: (state, action) => {
       state.lastSeen = action.payload;
@@ -69,7 +65,6 @@ export const {
   setMessages,
   settingFetchedMessages,
   setAllUsers,
-  setOnlineUser,
   setLastSeen,
 } = chatAreaSlice.actions;
 

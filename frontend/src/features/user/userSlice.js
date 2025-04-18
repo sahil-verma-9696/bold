@@ -19,8 +19,22 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     users: [],
+    onlineUsers: [],
     loading: false,
     error: null,
+  },
+  reducers: {
+    setOnlineUser: function (state, action) {
+      state.onlineUsers = action.payload;
+    },
+    updateUserStatus: function (state, action) {
+      const { userId, lastSeen } = action.payload;
+
+      const index = state.users.findIndex((user) => user._id === userId);
+      if (index !== -1 && lastSeen) {
+        state.users[index].lastSeen = lastSeen;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -41,4 +55,5 @@ const userSlice = createSlice({
   },
 });
 
+export const { setOnlineUser, updateUserStatus } = userSlice.actions;
 export default userSlice.reducer;
