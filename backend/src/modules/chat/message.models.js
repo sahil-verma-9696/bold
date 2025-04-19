@@ -18,6 +18,15 @@ const messageSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    isRead: {
+      type: Boolean,
+      default: false,
+    },
+    relatedNotificationId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Notification",
+      default: null,
+    },
   },
   { timestamps: true }
 );

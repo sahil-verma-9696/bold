@@ -7,6 +7,7 @@ import { getMessages } from "./controllers/getMessages.js";
 import { getMessage } from "./controllers/getMessage.js";
 import { updateMessage } from "./controllers/updateMessage.js";
 import { deleteMessage } from "./controllers/deleteMessage.js";
+import { markMessagesAsRead } from "./controllers/markMessagesAsRead.js";
 
 export const router = Router();
 
@@ -17,6 +18,7 @@ const routes = [
   { method: "get", path: "/:id", handler: getMessage },
   { method: "put", path: "/:id", handler: updateMessage },
   { method: "delete", path: "/:id", handler: deleteMessage },
+  { method: "patch", path:"/mark-read", handler: markMessagesAsRead}
 ];
 
 // Apply middleware to all routes and register

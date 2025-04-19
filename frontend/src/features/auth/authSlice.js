@@ -58,7 +58,7 @@ const authSlice = createSlice({
   },
   reducers: {
     setUser: (state, action) => {
-      state.user = action.payload; // Store user details in Redux
+      state.user = action.payload; 
     },
     clearUser: (state) => {
       state.user = null;

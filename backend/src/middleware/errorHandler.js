@@ -1,8 +1,12 @@
 // error Handler middleware introduced
+import { RESPONSE_TYPES } from "../constants/script.js";
 import { logError } from "../utils/logger.js";
 
 export function errorHandler(err, req, res, next) {
   logError(import.meta.url, `🔥 Error caught by middleware: ${err.message}`);
+
+  console.log(err);
+  
 
   let statusCode = err.statusCode || 500;
   let message = err.message || "Internal Server Error";
@@ -57,7 +61,7 @@ export function errorHandler(err, req, res, next) {
   }
 
   res.status(statusCode).json({
-    success: false,
+    type: RESPONSE_TYPES.ERROR,
     message,
     payload: null,
   });

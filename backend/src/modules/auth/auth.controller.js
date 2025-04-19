@@ -3,7 +3,7 @@ import { COOKIE_CONST, setCookie } from "../../utils/cookieSetter.js";
 import { generateTokens } from "../../utils/tokenGenerator.js";
 import { DEFAULT_AVATAR, MESSAGES } from "./constants.js";
 import { STATUS_CODES, RESPONSE_TYPES } from "../../constants/script.js";
-import { User } from "./user.model.js";
+import { User } from "../user/models/user.model.js";
 
 export async function signup(req, res) {
   logInfo(import.meta.url, MESSAGES.LOGS.SIGNUP_HIT);

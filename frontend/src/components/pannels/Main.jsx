@@ -3,7 +3,7 @@ import ChatArea from "../chat/ChatArea";
 
 function Main() {
   return (
-    <section className="h-screen overflow-y-scroll bg-gray-100 dark:bg-gray-700 scrollbar-thin hover:scrollbar-thumb-gray-400 hover:dark:scrollbar-thumb-gray-600 scrollbar-thumb-transparent scrollbar-track-transparent">
+    <section className="hidden lg:block h-screen overflow-y-scroll bg-gray-100 dark:bg-gray-700">
       <ChatArea />
     </section>
   );

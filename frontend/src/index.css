@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+
 ::-webkit-scrollbar {
     width: 4px;
     background-color: transparent;

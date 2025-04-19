@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getMessages } from "./chatService";
+import { getSocket } from "../../redux/middlewares/socket";
 
 // Async thunk for fetching messages
 export const messages = createAsyncThunk(
@@ -50,6 +51,20 @@ const chatAreaSlice = createSlice({
         state.errorMessages = null;
       })
       .addCase(messages.fulfilled, (state, action) => {
+        const socket = getSocket();
+        const msg = action.payload.messages[0];
+
+        if (msg) {
+          console.log(msg);
+          socket.emit("message:recived", {
+            type: "socket:success",
+            message: "message Received successfully",
+            payload: {
+              receiverId: msg.receiverId,
+              senderId: msg.senderId,
+            },
+          });
+        }
         state.loadingMessages = false;
         state.messages = action.payload.messages;
       })
