@@ -8,7 +8,7 @@ export async function getAllUsers() {
 export async function sendFriendRequest(receiverId) {
   const response = await apiRequest(
     `/api/user/friend-request/${receiverId}`,
-    "POST"
+    "GET"
   );
   return response.payload;
 }
@@ -16,14 +16,21 @@ export async function sendFriendRequest(receiverId) {
 export async function acceptFriendRequest(receiverId) {
   const response = await apiRequest(
     `/api/user/accept-request/${receiverId}`,
-    "POST"
+    "GET"
   );
   return response.payload;
 }
 export async function rejectFriendRequest(receiverId) {
   const response = await apiRequest(
     `/api/user/reject-request/${receiverId}`,
-    "POST"
+    "GET"
+  );
+  return response.payload;
+}
+export async function removeFriend(receiverId) {
+  const response = await apiRequest(
+    `/api/user/remove-friend/${receiverId}`,
+    "GET"
   );
   return response.payload;
 }

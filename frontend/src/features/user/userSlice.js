@@ -21,48 +21,8 @@ export const getUsers = createAsyncThunk(
   }
 );
 
-export const userFriendRequest = createAsyncThunk(
-  "user/sendFriendRequest",
-  async (receiverId, { rejectWithValue, dispatch }) => {
-    try {
-      const data = await sendFriendRequest(receiverId);
-      // dispatch(setUser(data.user));
-      return data;
-    } catch (err) {
-      return rejectWithValue(
-        err.response?.data?.message || "Sending friend request failed"
-      );
-    }
-  }
-);
-export const userAcceptFriendRequest = createAsyncThunk(
-  "user/acceptFriendRequest",
-  async (receiverId, { rejectWithValue, dispatch }) => {
-    try {
-      const data = await acceptFriendRequest(receiverId);
-      // dispatch(setUser(data.user));
-      return data;
-    } catch (err) {
-      return rejectWithValue(
-        err.response?.data?.message || "Accepting friend request failed"
-      );
-    }
-  }
-);
-export const userRejectFriendRequest = createAsyncThunk(
-  "user/acceptFriendRequest",
-  async (receiverId, { rejectWithValue, dispatch }) => {
-    try {
-      const data = await rejectFriendRequest(receiverId);
-      // dispatch(setUser(data.user));
-      return data;
-    } catch (err) {
-      return rejectWithValue(
-        err.response?.data?.message || "Accepting friend request failed"
-      );
-    }
-  }
-);
+
+
 
 const userSlice = createSlice({
   name: "user",

@@ -15,6 +15,7 @@ import { getAllUsers } from "./controllers/getAllUsers.js";
 import { sendFriendRequest } from "./controllers/sendFriendRequest.js";
 import { acceptFriendRequest } from "./controllers/acceptFriendRequest.js";
 import { rejectFriendRequest } from "./controllers/rejectFriendRequest.js";
+import { removeFriend } from "./user_relation/removeFriend.js";
 
 export const router = Router();
 
@@ -72,22 +73,28 @@ const routes = [
   },
 
   {
-    method: "post",
+    method: "get",
     path: "/friend-request/:id",
     middleware: [isProtected],
     handler: sendFriendRequest,
   },
   {
-    method: "post",
+    method: "get",
     path: "/accept-request/:id",
     middleware: [isProtected],
     handler: acceptFriendRequest,
   },
   {
-    method: "post",
+    method: "get",
     path: "/reject-request/:id",
     middleware: [isProtected],
     handler: rejectFriendRequest,
+  },
+  {
+    method: "get",
+    path: "/remove-friend/:id",
+    middleware: [isProtected],
+    handler: removeFriend,
   },
 ];
 
