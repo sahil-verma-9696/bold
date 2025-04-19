@@ -3,12 +3,15 @@ import { Link, useRouteError, isRouteErrorResponse } from "react-router-dom";
 export default function ErrorPage() {
   const error = useRouteError();
   console.error(error);
+  console.table(error);
 
   // Determine error message and status
   const status = isRouteErrorResponse(error) ? error.status : 500;
   const message = isRouteErrorResponse(error)
     ? error.statusText || "Something went wrong"
     : error?.message || "Unknown error occurred";
+
+  if (!error) return;
 
   return (
     <div className="flex flex-col items-center justify-center h-screen text-center px-4">
