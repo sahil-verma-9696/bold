@@ -42,7 +42,7 @@ app.use(
 );
 app.use(cookieParser());
 
-app.use(AUTH_ROUTES.AUTH.BASE, authRouter);
+app.use("/api/auth", authRouter);
 app.use(USER_ROUTES.USER.BASE, userRouter);
 app.use("/api/message", chatRouter);
 // app.use("api/notification", notificationRouter);
@@ -95,10 +95,7 @@ io.on("connection", async (socket) => {
       createdAt: new Date().toISOString(),
     };
 
-    io.to(getSocketId(receiverId)).emit(
-      "receiveMessage",
-      messagePayload
-    );
+    io.to(getSocketId(receiverId)).emit("receiveMessage", messagePayload);
 
     socket.emit("messageSent", messagePayload);
 

@@ -84,7 +84,7 @@ export const DEFAULT_AVATAR =
 
 export const ROUTES = {
   AUTH: {
-    BASE: "/api/auth",
+    BASE: "",
     SIGNUP: "/signup",
     LOGIN: "/login",
     LOGOUT: "/logout",

@@ -8,13 +8,12 @@ import { getMe } from "./controllers/getMe.js";
 import { deleteMe } from "./controllers/deleteMe.js";
 import { updateMe } from "./controllers/updateMe.js";
 import { getProfile } from "./controllers/getProfile.js";
-import { getSettings } from "./controllers/getSetting.js";
-import { updateSettings } from "./controllers/updateSetting.js";
-import { getRelationshipsByStatus } from "./controllers/getRelationshipByStatus.js";
+import { getSettings } from "./user_setting/getSetting.js";
+import { updateSettings } from "./user_setting/updateSetting.js";
 import { getAllUsers } from "./controllers/getAllUsers.js";
-import { sendFriendRequest } from "./controllers/sendFriendRequest.js";
-import { acceptFriendRequest } from "./controllers/acceptFriendRequest.js";
-import { rejectFriendRequest } from "./controllers/rejectFriendRequest.js";
+import { sendFriendRequest } from "./user_relation/sendFriendRequest.js";
+import { acceptFriendRequest } from "./user_relation/acceptFriendRequest.js";
+import { rejectFriendRequest } from "./user_relation/rejectFriendRequest.js";
 import { removeFriend } from "./user_relation/removeFriend.js";
 
 export const router = Router();
@@ -63,13 +62,6 @@ const routes = [
     path: ROUTES.USER.SETTING,
     middleware: [isProtected],
     handler: updateSettings,
-  },
-
-  {
-    method: "get",
-    path: ROUTES.USER.RELATIONSHIP,
-    middleware: [isProtected],
-    handler: getRelationshipsByStatus,
   },
 
   {
