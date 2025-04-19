@@ -66,7 +66,7 @@ const UserItem = ({ user }) => {
     <>
       <li
         onClick={handleSetReceiver}
-        className={`flex justify-between items-center hover:dark:bg-gray-700 hover:bg-gray-300 p-2 md:p-3 lg:p-4 rounded-md cursor-pointer select-none transition-all duration-200 ${
+        className={`flex justify-between items-center hover:dark:bg-gray-700 hover:bg-gray-300 p-2  rounded-md cursor-pointer select-none transition-all duration-200 ${
           isSelected
             ? "border-l-4 border-l-gray-900 bg-gray-300 dark:bg-gray-700"
             : "border-l-4 border-l-transparent"

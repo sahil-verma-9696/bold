@@ -31,15 +31,24 @@ function Lobby() {
       socket.off("user:update", handleUserUpdate);
     };
   }, [dispatch]);
-  const isDesktop = useMediaQuery({ minWidth: 1024 });
+  const isDesktop = useMediaQuery({ minWidth: 640 });
   const mode = useSelector((state) => state.lobby.mobileMode);
   return (
-    <div className="h-screen flex flex-col bg-red-400">
-      {/* <Main/> */}
-      {mode === "messaging" && <Main />}
-      {mode === "chats" && <Context/>}
-      {mode === "chats" && <Sidebar />}
-    </div>
+    <>
+      {!isDesktop ? (
+        <div className="h-screen flex flex-col bg-red-400">
+          {!isDesktop && mode === "messaging" && <Main />}
+          {!isDesktop && mode === "chats" && <Context />}
+          {!isDesktop && mode === "chats" && <Sidebar />}
+        </div>
+      ) : (
+        <div className="flex">
+          <Sidebar />
+          <Context />
+          <Main />
+        </div>
+      )}
+    </>
   );
 }
 
