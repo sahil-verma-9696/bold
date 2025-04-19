@@ -2,6 +2,8 @@ import { Router } from "express";
 import { ROUTES } from "./constants.js";
 import { isProtected } from "../auth/auth.middleware.js";
 import upload from "../../multer/config.js";
+import { asyncHandler } from "../../utils/asyncHandler.js";
+
 import { getMe } from "./controllers/getMe.js";
 import { deleteMe } from "./controllers/deleteMe.js";
 import { updateMe } from "./controllers/updateMe.js";
@@ -10,16 +12,86 @@ import { getSettings } from "./controllers/getSetting.js";
 import { updateSettings } from "./controllers/updateSetting.js";
 import { getRelationshipsByStatus } from "./controllers/getRelationshipByStatus.js";
 import { getAllUsers } from "./controllers/getAllUsers.js";
+import { sendFriendRequest } from "./controllers/sendFriendRequest.js";
+import { acceptFriendRequest } from "./controllers/acceptFriendRequest.js";
+import { rejectFriendRequest } from "./controllers/rejectFriendRequest.js";
+
 export const router = Router();
 
-router.get(ROUTES.USER.ALL, isProtected, getAllUsers);
-router.get(ROUTES.USER.ME, isProtected, getMe);
-router.patch(ROUTES.USER.ME, isProtected, upload.single("avatar"), updateMe);
-router.delete(ROUTES.USER.ME, isProtected, deleteMe);
+const routes = [
+  {
+    method: "get",
+    path: ROUTES.USER.ALL,
+    middleware: [isProtected],
+    handler: getAllUsers,
+  },
+  {
+    method: "get",
+    path: ROUTES.USER.ME,
+    middleware: [isProtected],
+    handler: getMe,
+  },
+  {
+    method: "patch",
+    path: ROUTES.USER.ME,
+    middleware: [isProtected, upload.single("avatar")],
+    handler: updateMe,
+  },
+  {
+    method: "delete",
+    path: ROUTES.USER.ME,
+    middleware: [isProtected],
+    handler: deleteMe,
+  },
 
-router.get(ROUTES.USER.PROFILE, getProfile);
+  {
+    method: "get",
+    path: ROUTES.USER.PROFILE,
+    middleware: [],
+    handler: getProfile,
+  },
 
-router.get(ROUTES.USER.SETTING, isProtected, getSettings);
-router.post(ROUTES.USER.SETTING, isProtected, updateSettings);
+  {
+    method: "get",
+    path: ROUTES.USER.SETTING,
+    middleware: [isProtected],
+    handler: getSettings,
+  },
+  {
+    method: "post",
+    path: ROUTES.USER.SETTING,
+    middleware: [isProtected],
+    handler: updateSettings,
+  },
 
-router.get(ROUTES.USER.RELATIONSHIP, isProtected, getRelationshipsByStatus);
+  {
+    method: "get",
+    path: ROUTES.USER.RELATIONSHIP,
+    middleware: [isProtected],
+    handler: getRelationshipsByStatus,
+  },
+
+  {
+    method: "post",
+    path: "/friend-request/:id",
+    middleware: [isProtected],
+    handler: sendFriendRequest,
+  },
+  {
+    method: "post",
+    path: "/accept-request/:id",
+    middleware: [isProtected],
+    handler: acceptFriendRequest,
+  },
+  {
+    method: "post",
+    path: "/reject-request/:id",
+    middleware: [isProtected],
+    handler: rejectFriendRequest,
+  },
+];
+
+// Register routes
+routes.forEach(({ method, path, middleware, handler }) => {
+  router[method](path, ...middleware, asyncHandler(handler));
+});

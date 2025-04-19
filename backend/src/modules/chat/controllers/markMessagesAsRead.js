@@ -1,4 +1,4 @@
-import { getReceiverSocketId } from "../../../services/socket.js";
+import { getSocketId } from "../../../services/socket.js";
 import { logInfo } from "../../../utils/logger.js";
 import Message from "../message.models.js";
 
@@ -15,7 +15,7 @@ export const markMessagesAsRead = async (req, res) => {
   // ✅ Emit real-time seen status
   const io = req.io;
   if (io) {
-    const receiverSocketId = getReceiverSocketId(senderId);
+    const receiverSocketId = getSocketId(senderId);
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("message:read", {
         by: receiverId,

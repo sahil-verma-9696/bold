@@ -1,6 +1,6 @@
 import { RESPONSE_TYPES, STATUS_CODES } from "../../constants/script.js";
 import { COOKIE_CONST } from "../../utils/cookieSetter.js";
-import { User } from "./user.model.js";
+import { User } from "../user/models/user.model.js";
 import { logError, logInfo } from "../../utils/logger.js";
 import jwt from "jsonwebtoken";
 

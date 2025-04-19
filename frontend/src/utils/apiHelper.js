@@ -5,7 +5,12 @@ const API_BASE_URL = "http://localhost:5000";
 /**
  * Generic function to make API calls with error handling & toast messages.
  */
-export async function apiRequest(endpoint, method, body = null, isFormData = false) {
+export async function apiRequest(
+  endpoint,
+  method,
+  body = null,
+  isFormData = false
+) {
   let loadingToastId = toast.loading("Connecting to the server...");
 
   try {
@@ -15,7 +20,14 @@ export async function apiRequest(endpoint, method, body = null, isFormData = fal
       method,
       headers,
       credentials: "include", // ✅ Handles secure cookies
-      body: method === "GET" ? null : isFormData ? body : JSON.stringify(body),
+      body:
+        method === "GET"
+          ? null
+          : isFormData
+          ? body
+          : body
+          ? JSON.stringify(body)
+          : null,
     });
 
     // ✅ Attempt to parse JSON response safely

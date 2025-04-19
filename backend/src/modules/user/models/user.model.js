@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import { logError } from "../../utils/logger.js";
-import { DEFAULT_AVATAR } from "./constants.js";
-import { UserSettings } from "../user/models/userSetting.js";
+import { logError } from "../../../utils/logger.js";
+import { DEFAULT_AVATAR } from "../../auth/constants.js";
+import { UserSettings } from "./userSetting.js";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -43,8 +43,32 @@ const UserSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    friends: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    requests: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    blocked: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    pending: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
-  { timestamps: true } 
+  { timestamps: true }
 );
 
 // pre-save hook to hash password before saving to database
@@ -71,7 +95,11 @@ UserSchema.pre("save", async function (next) {
 // post-save hook to create user settings
 UserSchema.post("save", async function (doc, next) {
   try {
-    await UserSettings.create({ userId: doc._id });
+    const existing = await UserSettings.findOne({ userId: doc._id });
+
+    if (!existing) {
+      await UserSettings.create({ userId: doc._id });
+    }
     next();
   } catch (err) {
     console.error("Error creating user settings:", err);

@@ -1,7 +1,7 @@
 import { logError, logInfo, logSuccess } from "../../../utils/logger.js";
 import { MESSAGES } from "../constants.js";
 import { STATUS_CODES, RESPONSE_TYPES } from "../../../constants/script.js";
-import { User } from "../../auth/user.model.js";
+import { User } from "../models/user.model.js";
 import { uploadToCloudinary } from "../../../services/uploadToCloudinary.js";
 
 // tested on POSTMAN ✅
