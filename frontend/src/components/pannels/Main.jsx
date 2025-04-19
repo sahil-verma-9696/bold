@@ -1,10 +1,10 @@
 import React from "react";
-import ChatArea from "../chat/ChatArea";
+import ChatWindow from "../chat/ChatWindow";
 
 function Main() {
   return (
-    <section className="hidden lg:block h-screen overflow-y-scroll bg-gray-100 dark:bg-gray-700">
-      <ChatArea />
+    <section className="sm:block flex-1 h-screen bg-gray-100 dark:bg-gray-700">
+      <ChatWindow />
     </section>
   );
 }

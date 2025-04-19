@@ -6,7 +6,12 @@ import { messages, setReceiver } from "../../features/chat/chatAreaSlice";
 import { lastSeenFormate } from "../../utils/lastSeenFormate";
 import { toggleProfile } from "../../features/user/userProfileSlice";
 import UserProfile from "../user/UserProfile";
-import { acceptFriendRequest, rejectFriendRequest, sendFriendRequest } from "../../features/user/userService";
+import {
+  acceptFriendRequest,
+  rejectFriendRequest,
+  sendFriendRequest,
+} from "../../features/user/userService";
+import { setMobileMode } from "../../pages/protected/lobby/lobbySlice";
 
 const UserItem = ({ user }) => {
   const dispatch = useDispatch();
@@ -17,11 +22,6 @@ const UserItem = ({ user }) => {
 
   const isSelected = receiver?.email === user.email;
 
-  useEffect(() => {
-    if (localStorage.getItem("receiver")) {
-      dispatch(setReceiver(JSON.parse(localStorage.getItem("reciver"))));
-    }
-  }, [dispatch]);
 
   const handleSetReceiver = () => {
     if (isSelected) {
@@ -30,6 +30,7 @@ const UserItem = ({ user }) => {
       localStorage.setItem("receiver", JSON.stringify(user));
       dispatch(setReceiver(user));
       dispatch(messages(user._id));
+      dispatch(setMobileMode("messaging"))
     }
   };
 
@@ -65,9 +66,9 @@ const UserItem = ({ user }) => {
     <>
       <li
         onClick={handleSetReceiver}
-        className={`flex justify-between items-center hover:bg-gray-700 p-2 md:p-3 lg:p-4 rounded-md cursor-pointer select-none transition-all duration-200 ${
+        className={`flex justify-between items-center hover:dark:bg-gray-700 hover:bg-gray-300 p-2 md:p-3 lg:p-4 rounded-md cursor-pointer select-none transition-all duration-200 ${
           isSelected
-            ? "border-l-4 border-l-gray-900 bg-gray-700"
+            ? "border-l-4 border-l-gray-900 bg-gray-300 dark:bg-gray-700"
             : "border-l-4 border-l-transparent"
         }`}
       >

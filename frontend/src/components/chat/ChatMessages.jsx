@@ -11,20 +11,35 @@ function ChatMessages({ messages, user }) {
     <div className="flex-1 p-4 overflow-y-auto space-y-3">
       {messages.map((msg, index) => {
         const isMe = msg.senderId === user._id;
+
         return (
           <div
             key={index}
             className={`w-full flex ${isMe ? "justify-end" : "justify-start"} flex-col`}
           >
             <div
-              className={`max-w-xs sm:max-w-sm md:max-w-md break-words px-4 py-2 rounded-lg ${
+              className={`relative max-w-xs sm:max-w-sm md:max-w-md break-words px-4 py-2 rounded-lg ${
                 isMe
                   ? "bg-green-100 dark:bg-green-800 text-black dark:text-white self-end"
                   : "bg-blue-100 dark:bg-blue-800 text-black dark:text-white self-start"
               }`}
+              style={{ marginBottom: isMe ? "1.2rem" : "0" }}
             >
               {msg.text}
+
+              {/* Read receipt */}
+              {isMe && (
+                <span
+                  className={`absolute bottom-[-1rem] right-2 text-xs ${
+                    msg.isRead ? "text-blue-500" : "text-gray-400"
+                  }`}
+                >
+                  {msg.isRead ? "✔✔" : "✔"}
+                </span>
+              )}
             </div>
+
+            {/* Timestamp */}
             <span
               className={`text-xs text-gray-500 mt-1 ${
                 isMe ? "text-right pr-2" : "text-left pl-2"

@@ -50,7 +50,7 @@ function Sidebar() {
           <img
             src={user?.avatar}
             alt="User Avatar"
-            className="w-8 h-8 rounded-full border-2 border-white"
+            className="w-[32px] aspect-square shrink-0 rounded-full border-2 border-white"
           />
         ),
         label: "Me",
@@ -62,9 +62,9 @@ function Sidebar() {
   return (
     <>
       {/* Desktop sidebar */}
-      <section className="hidden lg:flex flex-col justify-between bg-white dark:bg-gray-800 py-4 border-r border-gray-700 w-[5vw]">
+      <section className="hidden sm:flex sm:w-[65px] flex-col shrink-0 justify-between bg-white dark:bg-gray-800 py-4 border-r border-gray-700">
         {list.map((item, index) => (
-          <ul key={index} className="flex flex-col gap-6 px-2">
+          <ul key={index} className="flex flex-col shrink-0 gap-6 px-2">
             {item.map((item) => (
               <li
                 key={item.label}
@@ -81,7 +81,7 @@ function Sidebar() {
                 ) : (
                   <button
                     onClick={item.onClick}
-                    className="w-full flex flex-col items-center text-gray-800 dark:text-white"
+                    className="w-full mx-auto shrink-0 flex flex-col items-center text-gray-800 dark:text-white"
                   >
                     {item.icon}
                     <span className="text-sm">{item.label}</span>
@@ -95,7 +95,7 @@ function Sidebar() {
       </section>
 
       {/* Mobile bottom navbar */}
-      <section className="flex justify-between fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-white dark:bg-gray-800 border-t border-gray-700 px-4 py-2">
+      <section className="flex justify-between h-fit w-screen sm:hidden bg-white dark:bg-gray-800 px-4 py-2">
         <div className="flex justify-around items-center w-full">
           {[...list[0], ...list[1]].map((item) => (
             <button

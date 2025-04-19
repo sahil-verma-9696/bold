@@ -7,6 +7,8 @@ import {
 } from "../../features/user/userSlice";
 import { getSocket } from "../../redux/middlewares/socket";
 import UserItem from "./UserItem";
+import { messages, setReceiver } from "../../features/chat/chatAreaSlice";
+import { MoreVertical, Search } from "lucide-react";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -14,7 +16,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(getUsers());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     const socket = getSocket();
@@ -34,11 +36,22 @@ const Home = () => {
   }, [dispatch]);
 
   return (
-    <div className="py-4">
-      <section className="bg-gray-700 px-2 py-1">
-        <h1>All users</h1>
+    <div className="h-full">
+      <section className="w-full px-2 py-1 ">
+        <div className="flex justify-between items-center py-2">
+          <h1 className="text-3xl font-semibold dark:text-white">⚡Bolt</h1>
+          <MoreVertical />
+        </div>
       </section>
-      <ul>
+      <ul className="h-[calc(80vh+9px)] overflow-y-scroll">
+        <div className="flex dark:text-white bg-gray-300 dark:bg-gray-700 mx-2 my-2 px-2 py-2 rounded-xl">
+          <Search />
+          <input
+            className="flex-1 px-2 outline-0"
+            type="text"
+            placeholder="Search"
+          />
+        </div>
         {users?.map((user) => (
           <UserItem key={user.email} user={user} />
         ))}
