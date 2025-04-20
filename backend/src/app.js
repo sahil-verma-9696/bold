@@ -26,7 +26,7 @@ app.use(
   cors({
     origin: "https://bolt-iota-smoky.vercel.app", // don't use "*"
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
   })
 );
 app.use(
@@ -49,7 +49,7 @@ app.use("/api/message", chatRouter);
 app.use(errorHandler);
 
 app.get("/", function (req, res) {
-  console.log(req.io);
+  // console.log(req.io);
   res.status(200).send(
     `<div style="width:calc(100vw-8px);height:98vh;border-radius:1rem;margin:0;display:flex;justify-content:center;align-items:center;font-size:6rem;font-family:system-ui;background-color:black;color:white;">
       <span style="text-align:center;">Welcome <br> to <br> ⚡BOLT <br> Backend Home</span></div>`
