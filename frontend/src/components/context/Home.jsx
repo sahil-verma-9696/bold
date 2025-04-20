@@ -41,12 +41,7 @@ const Home = () => {
 
   return (
     <div className="h-full">
-      <section className="w-full px-2 py-1 ">
-        <div className="flex justify-between items-center py-2">
-          <h1 className="text-3xl font-semibold dark:text-white">⚡Bolt</h1>
-          {!isDesktop && <MoreVertical />}
-        </div>
-      </section>
+      
       <ul className="h-[calc(80vh+9px)] sm:h-[calc(92vh+4px)] overflow-y-scroll">
         <div className="flex dark:text-white bg-gray-300 dark:bg-gray-700 mx-2 my-2 px-2 py-2 rounded-xl">
           <Search />

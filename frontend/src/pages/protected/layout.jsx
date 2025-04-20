@@ -5,7 +5,7 @@ function ProtectedLayout() {
   return (
     <div>
       <Toaster />
-      <main className="h-screen">
+      <main className="h-screen overflow-hidden">
         <Outlet />
       </main>
     </div>

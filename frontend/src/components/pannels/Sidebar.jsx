@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Home, LogOut, Settings } from "lucide-react";
+import { Home, LogOut, Search, Settings } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Me from "../user/Me";
@@ -25,6 +25,14 @@ function Sidebar() {
           dispatch(setSelectedChannel("Home"));
         },
       },
+      {
+        type: "button",
+        icon: <Search />,
+        label: "Search",
+        onClick: () => {
+          dispatch(setSelectedChannel("Search"));
+        },
+      },
     ],
     [
       {
@@ -36,14 +44,14 @@ function Sidebar() {
           dispatch(logout());
         },
       },
-      {
-        type: "button",
-        icon: <Settings />,
-        label: "Settings",
-        onClick: () => {
-          dispatch(setSelectedChannel("Setting"));
-        },
-      },
+      // {
+      //   type: "button",
+      //   icon: <Settings />,
+      //   label: "Settings",
+      //   onClick: () => {
+      //     dispatch(setSelectedChannel("Setting"));
+      //   },
+      // },
       {
         type: "button",
         icon: (

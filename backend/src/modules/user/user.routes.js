@@ -15,6 +15,7 @@ import { sendFriendRequest } from "./user_relation/sendFriendRequest.js";
 import { acceptFriendRequest } from "./user_relation/acceptFriendRequest.js";
 import { rejectFriendRequest } from "./user_relation/rejectFriendRequest.js";
 import { removeFriend } from "./user_relation/removeFriend.js";
+import { searchController } from "./controllers/searchController.js";
 
 export const router = Router();
 
@@ -88,6 +89,12 @@ const routes = [
     middleware: [isProtected],
     handler: removeFriend,
   },
+  {
+    method:"get",
+    path:"/search",
+    middleware: [isProtected],
+    handler:searchController
+  }
 ];
 
 // Register routes
