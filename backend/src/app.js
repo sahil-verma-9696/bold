@@ -17,14 +17,14 @@ export const app = express();
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
-  cors: { origin: "https://bolt-iota-smoky.vercel.app/", credentials: true },
+  cors: { origin: "https://bolt-iota-smoky.vercel.app", credentials: true },
 });
 
 app.use(injectIO(io)); // injects io to all routes
 
 app.use(
   cors({
-    origin: "https://bolt-iota-smoky.vercel.app/", // don't use "*"
+    origin: "https://bolt-iota-smoky.vercel.app", // don't use "*"
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
