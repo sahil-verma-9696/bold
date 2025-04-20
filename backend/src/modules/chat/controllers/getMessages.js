@@ -1,6 +1,7 @@
 import { RESPONSE_TYPES, STATUS_CODES } from "../../../constants/script.js";
-import { logInfo, logSuccess } from "../../../utils/logger.js";
-import Message from "../message.models.js";
+import { logInfo } from "../../../utils/logger.js";
+import Message from "../models/message.js";
+import { sendResponse } from "../../../utils/response.js";
 
 export const getMessages = async (req, res) => {
   logInfo(import.meta.url, "Get Messages Hit");
@@ -19,11 +20,11 @@ export const getMessages = async (req, res) => {
     ],
   }).sort({ createdAt: 1 });
 
-  logSuccess(import.meta.url, "Messages Retrieved");
-
-  res.status(STATUS_CODES.OK).json({
-    type: RESPONSE_TYPES.SUCCESS,
-    message: "Messages fetched",
-    payload: { messages },
-  });
+  sendResponse(
+    res,
+    STATUS_CODES.OK,
+    RESPONSE_TYPES.SUCCESS,
+    "Messages fetched",
+    { messages }
+  );
 };

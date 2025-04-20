@@ -1,13 +1,13 @@
 import { Router } from "express";
 
-import { isAuthenticated } from "../auth/middleware/isAuthenticated.js";
-import { asyncHandler } from "../../utils/asyncHandler.js";
-import { createMessage } from "./controllers/createMessage.js";
-import { getMessages } from "./controllers/getMessages.js";
-import { getMessage } from "./controllers/getMessage.js";
-import { updateMessage } from "./controllers/updateMessage.js";
-import { deleteMessage } from "./controllers/deleteMessage.js";
-import { markMessagesAsRead } from "./controllers/markMessagesAsRead.js";
+import { isAuthenticated } from "../../auth/middleware/isAuthenticated.js";
+import { asyncHandler } from "../../../utils/asyncHandler.js";
+import { createMessage } from "../controllers/createMessage.js";
+import { getMessages } from "../controllers/getMessages.js";
+import { getMessage } from "../controllers/getMessage.js";
+import { updateMessage } from "../controllers/updateMessage.js";
+import { deleteMessage } from "../controllers/deleteMessage.js";
+import { markMessagesAsRead } from "../controllers/markMessagesAsRead.js";
 
 export const router = Router();
 

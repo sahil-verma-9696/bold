@@ -1,9 +1,10 @@
 import { RESPONSE_TYPES, STATUS_CODES } from "../../../constants/script.js";
-import { logInfo, logSuccess } from "../../../utils/logger.js";
-import Message from "../message.models.js";
+import { logInfo } from "../../../utils/logger.js";
+import Message from "../models/message.js";
+import { sendResponse } from "../../../utils/response.js";
 
 export const deleteMessage = async (req, res) => {
-  logInfo(import.meta.url, "delete Message Hit");
+  logInfo(import.meta.url, "Delete Message Hit");
 
   const { id } = req.params;
 
@@ -13,11 +14,11 @@ export const deleteMessage = async (req, res) => {
     throw new Error("Message not found or could not be deleted");
   }
 
-  logSuccess(import.meta.url, "Message Deleted: " + deleted._id);
-
-  res.status(STATUS_CODES.OK).json({
-    type: RESPONSE_TYPES.SUCCESS,
-    message: "Message deleted",
-    payload: { message: deleted },
-  });
+  sendResponse(
+    res,
+    STATUS_CODES.OK,
+    RESPONSE_TYPES.SUCCESS,
+    "Message deleted",
+    { message: deleted }
+  );
 };

@@ -1,7 +1,7 @@
 import { RESPONSE_TYPES, STATUS_CODES } from "../../../constants/script.js";
 import { logInfo } from "../../../utils/logger.js";
 import { sendResponse } from "../../../utils/response.js";
-import { User } from "../../user/models/user.model.js";
+import { User } from "../../user/models/user.js";
 import dotenv from "dotenv";
 dotenv.config();
 

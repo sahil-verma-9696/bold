@@ -2,7 +2,7 @@ import { logInfo } from "../../../utils/logger.js";
 import { setCookie } from "../../../utils/cookieSetter.js";
 import { generateTokens } from "../../../utils/tokenGenerator.js";
 import { STATUS_CODES, RESPONSE_TYPES } from "../../../constants/script.js";
-import { User } from "../../user/models/user.model.js";
+import { User } from "../../user/models/user.js";
 import { sendResponse } from "../../../utils/response.js";
 
 export async function login(req, res) {
