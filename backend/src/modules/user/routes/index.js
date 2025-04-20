@@ -1,21 +1,21 @@
 import { Router } from "express";
-import { ROUTES } from "./constants.js";
-import { isAuthenticated } from "../auth/middleware/isAuthenticated.js";
-import upload from "../../config/multer.js";
-import { asyncHandler } from "../../utils/asyncHandler.js";
+import { ROUTES } from "../constants.js";
+import { isAuthenticated } from "../../auth/middleware/isAuthenticated.js";
+import upload from "../../../config/multer.js";
+import { asyncHandler } from "../../../utils/asyncHandler.js";
 
-import { getMe } from "./controllers/getMe.js";
-import { deleteMe } from "./controllers/deleteMe.js";
-import { updateMe } from "./controllers/updateMe.js";
-import { getProfile } from "./controllers/getProfile.js";
-import { getSettings } from "./user_setting/getSetting.js";
-import { updateSettings } from "./user_setting/updateSetting.js";
-import { getAllUsers } from "./controllers/getAllUsers.js";
-import { sendFriendRequest } from "./user_relation/sendFriendRequest.js";
-import { acceptFriendRequest } from "./user_relation/acceptFriendRequest.js";
-import { rejectFriendRequest } from "./user_relation/rejectFriendRequest.js";
-import { removeFriend } from "./user_relation/removeFriend.js";
-import { searchController } from "./controllers/search.js";
+import { getMe } from "../controllers/getMe.js";
+import { deleteMe } from "../controllers/deleteMe.js";
+import { updateMe } from "../controllers/updateMe.js";
+import { getProfile } from "../controllers/getProfile.js";
+import { getSettings } from "../user_setting/getSetting.js";
+import { updateSettings } from "../user_setting/updateSetting.js";
+import { getAllUsers } from "../controllers/getAllUsers.js";
+import { sendFriendRequest } from "../user_relation/sendFriendRequest.js";
+import { acceptFriendRequest } from "../user_relation/acceptFriendRequest.js";
+import { rejectFriendRequest } from "../user_relation/rejectFriendRequest.js";
+import { removeFriend } from "../user_relation/removeFriend.js";
+import { searchController } from "../controllers/search.js";
 
 export const router = Router();
 
