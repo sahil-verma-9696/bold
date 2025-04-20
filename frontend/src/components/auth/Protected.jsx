@@ -23,7 +23,7 @@ export const ProtectedRoute = ({ children }) => {
 
           // Setup socket middleware if needed
           const socketMiddleware = createSocketMiddleware(
-            "http://localhost:5000", // or your deployed backend
+            import.meta.env.VITE_BACKEND_BASE_URL,
             store,
             response.user._id
           );
