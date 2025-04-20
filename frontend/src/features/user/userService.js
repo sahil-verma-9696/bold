@@ -34,3 +34,8 @@ export async function removeFriend(receiverId) {
   );
   return response.payload;
 }
+
+export async function search(queries) {
+  const response = await apiRequest(`/api/user/search?q=${queries}`);
+  return response.payload;
+}

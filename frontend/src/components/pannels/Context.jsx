@@ -4,10 +4,12 @@ import Home from "../context/Home";
 import Setting from "../context/Setting";
 import { useMediaQuery } from "react-responsive";
 import { MoreVertical } from "lucide-react";
+import Search from "../context/Search";
 
 const componentsMap = {
   Home: <Home />,
   Setting: <Setting />,
+  Search: <Search />,
 };
 
 function Context() {

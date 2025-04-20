@@ -17,5 +17,5 @@ export const searchController = async (req, res) => {
     searchBy: searchBy || "both",
   });
 
-  res.status(200).json({ success: true, users });
+  res.status(200).json({ success: true, payload: users });
 };

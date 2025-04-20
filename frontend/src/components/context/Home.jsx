@@ -10,6 +10,7 @@ import UserItem from "./UserItem";
 import { messages, setReceiver } from "../../features/chat/chatAreaSlice";
 import { MoreVertical, Search } from "lucide-react";
 import { useMediaQuery } from "react-responsive";
+import SearchUser from "../user/SearchUser";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -41,16 +42,8 @@ const Home = () => {
 
   return (
     <div className="h-full">
-      
       <ul className="h-[calc(80vh+9px)] sm:h-[calc(92vh+4px)] overflow-y-scroll">
-        <div className="flex dark:text-white bg-gray-300 dark:bg-gray-700 mx-2 my-2 px-2 py-2 rounded-xl">
-          <Search />
-          <input
-            className="flex-1 px-2 outline-0"
-            type="text"
-            placeholder="Search"
-          />
-        </div>
+        <SearchUser />
         {users?.map((user) => (
           <UserItem key={user.email} user={user} />
         ))}
