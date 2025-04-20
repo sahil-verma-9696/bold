@@ -16,19 +16,49 @@ import { injectIO } from "./middleware/socketInjection.js";
 export const app = express();
 
 const httpServer = createServer(app);
+
+const allowedOrigins = [
+  "https://bolt-iota-smoky.vercel.app",
+  "http://localhost:5173",
+  /\.vercel\.app$/ // allow preview deployments too
+];
+
 const io = new Server(httpServer, {
-  cors: { origin: "https://bolt-iota-smoky.vercel.app", credentials: true },
+  cors: {
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.some((allowed) =>
+          allowed instanceof RegExp ? allowed.test(origin) : allowed === origin
+        )
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by socket CORS"));
+      }
+    },
+    credentials: true,
+  },
 });
+
 
 app.use(injectIO(io)); // injects io to all routes
 
 app.use(
   cors({
-    origin: "https://bolt-iota-smoky.vercel.app", // don't use "*"
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.some((allowed) =>
+          allowed instanceof RegExp ? allowed.test(origin) : allowed === origin
+        )
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   })
 );
+
 app.use(
   express.json({
     strict: true,
