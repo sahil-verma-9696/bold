@@ -1,18 +1,19 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Users } from "lucide-react";
+import { ChartArea, MessageSquareOff, Users } from "lucide-react";
 import { getSocket } from "../../redux/middlewares/socket";
 import {
+  markMessagesAsRead,
   setMessages,
-  settingFetchedMessages,
+  setReceiver,
 } from "../../features/chat/chatAreaSlice";
 
-import { messages as getMessages } from "../../features/chat/chatAreaSlice";
 import ChatHeader from "./ChatHeader";
 import ChatMessages from "./ChatMessages";
 import ChatInput from "./ChatInput";
+import { messages as loadMessages } from "../../features/chat/chatAreaSlice";
 
-function ChatArea() {
+function ChatWindow() {
   const [message, setMessage] = useState("");
   const socket = getSocket();
   const dispatch = useDispatch();
@@ -21,10 +22,28 @@ function ChatArea() {
   const user = useSelector((state) => state.auth.user); // Assuming logged-in user info is in auth slice
   const messagesEndRef = useRef(null);
 
-  // Scroll to latest message
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  useEffect(() => {
+    const reciver = JSON.parse(localStorage.getItem("receiver"));
+    if (reciver._id) {
+      dispatch(setReceiver(reciver));
+      dispatch(loadMessages(reciver._id));
+    }
+  }, []);
+
+  useEffect(() => {
+    const socket = getSocket();
+
+    const handleRead = ({ updatedIds,updatedCount }) => {
+      dispatch(markMessagesAsRead(updatedIds));
+      console.log("messages seen",updatedCount);
+    };
+
+    socket.on("message:readed", handleRead);
+
+    return () => {
+      socket.off("message:readed", handleRead);
+    };
+  }, []);
 
   // Listen for incoming messages
   useEffect(() => {
@@ -34,7 +53,7 @@ function ChatArea() {
     if (!socket) return;
 
     const handleReceiveMessage = (data) => {
-      dispatch(setMessages(data));// save to db
+      dispatch(setMessages(data));
     };
 
     socket.on("receiveMessage", handleReceiveMessage);
@@ -61,10 +80,6 @@ function ChatArea() {
     setMessage("");
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
   if (!receiver) {
     return (
       <div className="flex flex-col h-full items-center justify-center text-center p-4">
@@ -82,7 +97,18 @@ function ChatArea() {
   return (
     <div className="flex flex-col h-full">
       <ChatHeader receiver={receiver} />
-      <ChatMessages messages={messages} user={user} />
+      {messages.length === 0 ? (
+        <div className="size-full flex justify-center items-center dark:text-white">
+          <div>
+            <div className="w-fit mx-auto">
+              <MessageSquareOff size={100} />
+            </div>
+            <h1 className="text-2xl italic ">No conversation Found </h1>
+          </div>
+        </div>
+      ) : (
+        <ChatMessages messages={messages} user={user} />
+      )}
       <ChatInput
         message={message}
         setMessage={setMessage}
@@ -92,4 +118,4 @@ function ChatArea() {
   );
 }
 
-export default ChatArea;
+export default ChatWindow;

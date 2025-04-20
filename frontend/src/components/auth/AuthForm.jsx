@@ -154,7 +154,10 @@ export default function AuthForm({ mode = "login", setIsLogin, setMode }) {
             <>
               Don’t have an account?{" "}
               <span
-                onClick={() => setIsLogin(false)}
+                onClick={() => {
+                  setIsLogin(false);
+                  setMode("signup");
+                }}
                 className="text-blue-500 cursor-pointer hover:underline"
               >
                 Signup
@@ -164,7 +167,10 @@ export default function AuthForm({ mode = "login", setIsLogin, setMode }) {
             <>
               Already have an account?{" "}
               <span
-                onClick={() => setIsLogin(true)}
+                onClick={() => {
+                  setIsLogin(true);
+                  setMode("login");
+                }}
                 className="text-blue-500 cursor-pointer hover:underline"
               >
                 Login

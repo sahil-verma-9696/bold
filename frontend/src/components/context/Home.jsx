@@ -7,6 +7,10 @@ import {
 } from "../../features/user/userSlice";
 import { getSocket } from "../../redux/middlewares/socket";
 import UserItem from "./UserItem";
+import { messages, setReceiver } from "../../features/chat/chatAreaSlice";
+import { MoreVertical, Search } from "lucide-react";
+import { useMediaQuery } from "react-responsive";
+import SearchUser from "../user/SearchUser";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -14,7 +18,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(getUsers());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     const socket = getSocket();
@@ -33,12 +37,13 @@ const Home = () => {
     };
   }, [dispatch]);
 
+  const isDesktop = useMediaQuery({ minWidth: 640 });
+  console.log(isDesktop);
+
   return (
-    <div className="py-4">
-      <section className="bg-gray-700 px-2 py-1">
-        <h1>All users</h1>
-      </section>
-      <ul>
+    <div className="h-full">
+      <ul className="h-[calc(80vh+9px)] sm:h-[calc(92vh+4px)] overflow-y-scroll">
+        <SearchUser />
         {users?.map((user) => (
           <UserItem key={user.email} user={user} />
         ))}

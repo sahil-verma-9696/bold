@@ -3,9 +3,9 @@ import { Toaster } from "react-hot-toast";
 
 function ProtectedLayout() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div>
       <Toaster />
-      <main>
+      <main className="h-screen overflow-hidden">
         <Outlet />
       </main>
     </div>

@@ -14,6 +14,7 @@ import { router as authRouter } from "../modules/auth/auth.routes.js";
 import { router as userRouter } from "../modules/user/user.routes.js";
 import { router as chatRouter } from "../modules/chat/chat.routes.js";
 import { errorHandler } from "../middleware/errorHandler.js";
+import mongoose from "mongoose";
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -108,16 +109,47 @@ io.on("connection", async (socket) => {
   });
   ``;
 
-  socket.on("message:recived", async function (res) {
-    console.log(res);
-    const { senderId, receiverId } = res;
-    Message.updateMany(
-      { senderId, receiverId, isRead: false },
-      { $set: { isRead: true } }
-    ).catch((err) => {
-      console.error("❌ Failed to update message:", err.message);
+  socket.on("message:recived", function (res) {
+    console.log("✅ Received data:", res);
+
+    const messageIds = res?.payload?.unSeenMessages;
+
+    if (!Array.isArray(messageIds) || messageIds.length === 0) {
+      console.warn("⚠️ No unSeenMessages to update.");
+      return;
+    }
+
+    setImmediate(async () => {
+      try {
+        const objectIds = messageIds.map(
+          (id) => new mongoose.Types.ObjectId(id)
+        );
+        const result = await Message.updateMany(
+          { _id: { $in: objectIds } },
+          { $set: { isRead: true } }
+        );
+
+        console.log(
+          "✅ Background isRead update successful:",
+          result.modifiedCount
+        );
+
+        // Notify frontend only after update is done
+        socket.emit("message:readed", {
+          status: "success",
+          updatedCount: result.modifiedCount,
+          updatedIds: messageIds,
+        });
+      } catch (err) {
+        console.error("❌ Background update failed:", err.message);
+
+        // Optional: Notify frontend of failure
+        socket.emit("message:readed", {
+          status: "error",
+          error: err.message,
+        });
+      }
     });
-    socket.emit("message:readed", {});
   });
 
   socket.on("disconnect", async function () {

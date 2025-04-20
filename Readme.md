@@ -80,8 +80,8 @@ open browser with `http://localhost:5137/`
 ## 🔧 In Progress
 
 - [x] Folder structure finalization
-- [ ] Module scaffolding
-- [ ] Base utility functions (e.g., response wrapper, error handler)
+- [x] Module scaffolding
+- [x] Base utility functions (e.g., response wrapper, error handler)
 
 ---
 
@@ -89,26 +89,26 @@ open browser with `http://localhost:5137/`
 
 ### 1. User Module
 
-- [ ] Get user by ID/email
+- [x] Get user by ID/email
 - [ ] Update profile info
 - [ ] Avatar upload & retrieval
-- [ ] Block user / Unblock user
+- [x] Block user / Unblock user
 - [ ] Settings (dark mode, notifications)
 
 ### 2. Chat Module
 
-- [ ] Create private chat
+- [x] Create private chat
 - [ ] Create group chat
 - [ ] Fetch user chat list
 - [ ] Chat deletion/archival
 
 ### 3. Message Module
 
-- [ ] Send text message
+- [x] Send text message
 - [ ] Send media (image, video, etc.)
 - [ ] Fetch messages with pagination
 - [ ] Mark as read/delivered
-- [ ] Real-time socket messaging
+- [x] Real-time socket messaging
 
 ### 4. Group Module
 
@@ -141,11 +141,11 @@ open browser with `http://localhost:5137/`
 - [ ] Track delivery & read receipts
 - [ ] Per-user message view status
 
-### 9. Know User / Relationship Module
+### 9. Relationship Module
 
-- [ ] Send friend request
-- [ ] Accept/Reject
-- [ ] Block/unfriend logic
+- [x] Send friend request
+- [x] Accept/Reject
+- [x] Block/unfriend logic
 
 ---
 
@@ -153,9 +153,9 @@ open browser with `http://localhost:5137/`
 
 - [ ] MongoDB connection pooling
 - [ ] Redis integration
-- [ ] Socket.IO setup
-- [ ] Environment config & validation
-- [ ] Logging (Winston or similar)
+- [x] Socket.IO setup
+- [x] Environment config & validation
+- [x] Logging 
 
 ---
 

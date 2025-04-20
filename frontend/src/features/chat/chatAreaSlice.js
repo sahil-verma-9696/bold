@@ -43,6 +43,12 @@ const chatAreaSlice = createSlice({
     setLastSeen: (state, action) => {
       state.lastSeen = action.payload;
     },
+    markMessagesAsRead: (state, action) => {
+      const updatedIds = action.payload;
+      state.messages = state.messages.map((msg) =>
+        updatedIds.includes(msg._id) ? { ...msg, isRead: true } : msg
+      );
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -51,22 +57,21 @@ const chatAreaSlice = createSlice({
         state.errorMessages = null;
       })
       .addCase(messages.fulfilled, (state, action) => {
-        const socket = getSocket();
-        const msg = action.payload.messages[0];
-
-        if (msg) {
-          console.log(msg);
-          socket.emit("message:recived", {
-            type: "socket:success",
-            message: "message Received successfully",
-            payload: {
-              receiverId: msg.receiverId,
-              senderId: msg.senderId,
-            },
-          });
-        }
         state.loadingMessages = false;
         state.messages = action.payload.messages;
+        const socket = getSocket();
+        const unSeenMessages = action.payload.messages
+          .filter((msg) => !msg.isRead)
+          .map((msg) => msg._id);
+
+        console.log(unSeenMessages);
+        socket.emit("message:recived", {
+          type: "socket:success",
+          message: "message Received successfully",
+          payload: {
+            unSeenMessages,
+          },
+        });
       })
       .addCase(messages.rejected, (state, action) => {
         state.loadingMessages = false;
@@ -81,6 +86,7 @@ export const {
   settingFetchedMessages,
   setAllUsers,
   setLastSeen,
+  markMessagesAsRead,
 } = chatAreaSlice.actions;
 
 export default chatAreaSlice.reducer;

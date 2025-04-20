@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../../components/pannels/Sidebar";
 import Context from "../../../components/pannels/Context";
 import Main from "../../../components/pannels/Main";
 import { getSocket } from "../../../redux/middlewares/socket";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../../features/auth/authSlice";
-
+import { useMediaQuery } from "react-responsive";
 function Lobby() {
   const dispatch = useDispatch();
+  const receiver = useSelector((state) => state.chat.receiver);
 
   useEffect(() => {
     const socket = getSocket();
@@ -30,13 +31,24 @@ function Lobby() {
       socket.off("user:update", handleUserUpdate);
     };
   }, [dispatch]);
-
+  const isDesktop = useMediaQuery({ minWidth: 640 });
+  const mode = useSelector((state) => state.lobby.mobileMode);
   return (
-    <div className="min-h-screen grid grid-cols-[5vw_20vw_75vw] bg-gray-50 dark:bg-gray-900">
-      <Sidebar />
-      <Context />
-      <Main />
-    </div>
+    <>
+      {!isDesktop ? (
+        <div className="h-screen flex flex-col bg-red-400">
+          {!isDesktop && mode === "messaging" && <Main />}
+          {!isDesktop && mode === "chats" && <Context />}
+          {!isDesktop && mode === "chats" && <Sidebar />}
+        </div>
+      ) : (
+        <div className="flex">
+          <Sidebar />
+          <Context />
+          <Main />
+        </div>
+      )}
+    </>
   );
 }
 
