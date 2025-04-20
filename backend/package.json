@@ -1,11 +1,11 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon src/index.js",
+    "dev": "nodemon src/server.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.mjs --coverage --detectOpenHandles --runInBand",
-    "start": "node src/index.js"
+    "start": "node src/server.js"
   },
   "type": "module",
   "keywords": [],

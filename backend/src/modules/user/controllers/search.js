@@ -1,4 +1,5 @@
 import { searchUsers } from "../utils/searchUsersFilter.js";
+import { sendResponse } from "../../../utils/response.js";
 
 export const searchController = async (req, res) => {
   const {
@@ -16,6 +17,11 @@ export const searchController = async (req, res) => {
     excludeEmail: excludeEmail || null,
     searchBy: searchBy || "both",
   });
-
-  res.status(200).json({ success: true, payload: users });
+  sendResponse(
+    res,
+    STATUS_CODES.OK,
+    RESPONSE_TYPES.SUCCESS,
+    "fetched search results",
+    users
+  );
 };

@@ -1,8 +1,9 @@
 import { RESPONSE_TYPES, STATUS_CODES } from "../../../constants/script.js";
-import { logInfo, logSuccess } from "../../../utils/logger.js";
+import { logInfo } from "../../../utils/logger.js";
 import { User } from "../models/user.js";
 import { MESSAGES } from "../constants.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
+import { sendResponse } from "../../../utils/response.js";
 
 export const getAllUsers = asyncHandler(async (req, res) => {
   logInfo(import.meta.url, MESSAGES.LOGS.GetAllUsers_HIT);
@@ -11,11 +12,12 @@ export const getAllUsers = asyncHandler(async (req, res) => {
     "-password"
   );
 
-  logSuccess(import.meta.url, MESSAGES.LOGS.GetAllUsers_SUCCESS);
+  sendResponse(
+    res,
+    STATUS_CODES.OK,
+    RESPONSE_TYPES.SUCCESS,
+    "all users fetched",
+    users
+  );
 
-  res.status(STATUS_CODES.OK).json({
-    type: RESPONSE_TYPES.SUCCESS,
-    message: MESSAGES.RESPONSE.GET_ALL_USERS_SUCCESS,
-    payload: users,
-  });
 });

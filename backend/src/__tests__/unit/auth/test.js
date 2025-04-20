@@ -1,6 +1,6 @@
 // __tests__/unit/auth/test.js
 import request from "supertest";
-import { app } from "../../../lib/socket.js"; // direct import, not httpServer
+import { app } from "../../../app.js"; // direct import, not httpServer
 
 describe("Test the root path", () => {
   test("It should respond to the GET method", async function () {

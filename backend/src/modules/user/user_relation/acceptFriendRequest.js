@@ -1,7 +1,8 @@
 import { RESPONSE_TYPES, STATUS_CODES } from "../../../constants/script.js";
-import { getSocket, getSocketId } from "../../../services/socket.js";
+import { getSocket, getSocketId } from "../../../app.js";
 import { logInfo } from "../../../utils/logger.js";
 import { User } from "../models/user.js";
+import { sendResponse } from "../../../utils/response.js";
 
 export async function acceptFriendRequest(req, res) {
   logInfo(import.meta.url, "acceptFriendRequest Hit");
@@ -53,10 +54,12 @@ export async function acceptFriendRequest(req, res) {
         payload: sender,
       });
 
-      return res.status(STATUS_CODES.OK).json({
-        type: RESPONSE_TYPES.SUCCESS,
-        message: "Friend request accepted.",
-        payload: { user: sender },
-      });
+      return sendResponse(
+        res,
+        STATUS_CODES.OK,
+        RESPONSE_TYPES.SUCCESS,
+        `${receiver.name} accept friend request of ${sender.name}`,
+        { user: sender }
+      );
   }
 }
