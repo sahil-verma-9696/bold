@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { isProtected } from "../auth/auth.middleware.js"; 
+import { isAuthenticated } from "../auth/middleware/isAuthenticated.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { createMessage } from "./controllers/createMessage.js";
 import { getMessages } from "./controllers/getMessages.js";
@@ -18,12 +18,10 @@ const routes = [
   { method: "get", path: "/:id", handler: getMessage },
   { method: "put", path: "/:id", handler: updateMessage },
   { method: "delete", path: "/:id", handler: deleteMessage },
-  { method: "patch", path:"/mark-read", handler: markMessagesAsRead}
+  { method: "patch", path: "/mark-read", handler: markMessagesAsRead },
 ];
 
 // Apply middleware to all routes and register
 routes.forEach(({ method, path, handler }) => {
-  router[method](path, isProtected, asyncHandler(handler));
+  router[method](path, isAuthenticated, asyncHandler(handler));
 });
-
-

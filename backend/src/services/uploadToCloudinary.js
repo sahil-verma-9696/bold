@@ -1,4 +1,4 @@
-import cloudinary from "../cloudinary/config.js";
+import cloudinary from "../config/cloudinary.js";
 import { createUploadProgressLogger } from "../utils/progressLogger.js";
 
 export async function uploadToCloudinary(

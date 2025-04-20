@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import { logError } from "../../../utils/logger.js";
-import { DEFAULT_AVATAR } from "../../auth/constants.js";
 import { UserSettings } from "./userSetting.js";
+
+export const DEFAULT_AVATAR =
+  "https://res.cloudinary.com/dfqdx3ieb/image/upload/v1742281653/default_user.png";
 
 const UserSchema = new mongoose.Schema(
   {

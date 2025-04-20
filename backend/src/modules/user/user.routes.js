@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { ROUTES } from "./constants.js";
-import { isProtected } from "../auth/auth.middleware.js";
-import upload from "../../multer/config.js";
+import { isAuthenticated } from "../auth/middleware/isAuthenticated.js";
+import upload from "../../config/multer.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 
 import { getMe } from "./controllers/getMe.js";
@@ -23,25 +23,25 @@ const routes = [
   {
     method: "get",
     path: ROUTES.USER.ALL,
-    middleware: [isProtected],
+    middleware: [isAuthenticated],
     handler: getAllUsers,
   },
   {
     method: "get",
     path: ROUTES.USER.ME,
-    middleware: [isProtected],
+    middleware: [isAuthenticated],
     handler: getMe,
   },
   {
     method: "patch",
     path: ROUTES.USER.ME,
-    middleware: [isProtected, upload.single("avatar")],
+    middleware: [isAuthenticated, upload.single("avatar")],
     handler: updateMe,
   },
   {
     method: "delete",
     path: ROUTES.USER.ME,
-    middleware: [isProtected],
+    middleware: [isAuthenticated],
     handler: deleteMe,
   },
 
@@ -55,46 +55,46 @@ const routes = [
   {
     method: "get",
     path: ROUTES.USER.SETTING,
-    middleware: [isProtected],
+    middleware: [isAuthenticated],
     handler: getSettings,
   },
   {
     method: "post",
     path: ROUTES.USER.SETTING,
-    middleware: [isProtected],
+    middleware: [isAuthenticated],
     handler: updateSettings,
   },
 
   {
     method: "get",
     path: "/friend-request/:id",
-    middleware: [isProtected],
+    middleware: [isAuthenticated],
     handler: sendFriendRequest,
   },
   {
     method: "get",
     path: "/accept-request/:id",
-    middleware: [isProtected],
+    middleware: [isAuthenticated],
     handler: acceptFriendRequest,
   },
   {
     method: "get",
     path: "/reject-request/:id",
-    middleware: [isProtected],
+    middleware: [isAuthenticated],
     handler: rejectFriendRequest,
   },
   {
     method: "get",
     path: "/remove-friend/:id",
-    middleware: [isProtected],
+    middleware: [isAuthenticated],
     handler: removeFriend,
   },
   {
-    method:"get",
-    path:"/search",
-    middleware: [isProtected],
-    handler:searchController
-  }
+    method: "get",
+    path: "/search",
+    middleware: [isAuthenticated],
+    handler: searchController,
+  },
 ];
 
 // Register routes
