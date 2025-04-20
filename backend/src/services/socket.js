@@ -2,17 +2,15 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { logInfo, logSuccess, logWarning } from "../utils/logger.js";
-import { User } from "../modules/user/models/user.model.js";
+import { User } from "../modules/user/models/user.js";
 import app from "../app.js";
-import Message from "../modules/chat/message.models.js";
+import Message from "../modules/chat/models/message.js";
 import { injectIO } from "../middleware/socketInjection.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { ROUTES as AUTH_ROUTES } from "../modules/auth/constants.js";
-import { ROUTES as USER_ROUTES } from "../modules/user/constants.js";
-import { router as authRouter } from "../modules/auth/auth.routes.js";
+import { router as authRouter } from "../modules/auth/routes/index.js";
 import { router as userRouter } from "../modules/user/user.routes.js";
-import { router as chatRouter } from "../modules/chat/chat.routes.js";
+import { router as chatRouter } from "../modules/chat/routes/index.js";
 import { errorHandler } from "../middleware/errorHandler.js";
 import mongoose from "mongoose";
 
@@ -44,9 +42,8 @@ app.use(
 app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
-app.use(USER_ROUTES.USER.BASE, userRouter);
+app.use("/api/user", userRouter);
 app.use("/api/message", chatRouter);
-// app.use("api/notification", notificationRouter);
 
 app.use(errorHandler);
 

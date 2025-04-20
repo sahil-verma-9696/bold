@@ -1,6 +1,7 @@
 import { RESPONSE_TYPES, STATUS_CODES } from "../../../constants/script.js";
-import { logInfo, logSuccess } from "../../../utils/logger.js";
-import Message from "../message.models.js";
+import { logInfo } from "../../../utils/logger.js";
+import Message from "../models/message.js";
+import { sendResponse } from "../../../utils/response.js";
 
 export const updateMessage = async (req, res) => {
   logInfo(import.meta.url, "update Messages Hit");
@@ -18,11 +19,11 @@ export const updateMessage = async (req, res) => {
     throw new Error("Message not found or could not be updated");
   }
 
-  logSuccess(import.meta.url, "Message Update successfully");
-
-  res.status(STATUS_CODES.OK).json({
-    type: RESPONSE_TYPES.SUCCESS,
-    message: "Message updated",
-    payload: { message: updated },
-  });
+  sendResponse(
+    res,
+    STATUS_CODES.OK,
+    RESPONSE_TYPES.SUCCESS,
+    "Message updated",
+    { message: updated }
+  );
 };

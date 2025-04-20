@@ -1,7 +1,7 @@
 import { logInfo, logSuccess, logError } from "../../../utils/logger.js";
 import { MESSAGES } from "../constants.js";
 import { STATUS_CODES, RESPONSE_TYPES } from "../../../constants/script.js";
-import { User } from "../models/user.model.js";
+import { User } from "../models/user.js";
 import mongoose from "mongoose";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 

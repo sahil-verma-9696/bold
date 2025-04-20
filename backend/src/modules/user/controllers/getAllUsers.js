@@ -1,6 +1,6 @@
 import { RESPONSE_TYPES, STATUS_CODES } from "../../../constants/script.js";
 import { logInfo, logSuccess } from "../../../utils/logger.js";
-import { User } from "../models/user.model.js";
+import { User } from "../models/user.js";
 import { MESSAGES } from "../constants.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
 

@@ -1,13 +1,11 @@
 import { Router } from "express";
-import {
-  login,
-  logout,
-  signup,
-  forgotPassword,
-  resetPassword,
-} from "./auth.controller.js";
-import { isProtected } from "./auth.middleware.js";
-import { asyncHandler } from "../../utils/asyncHandler.js";
+import { isAuthenticated } from "../middleware/isAuthenticated.js";
+import { asyncHandler } from "../../../utils/asyncHandler.js";
+import { login } from "../controllers/login.js";
+import { signup } from "../controllers/signup.js";
+import { logout } from "../controllers/logout.js";
+import { forgotPassword } from "../controllers/forgotPassword.js";
+import { resetPassword } from "../controllers/resetPassword.js";
 
 export const router = Router();
 
@@ -27,7 +25,7 @@ const routes = [
   {
     method: "get",
     path: "/logout",
-    middlewares: [isProtected],
+    middlewares: [isAuthenticated],
     handler: logout,
   },
   {

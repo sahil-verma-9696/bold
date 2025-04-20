@@ -1,7 +1,7 @@
 import { RESPONSE_TYPES, STATUS_CODES } from "../../../constants/script.js";
 import { getSocketId, getSocket } from "../../../services/socket.js";
 import { logInfo } from "../../../utils/logger.js";
-import { User } from "../models/user.model.js";
+import { User } from "../models/user.js";
 
 export async function sendFriendRequest(req, res) {
   logInfo(import.meta.url, "sendFrienRequest Hit");
