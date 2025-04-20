@@ -1,5 +1,7 @@
 import { searchUsers } from "../utils/searchUsersFilter.js";
 import { sendResponse } from "../../../utils/response.js";
+import { STATUS_CODES, RESPONSE_TYPES } from "../../../constants/script.js";
+
 
 export const searchController = async (req, res) => {
   const {
