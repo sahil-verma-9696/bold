@@ -1,17 +1,17 @@
+import cors from "cors";
 import express from "express";
+import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { logInfo, logSuccess, logWarning } from "./utils/logger.js";
 import { User } from "./modules/user/models/user.js";
 import Message from "./modules/chat/models/message.js";
-import { injectIO } from "./middleware/socketInjection.js";
-import cors from "cors";
-import cookieParser from "cookie-parser";
 import { router as authRouter } from "./modules/auth/routes/index.js";
-import { router as userRouter } from "./modules/user/user.routes.js";
+import { router as userRouter } from "./modules/user/routes/index.js";
 import { router as chatRouter } from "./modules/chat/routes/index.js";
 import { errorHandler } from "./middleware/errorHandler.js";
-import mongoose from "mongoose";
+import { injectIO } from "./middleware/socketInjection.js";
 
 export const app = express();
 
