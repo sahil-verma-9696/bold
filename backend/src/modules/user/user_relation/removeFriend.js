@@ -1,7 +1,8 @@
 import { RESPONSE_TYPES, STATUS_CODES } from "../../../constants/script.js";
-import { getSocket, getSocketId } from "../../../services/socket.js";
+import { getSocket, getSocketId } from "../../../app.js";
 import { logInfo } from "../../../utils/logger.js";
 import { User } from "../models/user.js";
+import { sendResponse } from "../../../utils/response.js";
 
 export async function removeFriend(req, res) {
   logInfo(import.meta.url, "removeFriend Hit");
@@ -43,10 +44,12 @@ export async function removeFriend(req, res) {
       io.to(userSocketId).emit("user:update", { payload: user });
       io.to(friendSocketId).emit("user:update", { payload: friend });
 
-      return res.status(STATUS_CODES.OK).json({
-        type: RESPONSE_TYPES.SUCCESS,
-        message: "Friend removed successfully.",
-        payload: { user: friend },
-      });
+      return sendResponse(
+        res,
+        STATUS_CODES.OK,
+        RESPONSE_TYPES.SUCCESS,
+        `${user.name} remove ${friend.name} as friend`,
+        { user: friend }
+      );
   }
 }

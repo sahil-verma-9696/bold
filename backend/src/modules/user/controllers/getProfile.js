@@ -4,6 +4,7 @@ import { STATUS_CODES, RESPONSE_TYPES } from "../../../constants/script.js";
 import { User } from "../models/user.js";
 import mongoose from "mongoose";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
+import { sendResponse } from "../../../utils/response.js";
 
 // The handler function
 export const getProfile = asyncHandler(async (req, res) => {
@@ -11,7 +12,6 @@ export const getProfile = asyncHandler(async (req, res) => {
   const id = req.params.id;
 
   if (!id) {
-    logError(import.meta.url, "params not found");
     throw new Error("Missing user ID in request params");
   }
 
@@ -22,15 +22,14 @@ export const getProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(id).select("-password");
 
   if (!user) {
-    logError(import.meta.url, "user not found");
     throw new Error("User not found");
   }
 
-  logSuccess(import.meta.url, MESSAGES.LOGS.USER_FETCHED.replace("{}", id));
-
-  res.status(STATUS_CODES.OK).json({
-    type: RESPONSE_TYPES.SUCCESS,
-    message: MESSAGES.RESPONSE.AUTH_SUCCESS,
-    payload: { user },
-  });
+  sendResponse(
+    res,
+    STATUS_CODES.OK,
+    RESPONSE_TYPES.SUCCESS,
+    user.name + " profile fetched successfully",
+    { user }
+  );
 });

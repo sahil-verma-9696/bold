@@ -1,7 +1,8 @@
 import { RESPONSE_TYPES, STATUS_CODES } from "../../../constants/script.js";
-import { getSocket, getSocketId } from "../../../services/socket.js";
+import { getSocket, getSocketId } from "../../../app.js";
 import { logInfo } from "../../../utils/logger.js";
 import { User } from "../models/user.js";
+import { sendResponse } from "../../../utils/response.js";
 
 export async function rejectFriendRequest(req, res) {
   logInfo(import.meta.url, "rejectFriendRequest Hit");
@@ -49,10 +50,13 @@ export async function rejectFriendRequest(req, res) {
         payload: sender,
       });
 
-      return res.status(STATUS_CODES.OK).json({
-        type: RESPONSE_TYPES.SUCCESS,
-        message: "Friend request rejected.",
-        payload: { user: receiver },
-      });
+      return sendResponse(
+        res,
+        STATUS_CODES.OK,
+        RESPONSE_TYPES.SUCCESS,
+        `${receiver.name} rejected Friend request of ${sender.name}.`,
+        { user: receiver }
+      );
+
   }
 }

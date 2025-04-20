@@ -1,5 +1,5 @@
 import { RESPONSE_TYPES, STATUS_CODES } from "../../../constants/script.js";
-import { getSocketId } from "../../../services/socket.js";
+import { getSocketId } from "../../../app.js";
 import { logInfo } from "../../../utils/logger.js";
 import { sendResponse } from "../../../utils/response.js";
 import Message from "../models/message.js";

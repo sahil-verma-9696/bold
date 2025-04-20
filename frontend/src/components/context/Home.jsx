@@ -23,7 +23,7 @@ const Home = () => {
   useEffect(() => {
     const socket = getSocket();
 
-    socket.on("getOnlineUsers", (users) => {
+    socket.on("users:online", (users) => {
       dispatch(setOnlineUser(users));
     });
 
@@ -32,7 +32,7 @@ const Home = () => {
     });
 
     return () => {
-      socket.off("getOnlineUsers");
+      socket.off("users:online");
       socket.off("user:offline");
     };
   }, [dispatch]);

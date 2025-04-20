@@ -5,7 +5,7 @@ import { logError } from "../utils/logger.js";
 export function errorHandler(err, req, res, next) {
   logError(import.meta.url, `🔥 Error caught by middleware: ${err.message}`);
 
-  // console.log(err);
+  console.error(err);
   
 
   let statusCode = err.statusCode || 500;

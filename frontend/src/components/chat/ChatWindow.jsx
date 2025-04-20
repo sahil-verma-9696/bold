@@ -33,9 +33,9 @@ function ChatWindow() {
   useEffect(() => {
     const socket = getSocket();
 
-    const handleRead = ({ updatedIds,updatedCount }) => {
+    const handleRead = ({ updatedIds, updatedCount }) => {
       dispatch(markMessagesAsRead(updatedIds));
-      console.log("messages seen",updatedCount);
+      console.log("messages seen", updatedCount);
     };
 
     socket.on("message:readed", handleRead);
@@ -56,10 +56,10 @@ function ChatWindow() {
       dispatch(setMessages(data));
     };
 
-    socket.on("receiveMessage", handleReceiveMessage);
+    socket.on("message:receive-updateToSender", handleReceiveMessage);
 
     return () => {
-      socket.off("receiveMessage", handleReceiveMessage);
+      socket.off("message:receive-updateToSender", handleReceiveMessage);
     };
   }, [socket, dispatch]);
 
@@ -74,7 +74,7 @@ function ChatWindow() {
       image: null, // You can integrate image upload later
     };
 
-    socket.emit("sendMessage", payload);
+    socket.emit("message:send-updateToReceiver", payload);
     dispatch(setMessages({ ...payload, createdAt: new Date().toISOString() }));
 
     setMessage("");
