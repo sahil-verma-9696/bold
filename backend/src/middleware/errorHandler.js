@@ -6,13 +6,17 @@ export function errorHandler(err, req, res, next) {
   logError(import.meta.url, `🔥 Error caught by middleware: ${err.message}`);
 
   console.error(err);
-  
+  console.error("error name:", err.name);
 
   let statusCode = err.statusCode || 500;
   let message = err.message || "Internal Server Error";
   const name = err.name?.toLowerCase() || "";
 
   switch (true) {
+    case message.toLowerCase().includes("unauthorized"):
+      statusCode = 401;
+      break;
+
     case name.includes("cast"):
       statusCode = 400;
       message = err.message || `Invalid ${err.path}: ${err.value}`;
