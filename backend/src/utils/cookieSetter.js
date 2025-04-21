@@ -7,7 +7,7 @@ export function setCookie(res) {
       res.cookie(COOKIE_CONST.ACCESS_TOKEN, accessToken, {
         httpOnly: true, // prevent XSS attacks, cross-site script injection
         secure: true,
-        sameSite: "None", // prevent cross-site request forgery  CSRF
+        sameSite: "None", 
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
     },
