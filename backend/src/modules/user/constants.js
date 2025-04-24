@@ -1,12 +1,5 @@
 export const ROUTES = {
   USER: {
-    BASE: "/api/user",
-    ALL: "/",
-    ME: "/me",
-    SETTING: "/setting",
-    PROFILE: "/profile/:id",
-    RELATIONSHIP: "/relationships/:type",
-
     FRIENDS: {
       SEND_REQUEST: "/friends/request/:id", // POST
       RESPOND_REQUEST: "/friends/respond/:id", // PATCH

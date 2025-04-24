@@ -1,36 +1,64 @@
 import React, { useState } from "react";
-import { Home, LogOut, Search, Settings } from "lucide-react";
+import {
+  BookUser,
+  Home,
+  LogOut,
+  Menu,
+  MessageCircleMore,
+  Search,
+  Settings,
+  Users,
+} from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import Me from "../user/Me";
+import { Me } from "../ui/Profile";
 import { setSelectedChannel } from "../../pages/protected/lobby/lobbySlice";
 import { disconnectSocket } from "../../redux/middlewares/socket";
 import { logout } from "../../features/auth/authSlice";
+import { toggleContext, toggleMeProfile } from "../../redux/slice/sidebar";
+import { setWindow } from "../main/mainSlice";
 
 function Sidebar() {
   const { user } = useSelector((store) => store.auth);
   const { selectedChannel } = useSelector((store) => store.lobby);
   const dispatch = useDispatch();
-  const [showMe, setShowMe] = useState(false);
+  const showMe = useSelector((store) => store.sidebar.openMeProfile);
 
-  const handleToggleMe = () => setShowMe((prev) => !prev);
+  const handleToggleMe = () => dispatch(toggleMeProfile());
 
   const list = [
     [
       {
         type: "button",
-        icon: <Home />,
-        label: "Home",
+        icon: <Menu />,
+        label: "",
         onClick: () => {
-          dispatch(setSelectedChannel("Home"));
+          dispatch(toggleContext());
         },
       },
       {
         type: "button",
-        icon: <Search />,
-        label: "Search",
+        icon: <MessageCircleMore />,
+        label: "Chats",
         onClick: () => {
-          dispatch(setSelectedChannel("Search"));
+          dispatch(setSelectedChannel("Home"));
+          dispatch(setWindow("chat"));
+        },
+      },
+      {
+        type: "button",
+        icon: <Users />,
+        label: "Group",
+        onClick: () => {
+          dispatch(setSelectedChannel("Group"));
+        },
+      },
+      {
+        type: "button",
+        icon: <BookUser />,
+        label: "Contacts",
+        onClick: () => {
+          dispatch(setWindow("contact"));
         },
       },
     ],
@@ -44,14 +72,6 @@ function Sidebar() {
           dispatch(logout());
         },
       },
-      // {
-      //   type: "button",
-      //   icon: <Settings />,
-      //   label: "Settings",
-      //   onClick: () => {
-      //     dispatch(setSelectedChannel("Setting"));
-      //   },
-      // },
       {
         type: "button",
         icon: (
@@ -70,7 +90,7 @@ function Sidebar() {
   return (
     <>
       {/* Desktop sidebar */}
-      <section className="hidden sm:flex sm:w-[65px] flex-col shrink-0 justify-between bg-white dark:bg-gray-800 py-4 border-r border-gray-700">
+      <section className="hidden h-screen sm:flex sm:w-[65px] flex-col shrink-0 justify-between bg-white dark:bg-black py-4 border-r border-gray-700">
         {list.map((item, index) => (
           <ul key={index} className="flex flex-col shrink-0 gap-6 px-2">
             {item.map((item) => (
@@ -103,7 +123,7 @@ function Sidebar() {
       </section>
 
       {/* Mobile bottom navbar */}
-      <section className="flex justify-between h-fit w-screen sm:hidden bg-white dark:bg-gray-800 px-4 py-2">
+      <section className="flex justify-between w-screen sm:hidden bg-white dark:bg-gray-800 px-4 py-2">
         <div className="flex justify-around items-center w-full">
           {[...list[0], ...list[1]].map((item) => (
             <button

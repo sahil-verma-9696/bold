@@ -20,6 +20,7 @@ export async function acceptFriendRequest(receiverId) {
   );
   return response.payload;
 }
+
 export async function rejectFriendRequest(receiverId) {
   const response = await apiRequest(
     `/api/user/reject-request/${receiverId}`,
@@ -27,6 +28,7 @@ export async function rejectFriendRequest(receiverId) {
   );
   return response.payload;
 }
+
 export async function removeFriend(receiverId) {
   const response = await apiRequest(
     `/api/user/remove-friend/${receiverId}`,
@@ -37,5 +39,10 @@ export async function removeFriend(receiverId) {
 
 export async function search(queries) {
   const response = await apiRequest(`/api/user/search?q=${queries}`);
+  return response.payload;
+}
+
+export async function getFriends() {
+  const response = await apiRequest(`/api/user/friends`, "GET");
   return response.payload;
 }

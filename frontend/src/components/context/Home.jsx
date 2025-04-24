@@ -2,22 +2,24 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getUsers,
+  loadFriends,
   setOnlineUser,
   updateUserStatus,
 } from "../../features/user/userSlice";
 import { getSocket } from "../../redux/middlewares/socket";
-import UserItem from "./UserItem";
 import { messages, setReceiver } from "../../features/chat/chatAreaSlice";
-import { MoreVertical, Search } from "lucide-react";
 import { useMediaQuery } from "react-responsive";
 import SearchUser from "../user/SearchUser";
+import UserList from "../ui/UserList";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const users = useSelector((store) => store.user.users);
+  const { isFriendsLoaded, friends } = useSelector((store) => store.user);
 
   useEffect(() => {
-    dispatch(getUsers());
+    if (!isFriendsLoaded) {
+      dispatch(loadFriends());
+    }
   }, []);
 
   useEffect(() => {
@@ -37,17 +39,9 @@ const Home = () => {
     };
   }, [dispatch]);
 
-  const isDesktop = useMediaQuery({ minWidth: 640 });
-  console.log(isDesktop);
-
   return (
-    <div className="h-full">
-      <ul className="h-[calc(80vh+9px)] sm:h-[calc(92vh+4px)] overflow-y-scroll">
-        <SearchUser />
-        {users?.map((user) => (
-          <UserItem key={user.email} user={user} />
-        ))}
-      </ul>
+    <div className="h-[84vh] overflow-y-scroll">
+      <UserList userList={friends} />
     </div>
   );
 };

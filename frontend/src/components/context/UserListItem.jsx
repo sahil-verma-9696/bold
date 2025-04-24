@@ -13,7 +13,7 @@ import {
 } from "../../features/user/userService";
 import { setMobileMode } from "../../pages/protected/lobby/lobbySlice";
 
-const UserItem = ({ user }) => {
+const UserListItem = ({ user }) => {
   const dispatch = useDispatch();
   const receiver = useSelector((state) => state.chat.receiver);
   const onlineUsers = useSelector((state) => state.user.onlineUsers);
@@ -22,15 +22,14 @@ const UserItem = ({ user }) => {
 
   const isSelected = receiver?.email === user.email;
 
-
   const handleSetReceiver = () => {
     if (isSelected) {
       dispatch(setReceiver(null));
+      localStorage.removeItem("receiver");
     } else {
       localStorage.setItem("receiver", JSON.stringify(user));
       dispatch(setReceiver(user));
-      dispatch(messages(user._id));
-      dispatch(setMobileMode("messaging"))
+      dispatch(setMobileMode("messaging"));
     }
   };
 
@@ -58,10 +57,6 @@ const UserItem = ({ user }) => {
     [dispatch, user._id]
   );
 
-  function handleShowUserProfile(e) {
-    e.stopPropagation();
-    dispatch(toggleProfile(user));
-  }
   return (
     <>
       <li
@@ -75,9 +70,8 @@ const UserItem = ({ user }) => {
         <div className="flex gap-2 sm:gap-3 items-center">
           <div className="relative min-w-[3rem]">
             <img
-              onClick={handleShowUserProfile}
               loading="lazy"
-              src="https://res.cloudinary.com/dfqdx3ieb/image/upload/v1742281653/default_user.png"
+              src={user.avatar}
               alt="avatar"
               className="w-10 sm:w-12 aspect-square rounded-full border-2 border-white object-cover"
             />
@@ -140,4 +134,4 @@ const UserItem = ({ user }) => {
   );
 };
 
-export default memo(UserItem);
+export default memo(UserListItem);

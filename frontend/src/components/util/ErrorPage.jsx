@@ -14,7 +14,7 @@ export default function ErrorPage() {
   if (!error) return;
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen text-center px-4">
+    <div className="flex flex-col items-center justify-center h-screen text-center px-4 dark:bg-black dark:text-white">
       <h1 className="text-5xl font-bold text-red-600 mb-4">Oops!</h1>
       <p className="text-xl mb-2">An unexpected error has occurred.</p>
 

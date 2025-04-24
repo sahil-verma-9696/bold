@@ -6,10 +6,9 @@ import { getSocket } from "../../../redux/middlewares/socket";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../../features/auth/authSlice";
 import { useMediaQuery } from "react-responsive";
+import RightPannel from "../../../components/pannels/RightPannel";
 function Lobby() {
   const dispatch = useDispatch();
-  const receiver = useSelector((state) => state.chat.receiver);
-
   useEffect(() => {
     const socket = getSocket();
 
@@ -31,21 +30,23 @@ function Lobby() {
       socket.off("user:update", handleUserUpdate);
     };
   }, [dispatch]);
-  const isDesktop = useMediaQuery({ minWidth: 640 });
+  const Desktop = useMediaQuery({ minWidth: 640 });
   const mode = useSelector((state) => state.lobby.mobileMode);
+  const showContext = useSelector((state) => state.sidebar.openContext);
   return (
     <>
-      {!isDesktop ? (
+      {!Desktop ? (
         <div className="h-screen flex flex-col bg-red-400">
-          {!isDesktop && mode === "messaging" && <Main />}
-          {!isDesktop && mode === "chats" && <Context />}
-          {!isDesktop && mode === "chats" && <Sidebar />}
+          {!Desktop && mode === "messaging" && <Main />}
+          {!Desktop && mode === "chats" && <Context />}
+          {!Desktop && mode === "chats" && <Sidebar />}
         </div>
       ) : (
-        <div className="flex">
+        <div className="h-screen flex items-center">
           <Sidebar />
-          <Context />
+          {showContext && <Context />}
           <Main />
+          <RightPannel />
         </div>
       )}
     </>

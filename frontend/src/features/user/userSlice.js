@@ -1,12 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {
-  acceptFriendRequest,
-  getAllUsers,
-  rejectFriendRequest,
-  search,
-  sendFriendRequest,
-} from "./userService";
-import { setUser } from "../auth/authSlice";
+import { getAllUsers, getFriends, search } from "./userService";
 
 export const getUsers = createAsyncThunk(
   "user/getUsers",
@@ -26,12 +19,24 @@ export const searchUsers = createAsyncThunk(
   async (query, { rejectWithValue }) => {
     try {
       const data = await search(query);
-      console.log(data);
-      
       return data;
     } catch (error) {
       return rejectWithValue(
         err.response?.data?.message || "Fetching users failed"
+      );
+    }
+  }
+);
+
+export const loadFriends = createAsyncThunk(
+  "user/friends",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getFriends();
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        err.response?.data?.message || "Fetching user's friends failed"
       );
     }
   }
@@ -43,6 +48,8 @@ const userSlice = createSlice({
     users: [],
     onlineUsers: [],
     filteredUsers: [],
+    friends: [],
+    isFriendsLoaded: false,
     searchQuery: "",
     loading: false,
     error: null,
@@ -83,9 +90,22 @@ const userSlice = createSlice({
         state.error = action.payload || "Something went wrong";
       })
       .addCase(searchUsers.fulfilled, (state, action) => {
-        console.log(action.payload);
-        
         state.filteredUsers = action.payload;
+      })
+      .addCase(loadFriends.pending, (state) => {
+        state.loading = true;
+        state.isFriendsLoaded = false;
+        state.error = null;
+      })
+      .addCase(loadFriends.fulfilled, (state, action) => {
+        state.friends = action.payload.friends;
+        state.loading = false;
+        state.isFriendsLoaded = true;
+      })
+      .addCase(loadFriends.rejected, (state, action) => {
+        state.loading = false;
+        state.isFriendsLoaded = false;
+        state.error = action.payload;
       });
   },
 });

@@ -30,6 +30,7 @@ const chatAreaSlice = createSlice({
   reducers: {
     setReceiver: (state, action) => {
       state.receiver = action.payload;
+      localStorage.setItem("receiver", JSON.stringify(action.payload));
     },
     setMessages: (state, action) => {
       state.messages = [...state.messages, action.payload];

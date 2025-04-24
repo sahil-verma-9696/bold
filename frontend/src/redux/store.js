@@ -5,7 +5,8 @@ import chatAreaSlice from "../features/chat/chatAreaSlice";
 import lobbySlice from "../pages/protected/lobby/lobbySlice";
 import userSlice from "../features/user/userSlice";
 import userProfileSlice from "../features/user/userProfileSlice";
-
+import sidebarSlice from "./slice/sidebar";
+import mainSlice from "./../components/main/mainSlice";
 export const store = configureStore({
   reducer: {
     auth: authSlice,
@@ -13,5 +14,7 @@ export const store = configureStore({
     lobby: lobbySlice,
     user: userSlice,
     userProfile: userProfileSlice,
+    sidebar: sidebarSlice,
+    mainPannel: mainSlice,
   },
 });

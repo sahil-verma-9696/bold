@@ -7,6 +7,8 @@ import {
   clearSearch,
 } from "../../features/user/userSlice";
 import { Search } from "lucide-react";
+import UserListItem from "../ui/UserListItem";
+import SearchUserList from "../context/SearchUserList";
 
 const filters = ["all", "friends", "blocked", "requests", "pending"];
 
@@ -43,29 +45,7 @@ const SearchUser = () => {
         />
       </div>
 
-      <div className="flex gap-2 overflow-x-auto">
-        {filters?.map((filter) => (
-          <button
-            key={filter}
-            className={`px-3 py-1 rounded-full text-sm font-medium ${
-              selectedFilter === filter
-                ? "bg-blue-600 text-white"
-                : "bg-gray-300 dark:bg-gray-600 text-gray-900 dark:text-white"
-            }`}
-            onClick={() => setSelectedFilter(filter)}
-          >
-            {filter}
-          </button>
-        ))}
-      </div>
-
-      <ul className="max-h-96 overflow-y-auto">
-        {filteredUsers?.map((user) => (
-          <li key={user._id} className="py-1 border-b dark:border-gray-600">
-            {user.name} ({user.email})
-          </li>
-        ))}
-      </ul>
+      <SearchUserList list={filteredUsers} />
     </div>
   );
 };
