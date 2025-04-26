@@ -26,8 +26,6 @@ export const createSocketMiddleware = (url, store, userId) => {
       store.dispatch({ type: "socket/disconnected" });
     });
   }
-
-  // Return the socket middleware for Redux
   return createSocketIoMiddleware(socket, "server/");
 };
 

@@ -23,7 +23,7 @@ function Sidebar() {
   const { selectedChannel } = useSelector((store) => store.lobby);
   const dispatch = useDispatch();
   const showMe = useSelector((store) => store.sidebar.openMeProfile);
-
+  const window = useSelector((store) => store.mainPannel.window);
   const handleToggleMe = () => dispatch(toggleMeProfile());
 
   const list = [
@@ -44,6 +44,7 @@ function Sidebar() {
           dispatch(setSelectedChannel("Home"));
           dispatch(setWindow("chat"));
         },
+        isActive: selectedChannel === "Home",
       },
       {
         type: "button",
@@ -52,14 +53,17 @@ function Sidebar() {
         onClick: () => {
           dispatch(setSelectedChannel("Group"));
         },
+        isActive: selectedChannel === "Group",
       },
       {
         type: "button",
         icon: <BookUser />,
         label: "Contacts",
         onClick: () => {
+          dispatch(setSelectedChannel("contact"));
           dispatch(setWindow("contact"));
         },
+        isActive: selectedChannel === "contact",
       },
     ],
     [
@@ -96,7 +100,9 @@ function Sidebar() {
             {item.map((item) => (
               <li
                 key={item.label}
-                className="hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded-lg cursor-pointer"
+                className={`hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded-lg cursor-pointer ${
+                  item.isActive ? "bg-gray-800" : ""
+                }`}
               >
                 {item.type === "link" ? (
                   <Link
@@ -109,7 +115,7 @@ function Sidebar() {
                 ) : (
                   <button
                     onClick={item.onClick}
-                    className="w-full mx-auto shrink-0 flex flex-col items-center text-gray-800 dark:text-white"
+                    className={`w-full mx-auto shrink-0 flex flex-col items-center text-gray-800 dark:text-white `}
                   >
                     {item.icon}
                     <span className="text-sm">{item.label}</span>

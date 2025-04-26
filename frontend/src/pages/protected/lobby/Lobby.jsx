@@ -33,6 +33,8 @@ function Lobby() {
   const Desktop = useMediaQuery({ minWidth: 640 });
   const mode = useSelector((state) => state.lobby.mobileMode);
   const showContext = useSelector((state) => state.sidebar.openContext);
+  
+  
   return (
     <>
       {!Desktop ? (

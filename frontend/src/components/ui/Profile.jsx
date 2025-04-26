@@ -1,13 +1,13 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleMeProfile } from "../../redux/slice/sidebar";
-import { Pencil } from "lucide-react";
-import Avatar from "../ui/Avatar";
 import { ButtonEditProfile } from "../ui/Button";
+import Avatar from "../ui/Avatar";
 
 export function Me() {
   const { user } = useSelector((store) => store.auth);
   const showProfile = useSelector((store) => store.sidebar.openMeProfile);
+  const onlineUsers = useSelector((store) => store.user.onlineUsers);
   const dispatch = useDispatch();
 
   if (!user || !showProfile) return null;
@@ -38,6 +38,7 @@ export function Me() {
             size="md"
             img={user.avatar}
             css={"absolute top-full -translate-y-1/2 mx-10"}
+            showOnline={onlineUsers.includes(user._id)}
           />
         </div>
 

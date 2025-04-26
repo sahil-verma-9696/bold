@@ -8,6 +8,7 @@ import SearchUser from "../user/SearchUser";
 const componentsMap = {
   Home: <Home />,
   Group: <Group />,
+  contact: <Home />,
 };
 
 function Context() {

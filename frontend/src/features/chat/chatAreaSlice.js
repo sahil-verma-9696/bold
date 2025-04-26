@@ -65,7 +65,6 @@ const chatAreaSlice = createSlice({
           .filter((msg) => !msg.isRead)
           .map((msg) => msg._id);
 
-        console.log(unSeenMessages);
         socket.emit("message:recived", {
           type: "socket:success",
           message: "message Received successfully",

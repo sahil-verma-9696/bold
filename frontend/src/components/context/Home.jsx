@@ -1,20 +1,18 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getUsers,
   loadFriends,
   setOnlineUser,
   updateUserStatus,
 } from "../../features/user/userSlice";
 import { getSocket } from "../../redux/middlewares/socket";
-import { messages, setReceiver } from "../../features/chat/chatAreaSlice";
-import { useMediaQuery } from "react-responsive";
-import SearchUser from "../user/SearchUser";
-import UserList from "../ui/UserList";
+import UserListItem from "../ui/UserListItem";
+import { setReceiver } from "../../features/chat/chatAreaSlice";
 
 const Home = () => {
   const dispatch = useDispatch();
   const { isFriendsLoaded, friends } = useSelector((store) => store.user);
+  const receiver = useSelector((state) => state.chat.receiver);
 
   useEffect(() => {
     if (!isFriendsLoaded) {
@@ -41,7 +39,18 @@ const Home = () => {
 
   return (
     <div className="h-[84vh] overflow-y-scroll">
-      <UserList userList={friends} />
+      <ul className="p-1 h-full">
+        {friends?.map((user) => (
+          <UserListItem
+            onClick={() => dispatch(setReceiver(user))}
+            key={user._id}
+            user={user}
+            css={`hover:dark:bg-gray-900 ${
+              receiver._id === user._id ? "bg-gray-100 dark:bg-gray-800" : ""
+            }`}
+          />
+        ))}
+      </ul>
     </div>
   );
 };
