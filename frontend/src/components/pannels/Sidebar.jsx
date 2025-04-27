@@ -115,7 +115,7 @@ function Sidebar() {
                 ) : (
                   <button
                     onClick={item.onClick}
-                    className={`w-full mx-auto shrink-0 flex flex-col items-center text-gray-800 dark:text-white `}
+                    className={`w-full mx-auto shrink-0 flex flex-col items-center text-gray-800 dark:text-white cursor-pointer`}
                   >
                     {item.icon}
                     <span className="text-sm">{item.label}</span>

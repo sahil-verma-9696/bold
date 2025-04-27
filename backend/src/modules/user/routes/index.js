@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { ROUTES } from "../constants.js";
 import { isAuthenticated } from "../../auth/middleware/isAuthenticated.js";
 import upload from "../../../config/multer.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
@@ -17,6 +16,8 @@ import { rejectFriendRequest } from "../user_relation/rejectFriendRequest.js";
 import { removeFriend } from "../user_relation/removeFriend.js";
 import { searchController } from "../controllers/search.js";
 import { getFriends } from "../controllers/getFriends.js";
+import { getPendings } from "../controllers/getPendings.js";
+import { getFriendRequests } from "../controllers/getFriendRequests.js";
 
 export const router = Router();
 
@@ -32,6 +33,18 @@ const routes = [
     path: "/friends",
     middleware: [isAuthenticated],
     handler: getFriends,
+  },
+  {
+    method: "get",
+    path: "/pending",
+    middleware: [isAuthenticated],
+    handler: getPendings,
+  },
+  {
+    method: "get",
+    path: "/requests",
+    middleware: [isAuthenticated],
+    handler: getFriendRequests,
   },
   {
     method: "get",

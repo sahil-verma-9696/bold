@@ -43,10 +43,10 @@ const Home = () => {
         {friends?.map((user) => (
           <UserListItem
             onClick={() => dispatch(setReceiver(user))}
-            key={user._id}
+            key={user?._id}
             user={user}
             css={`hover:dark:bg-gray-900 ${
-              receiver._id === user._id ? "bg-gray-100 dark:bg-gray-800" : ""
+              receiver?._id === user?._id ? "bg-gray-100 dark:bg-gray-800" : ""
             }`}
           />
         ))}

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  searchUsers,
+  loadSearchResults,
   setSearchQuery,
   clearSearch,
 } from "../../features/user/userSlice";
@@ -22,7 +22,7 @@ const SearchUser = () => {
       const queryParam =
         `${searchQuery}` +
         (selectedFilter !== "all" ? `&filter=${selectedFilter}` : "");
-      dispatch(searchUsers(queryParam));
+      dispatch(loadSearchResults(queryParam));
     } else {
       dispatch(clearSearch());
     }

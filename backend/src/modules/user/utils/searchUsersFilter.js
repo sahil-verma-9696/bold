@@ -63,7 +63,7 @@ export const searchUsers = async (
 
     // ✅ Add sorting by name lexicographically (ascending)
     const users = await User.find(baseFilter)
-      .select("name email avatar username")
+      .select("name email avatar username lastSeen")
       .sort({ name: 1 }); // 1 = ascending, -1 = descending
 
     return users;

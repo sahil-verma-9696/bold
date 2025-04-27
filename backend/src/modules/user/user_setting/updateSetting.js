@@ -1,10 +1,9 @@
 import { logError, logInfo, logSuccess } from "../../../utils/logger.js";
-import { MESSAGES } from "../constants.js";
 import { STATUS_CODES, RESPONSE_TYPES } from "../../../constants/script.js";
 import { UserSettings } from "../models/userSetting.js";
 
 export async function updateSettings(req, res) {
-  logInfo(import.meta.url, MESSAGES.LOGS.UpdateSettings_HIT);
+  logInfo(import.meta.url, "updateSettings() endpoint hit");
 
   try {
     const { _id } = req.user;
@@ -28,19 +27,16 @@ export async function updateSettings(req, res) {
       throw new Error("User settings not found");
     }
 
-    logSuccess(
-      import.meta.url,
-      MESSAGES.LOGS.SETTINGS_UPDATED.replace("{}", _id)
-    );
+    logSuccess(import.meta.url, "User settings updated successfully");
 
     res.status(STATUS_CODES.OK).json({
       type: RESPONSE_TYPES.SUCCESS,
-      message: MESSAGES.RESPONSE.SETTINGS_UPDATED,
+      message: "User settings updated successfully",
       payload: { settings },
     });
   } catch (error) {
     let statusCode = STATUS_CODES.INTERNAL_SERVER_ERROR;
-    let message = MESSAGES.RESPONSE.ERROR_OCCURED;
+    let message = "Something went wrong";
 
     switch (true) {
       case error.message.includes("not found"):
@@ -58,10 +54,7 @@ export async function updateSettings(req, res) {
         break;
     }
 
-    logError(
-      import.meta.url,
-      MESSAGES.LOGS.ERROR_OCCURED?.replace("{}", message) || message
-    );
+    logError(import.meta.url, "updateSettings() endpoint failed" || message);
 
     res.status(statusCode).json({
       type: RESPONSE_TYPES.ERROR,

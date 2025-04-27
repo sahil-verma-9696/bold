@@ -46,3 +46,13 @@ export async function getFriends() {
   const response = await apiRequest(`/api/user/friends`, "GET");
   return response.payload;
 }
+
+export async function getPendings() {
+  const response = await apiRequest(`/api/user/pending`, "GET");
+  return response.payload;
+}
+
+export async function getRequests() {
+  const response = await apiRequest(`/api/user/requests`, "GET");
+  return response.payload;
+}

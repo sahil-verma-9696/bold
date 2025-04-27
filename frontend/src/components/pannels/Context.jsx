@@ -21,6 +21,7 @@ function Context() {
         <h1 className="text-4xl font-semibold">⚡Bolt</h1>
       </div>
       <SearchUser />
+      
       {componentsMap[selectedChannel] || (
         <p className="text-gray-500 size-full flex justify-center items-center dark:text-white text-2xl">
           {selectedChannel} Not Available

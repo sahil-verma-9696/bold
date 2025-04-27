@@ -1,5 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getAllUsers, getFriends, search } from "./userService";
+import {
+  getAllUsers,
+  getFriends,
+  getPendings,
+  getRequests,
+  search,
+} from "./userService";
+import { apiRequest } from "../../utils/apiHelper";
 
 export const getUsers = createAsyncThunk(
   "user/getUsers",
@@ -14,15 +21,16 @@ export const getUsers = createAsyncThunk(
     }
   }
 );
-export const searchUsers = createAsyncThunk(
-  "user/searchUsers",
+
+export const loadSearchResults = createAsyncThunk(
+  "user/loadSearchResults",
   async (query, { rejectWithValue }) => {
     try {
       const data = await search(query);
       return data;
     } catch (error) {
       return rejectWithValue(
-        err.response?.data?.message || "Fetching users failed"
+        err.response?.data?.message || "Fetching search users failed"
       );
     }
   }
@@ -42,6 +50,34 @@ export const loadFriends = createAsyncThunk(
   }
 );
 
+export const loadPendings = createAsyncThunk(
+  "user/pending",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getPendings();
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        err.response?.data?.message || "Fetching user's pending failed"
+      );
+    }
+  }
+);
+
+export const loadRequests = createAsyncThunk(
+  "user/requests",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getRequests();
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        err.response?.data?.message || "Fetching user's pending failed"
+      );
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -49,6 +85,8 @@ const userSlice = createSlice({
     onlineUsers: [],
     filteredUsers: [],
     friends: [],
+    pendings: [],
+    requests: [],
     isFriendsLoaded: false,
     searchQuery: "",
     loading: false,
@@ -89,8 +127,12 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload || "Something went wrong";
       })
-      .addCase(searchUsers.fulfilled, (state, action) => {
+      .addCase(loadSearchResults.fulfilled, (state, action) => {
         state.filteredUsers = action.payload;
+      })
+      .addCase(loadSearchResults.rejected, (state, action) => {
+        state.error = action.payload.message;
+        state.loading = false;
       })
       .addCase(loadFriends.pending, (state) => {
         state.loading = true;
@@ -104,7 +146,30 @@ const userSlice = createSlice({
       })
       .addCase(loadFriends.rejected, (state, action) => {
         state.loading = false;
-        state.isFriendsLoaded = false;
+        state.error = action.payload.message;
+      })
+      .addCase(loadPendings.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loadPendings.fulfilled, (state, action) => {
+        state.pendings = action.payload.pending;
+        state.loading = false;
+      })
+      .addCase(loadPendings.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(loadRequests.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loadRequests.fulfilled, (state, action) => {
+        state.requests = action.payload.requests;
+        state.loading = false;
+      })
+      .addCase(loadRequests.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload;
       });
   },
