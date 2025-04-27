@@ -40,7 +40,7 @@ const UserProfile = () => {
           <h2 className="text-2xl font-semibold capitalize">{user.name}</h2>
           <p className="text-sm text-gray-600">{user.email}</p>
           <p className="text-xs text-gray-500 mt-1">
-            Last seen: {new Date(user.lastSeen).toLocaleString()}
+            Last seen: {new Date(user?.lastSeen).toLocaleString()}
           </p>
 
           {/* Red "Remove Friend" Button */}

@@ -1,4 +1,5 @@
 export function lastSeenFormate(lastSeen) {
+  if (!lastSeen) return "";
   const date = new Date(lastSeen);
   const options = {
     hour: "2-digit",

@@ -25,7 +25,7 @@ const UserListItem = ({ user, mode = "normal", type, css, ...props }) => {
             <span className="text-sm text-gray-400 font-thin">
               {onlineUsers.includes(user._id)
                 ? user.email
-                : lastSeenFormate(user.lastSeen)}
+                : lastSeenFormate(user?.lastSeen)}
             </span>
           ) : (
             <span className="text-sm text-gray-400 font-thin">

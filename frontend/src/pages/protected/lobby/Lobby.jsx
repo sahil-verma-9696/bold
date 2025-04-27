@@ -7,34 +7,63 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../../features/auth/authSlice";
 import { useMediaQuery } from "react-responsive";
 import RightPannel from "../../../components/pannels/RightPannel";
+import {
+  loadFriends,
+  loadPendings,
+  loadRequests,
+  updateFriends,
+  updatePending,
+  updateRequests,
+} from "../../../features/user/userSlice";
 function Lobby() {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadFriends());
+    dispatch(loadPendings());
+    dispatch(loadRequests());
+  }, []);
+
   useEffect(() => {
     const socket = getSocket();
 
-    const handleUserUpdate = (res) => {
-      console.log("User update received");
+    socket.on("FR:sended", (res) => {
       console.log(res);
-
-      dispatch(setUser(res.payload)); // ✅ Use a proper Redux action
-    };
-
-    socket.on("user:friend-request", (data) => {
-      console.log(data);
+      dispatch(updatePending(res.payload.pendings));
+    });
+    socket.on("FR:received", (res) => {
+      console.log(res);
+      dispatch(updateRequests(res.payload.requests));
     });
 
-    socket.on("user:update", handleUserUpdate);
+    socket.on("FR:reject", (res) => {
+      console.log(res);
+      dispatch(updateRequests(res.payload.requests));
+    });
+    socket.on("FR:rejected", (res) => {
+      console.log(res);
+      dispatch(updatePending(res.payload.pendings));
+    });
 
-    // ✅ Clean up to prevent memory leaks
+    socket.on("FR:accept", (res) => {
+      console.log(res);
+      dispatch(updateFriends(res.payload.friends));
+      dispatch(updateRequests(res.payload.requests));
+    });
+    socket.on("FR:accepted", (res) => {
+      console.log(res);
+      dispatch(updateFriends(res.payload.friends));
+      dispatch(updatePending(res.payload.pendings));
+    });
+
     return () => {
-      socket.off("user:update", handleUserUpdate);
+      // socket.off("user:update");
     };
   }, [dispatch]);
   const Desktop = useMediaQuery({ minWidth: 640 });
   const mode = useSelector((state) => state.lobby.mobileMode);
   const showContext = useSelector((state) => state.sidebar.openContext);
-  
-  
+
   return (
     <>
       {!Desktop ? (

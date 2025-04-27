@@ -43,15 +43,42 @@ export async function acceptFriendRequest(req, res) {
 
       await receiver.save();
       await sender.save();
+      await sender.populate(
+        "pending",
+        "-password -role -lastSeen -pending -requests -blocked -friends -__v"
+      );
+      await receiver.populate(
+        "requests",
+        "-password -role -lastSeen -pending -requests -blocked -friends -__v"
+      );
+      await receiver.populate(
+        "friends",
+        "-password -role -lastSeen -pending -requests -blocked -friends -__v"
+      );
+      await sender.populate(
+        "friends",
+        "-password -role -lastSeen -pending -requests -blocked -friends -__v"
+      );
 
       const io = getSocket();
       const receiverSocketId = getSocketId(receiver._id);
       const senderSocketId = getSocketId(sender._id);
-      io.to(receiverSocketId).emit("user:update", {
-        payload: receiver,
+
+      io.to(receiverSocketId).emit("FR:accept", {
+        event: "FR:accept",
+        message: "You accept Friend Request of " + receiver.name,
+        payload: {
+          requests: receiver.requests,
+          friends: receiver.friends,
+        },
       });
-      io.to(senderSocketId).emit("user:update", {
-        payload: sender,
+      io.to(senderSocketId).emit("FR:accepted", {
+        event: "FR:accepted",
+        message: "Friend request rejected by " + sender.name,
+        payload: {
+          pendings: sender.pending,
+          friends: sender.friends,
+        },
       });
 
       return sendResponse(

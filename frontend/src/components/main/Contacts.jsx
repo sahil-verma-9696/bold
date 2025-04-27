@@ -81,9 +81,9 @@ function PendingList() {
   const pendings = useSelector((store) => store.user.pendings);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(loadPendings());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(loadPendings());
+  // }, [dispatch]);
 
   if (!pendings || pendings.length === 0) {
     return (
@@ -114,9 +114,9 @@ function RequestList() {
   const requests = useSelector((store) => store.user.requests);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(loadRequests());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(loadRequests());
+  // }, [dispatch]);
 
   if (!requests || requests.length === 0) {
     return (

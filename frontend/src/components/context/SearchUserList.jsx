@@ -1,15 +1,18 @@
 import React from "react";
-import SearchUserListItem from "./SearchUserListItem";
-import { Check, X } from "lucide-react";
 import UserListItem from "../ui/UserListItem";
 import { useSelector } from "react-redux";
 
 const SearchUserList = ({ list }) => {
   if (list.length === 0) return null;
-  const { pendings, requests, blocked } = useSelector((store) => store.user);
+  const { friends, pendings, requests, blocked } = useSelector(
+    (store) => store.user
+  );
   const { _id } = useSelector((store) => store.auth.user);
-  
+
   function handleType(id) {
+    if (friends?.some((user) => user._id === id)) {
+      return "";
+    }
     if (pendings?.some((user) => user._id === id)) {
       return "pending";
     }

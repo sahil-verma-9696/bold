@@ -78,6 +78,23 @@ export const loadRequests = createAsyncThunk(
   }
 );
 
+export const removeFriend = createAsyncThunk(
+  "user/remove-friend",
+  async (receiverId, { rejectWithValue }) => {
+    try {
+      const response = await apiRequest(
+        `/api/user/remove-friend/${receiverId}`,
+        "GET"
+      );
+      return response.payload;
+    } catch (error) {
+      return rejectWithValue(
+        err.response?.data?.message || "Fetching user's pending failed"
+      );
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -93,6 +110,15 @@ const userSlice = createSlice({
     error: null,
   },
   reducers: {
+    updatePending: (state, action) => {
+      state.pendings = action.payload;
+    },
+    updateRequests: (state, action) => {
+      state.requests = action.payload;
+    },
+    updateFriends: (state, action) => {
+      state.friends = action.payload;
+    },
     setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;
     },
@@ -105,7 +131,6 @@ const userSlice = createSlice({
     },
     updateUserStatus: function (state, action) {
       const { userId, lastSeen } = action.payload;
-
       const index = state.users.findIndex((user) => user._id === userId);
       if (index !== -1 && lastSeen) {
         state.users[index].lastSeen = lastSeen;
@@ -171,10 +196,23 @@ const userSlice = createSlice({
       .addCase(loadRequests.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(removeFriend.fulfilled, (state, action) => {
+        state.friends = action.payload.friends;
+      })
+      .addCase(removeFriend.rejected, (state, action) => {
+        state.error = action.payload;
       });
   },
 });
 
-export const { setSearchQuery, clearSearch, setOnlineUser, updateUserStatus } =
-  userSlice.actions;
+export const {
+  updatePending,
+  updateFriends,
+  updateRequests,
+  setSearchQuery,
+  clearSearch,
+  setOnlineUser,
+  updateUserStatus,
+} = userSlice.actions;
 export default userSlice.reducer;
