@@ -52,14 +52,15 @@ const UserActionButton = ({ type, onAddFriend, onRemoveFriend }) => {
   );
 };
 
-const RightPannel = () => {
-  const receiver = useSelector((store) => store.chat.receiver);
+export default function Right() {
+  const dispatch = useDispatch();
+  const rightUser = useSelector((store) => store.rightPannel.user);
+
   const { friends, pendings, requests, blocked } = useSelector(
     (store) => store.user
   );
   const { _id } = useSelector((store) => store.auth.user);
   const onlineUsers = useSelector((store) => store.user.onlineUsers);
-  const dispatch = useDispatch();
 
   function handleType(id) {
     if (friends?.some((user) => user._id === id)) {
@@ -81,33 +82,33 @@ const RightPannel = () => {
   }
 
   function handleRemoveFriend() {
-    dispatch(removeFriend(receiver._id));
+    dispatch(removeFriend(rightUser._id));
     dispatch(setReceiver(null));
   }
 
   function handleAddFriend() {
-    dispatch(sendFriendRequest(receiver._id));
+    dispatch(sendFriendRequest(rightUser._id));
   }
 
-  if (!receiver) return null;
+  if (!rightUser) return null;
 
-  const relationType = handleType(receiver._id);
+  const relationType = handleType(rightUser._id);
 
   return (
-    <section className="h-screen w-90 dark:bg-black max-lg:hidden">
+    <section className="h-screen w-90 border-l border-white dark:bg-black max-lg:hidden">
       <header className="w-full h-50 bg-purple-400 relative">
         <Avatar
           size="md"
-          img={receiver.avatar}
+          img={rightUser.avatar}
           css={"absolute top-full -translate-y-1/2 mx-12"}
-          showOnline={onlineUsers.includes(receiver._id)}
+          showOnline={onlineUsers.includes(rightUser._id)}
         />
       </header>
       <div className="p-12">
-        <h2 className="dark:text-white text-2xl">{receiver.name}</h2>
-        <h2 className="dark:text-white text-lg">@{receiver.username}</h2>
-        <h2 className="dark:text-white text-md">{receiver.email}</h2>
-        <h2 className="dark:text-white text-sm italic">{receiver.bio}</h2>
+        <h2 className="dark:text-white text-2xl">{rightUser.name}</h2>
+        <h2 className="dark:text-white text-lg">@{rightUser.username}</h2>
+        <h2 className="dark:text-white text-md">{rightUser.email}</h2>
+        <h2 className="dark:text-white text-sm italic">{rightUser.bio}</h2>
 
         <div className="py-4">
           <UserActionButton
@@ -119,6 +120,4 @@ const RightPannel = () => {
       </div>
     </section>
   );
-};
-
-export default RightPannel;
+}

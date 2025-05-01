@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ChartArea, MessageSquareOff, Users } from "lucide-react";
+import { MessageSquareOff, Users } from "lucide-react";
 import { getSocket } from "../../redux/middlewares/socket";
 import {
   markMessagesAsRead,
@@ -12,7 +12,6 @@ import ChatHeader from "../chat/ChatHeader";
 import ChatMessages from "../chat/ChatMessages";
 import ChatInput from "../chat/ChatInput";
 import { messages as loadMessages } from "../../features/chat/chatAreaSlice";
-import UserListItem from "../ui/UserListItem";
 
 function ChatWindow() {
   const [message, setMessage] = useState("");
@@ -97,7 +96,7 @@ function ChatWindow() {
   return (
     <div className="flex flex-col h-full">
       <ChatHeader receiver={receiver} />
-      
+
       {messages.length === 0 ? (
         <div className="size-full flex justify-center items-center dark:text-white">
           <div>

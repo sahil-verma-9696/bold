@@ -7,9 +7,9 @@ const sidebarSlice = createSlice({
     openMeProfile: false,
   },
   reducers: {
-    toggleContext: (state) => {
-      state.openContext = !state.openContext;
-    },
+      toggleContext: (state) => {
+        state.openContext = !state.openContext;
+      },
     toggleMeProfile: (state) => {
       state.openMeProfile = !state.openMeProfile;
     },

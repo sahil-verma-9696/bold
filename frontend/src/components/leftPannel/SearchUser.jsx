@@ -7,8 +7,8 @@ import {
   clearSearch,
 } from "../../features/user/userSlice";
 import { Search } from "lucide-react";
-import UserListItem from "../ui/UserListItem";
-import SearchUserList from "../context/SearchUserList";
+import SearchUserList from "./SearchUserList";
+import SearchInput from "../ui/SearchInput";
 
 const filters = ["all", "friends", "blocked", "requests", "pending"];
 
@@ -34,17 +34,10 @@ const SearchUser = () => {
 
   return (
     <div className="p-2 space-y-2">
-      <div className="flex items-center gap-2 bg-gray-200 dark:bg-gray-700 px-3 py-2 rounded-xl">
-        <Search />
-        <input
-          className="flex-1 px-2 outline-none bg-transparent"
-          type="text"
-          placeholder="Search by name or email"
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
-      </div>
-
+      <SearchInput
+        searchQuery={searchQuery}
+        handleSearchChange={handleSearchChange}
+      />
       <SearchUserList list={filteredUsers} />
     </div>
   );

@@ -1,4 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import ChatWindow from "./ChatWindow";
+import { Index as ContactIndex } from "./contact/Index";
+
+export const windowMap = {
+  chat: ChatWindow,
+  contact: ContactIndex,
+};
 
 const mainSlice = createSlice({
   name: "main_pannel",

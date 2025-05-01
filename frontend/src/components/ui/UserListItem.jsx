@@ -3,9 +3,14 @@ import Avatar from "./Avatar";
 import { lastSeenFormate } from "../../utils/lastSeenFormate";
 import { useSelector } from "react-redux";
 import { Check, Plus, TimerIcon, User, X } from "lucide-react";
-import { acceptFriendRequest, rejectFriendRequest, sendFriendRequest } from "../../features/user/userService";
+import {
+  acceptFriendRequest,
+  rejectFriendRequest,
+  sendFriendRequest,
+} from "../../features/user/userService";
+import { getUserType } from "../../utils/getUserType";
 
-const UserListItem = ({ user, mode = "normal", type, css, ...props }) => {
+const UserListItem = ({ user, mode = "normal", css, ...props }) => {
   const onlineUsers = useSelector((state) => state.user.onlineUsers);
   if (!user) return null;
   return (
@@ -34,13 +39,14 @@ const UserListItem = ({ user, mode = "normal", type, css, ...props }) => {
           )}
         </div>
       </div>
-      <Action type={type} user={user} />
+      <Action user={user} />
     </li>
   );
 };
 
-function Action({ type, user }) {
-  if (!type) return null;
+function Action({ user }) {
+  console.log(user._id);
+  const type = getUserType(user._id);
 
   const handleFriendRequest = useCallback(
     async (e) => {

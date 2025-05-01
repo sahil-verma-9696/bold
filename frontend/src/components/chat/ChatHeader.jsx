@@ -1,6 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import { useDispatch } from "react-redux";
-import { setMobileMode } from "../../pages/protected/lobby/lobbySlice";
+import { setMobileMode } from "../../redux/slices/lobbySlice";
 import { useMediaQuery } from "react-responsive";
 import UserListItem from "../ui/UserListItem";
 
@@ -15,7 +15,7 @@ function ChatHeader({ receiver }) {
           <ArrowLeft />
         </span>
       )}
-      <UserListItem user={receiver} />
+      {/* <UserListItem user={receiver} /> */}
     </div>
   );
 }

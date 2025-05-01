@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleMeProfile } from "../../redux/slice/sidebar";
+import { toggleMeProfile } from "../../redux/slices/sidebar";
 import { ButtonEditProfile } from "../ui/Button";
 import Avatar from "../ui/Avatar";
 
