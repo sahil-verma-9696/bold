@@ -16,7 +16,7 @@ const SearchUserList = ({ list }) => {
         return (
           <UserListItem
             key={user._id}
-            // type={getUserType(user._id)}
+            type={getUserType(user._id)}
             mode="search"
             user={user}
           />

@@ -19,7 +19,7 @@ export function BlockedList() {
       <ul className="flex flex-col gap-2 mt-2">
         {blocked.map((user) => (
           <UserListItem
-            // type="blocked"
+            type="blocked"
             key={user._id}
             user={user}
             css="hover:bg-gray-800 p-2 rounded"

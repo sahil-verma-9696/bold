@@ -1,16 +1,9 @@
-import React, { useCallback } from "react";
 import Avatar from "./Avatar";
-import { lastSeenFormate } from "../../utils/lastSeenFormate";
 import { useSelector } from "react-redux";
-import { Check, Plus, TimerIcon, User, X } from "lucide-react";
-import {
-  acceptFriendRequest,
-  rejectFriendRequest,
-  sendFriendRequest,
-} from "../../features/user/userService";
-import { getUserType } from "../../utils/getUserType";
+import { UserActions } from "./UserActions";
+import { lastSeenFormate } from "../../utils/lastSeenFormate";
 
-const UserListItem = ({ user, mode = "normal", css, ...props }) => {
+const UserListItem = ({ user, mode = "normal", type, css, ...props }) => {
   const onlineUsers = useSelector((state) => state.user.onlineUsers);
   if (!user) return null;
   return (
@@ -24,76 +17,28 @@ const UserListItem = ({ user, mode = "normal", css, ...props }) => {
           size="sm"
           showOnline={onlineUsers.includes(user._id)}
         />
-        <div className="flex flex-col">
-          <span className="text-lg">{user.name}</span>
-          {!(mode === "search") ? (
-            <span className="text-sm text-gray-400 font-thin">
-              {onlineUsers.includes(user._id)
-                ? user.email
-                : lastSeenFormate(user?.lastSeen)}
-            </span>
-          ) : (
-            <span className="text-sm text-gray-400 font-thin">
-              {user.email}
-            </span>
-          )}
-        </div>
+        <UserMeta user={user} />
       </div>
-      <Action user={user} />
+      <UserActions type={type} user={user} />
     </li>
   );
 };
 
-function Action({ user }) {
-  console.log(user._id);
-  const type = getUserType(user._id);
-
-  const handleFriendRequest = useCallback(
-    async (e) => {
-      e.stopPropagation();
-      sendFriendRequest(user._id);
-    },
-    [user._id]
-  );
-
-  const handleAccept = useCallback(
-    async (e) => {
-      e.stopPropagation();
-      acceptFriendRequest(user._id);
-    },
-    [user._id]
-  );
-
-  const handleReject = useCallback(
-    async (e) => {
-      e.stopPropagation();
-      rejectFriendRequest(user._id);
-    },
-    [user._id]
-  );
-  switch (true) {
-    case type === "pending":
-      return <TimerIcon />;
-      break;
-
-    case type === "unknown":
-      return <Plus onClick={handleFriendRequest} />;
-      break;
-    case type === "request":
-      return (
-        <span className="flex gap-4">
-          <Check onClick={handleAccept} />
-          <X onClick={handleReject} />
+function UserMeta({ user }) {
+  if (!user) return null;
+  return (
+    <div className="flex flex-col">
+      <span className="text-lg">{user.name}</span>
+      {!(mode === "search") ? (
+        <span className="text-sm text-gray-400 font-thin">
+          {onlineUsers.includes(user._id)
+            ? user.email
+            : lastSeenFormate(user?.lastSeen)}
         </span>
-      );
-      break;
-    case type === "me":
-      return <User />;
-      break;
-
-    default:
-      return null;
-  }
+      ) : (
+        <span className="text-sm text-gray-400 font-thin">{user.email}</span>
+      )}
+    </div>
+  );
 }
-
 export default UserListItem;

@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 
 export function getUserType(id) {
-  // const user = useSelector(store=>)
   const { friends, pendings, requests, blocked } = useSelector(
     (store) => store.user
   );
