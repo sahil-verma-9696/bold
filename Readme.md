@@ -1,3 +1,16 @@
+# Project Snaps
+
+![Screenshot 2025-05-01 230425](https://github.com/user-attachments/assets/ff441b5a-2566-42ad-99c7-1e921188b14c)
+
+
+![Screenshot 2025-05-01 230959](https://github.com/user-attachments/assets/e4ebe146-7a89-477c-8839-0f6532d64bdd)
+![Screenshot 2025-05-01 230809](https://github.com/user-attachments/assets/3f3edcdd-bea0-4647-8b8b-3e3890da798b)
+![Screenshot 2025-05-01 230650](https://github.com/user-attachments/assets/9aeb88f3-678c-46b8-9939-12fb14a70cfd)
+![Screenshot 2025-05-01 230629](https://github.com/user-attachments/assets/54ae41c2-d92c-413c-9087-2dd92eb2e28f)
+![Screenshot 2025-05-01 230604](https://github.com/user-attachments/assets/62cdc21e-e4bf-4ebd-a3b4-cb8fc3a8e9dc)
+![Screenshot 2025-05-01 230540](https://github.com/user-attachments/assets/1f8f1f19-7bf2-4065-a91a-f0a2a3c10ae3)
+
+
 # 🚀 Project Installation Guide
 
 Follow these steps to set up and run the project locally.
