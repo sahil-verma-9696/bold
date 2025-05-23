@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Header } from "./Header";
-import { currWindow } from "../../../redux/slices/contactSlice";
+import { currWindow } from "../../redux/slices/contactSlice";
 
 export function Index() {
   const activeHeader = useSelector((store) => store.contacts.activeHeader);

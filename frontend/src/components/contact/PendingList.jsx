@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { EmptyState } from "./EmptyState";
-import UserListItem from "../../ui/UserListItem";
+import UserListItem from "../ui/UserListItem";
+import { setRightPannelUser } from "../../redux/slices/rightPannel";
 
 export function PendingList() {
   const pendings = useSelector((store) => store.user.pendings);
@@ -20,6 +21,7 @@ export function PendingList() {
       <ul className="flex flex-col gap-2 mt-2">
         {pendings.map((pending) => (
           <UserListItem
+            onClick={() => dispatch(setRightPannelUser(pending))}
             type="pending"
             key={pending._id}
             user={pending}

@@ -6,7 +6,7 @@ import lobbySlice from "./slices/lobbySlice";
 import userSlice from "../features/user/userSlice";
 import userProfileSlice from "../features/user/userProfileSlice";
 import sidebarSlice from "./slices/sidebar";
-import mainPannelSlice from "../components/mainPannel/mainSlice";
+import mainPannelSlice from "./slices/mainSlice";
 import leftPannelSlice from "./slices/leftPannel";
 import contactSlice from "./slices/contactSlice";
 import rightPannelSlice from "./slices/rightPannel";
@@ -23,7 +23,7 @@ export const store = configureStore({
     leftPannel: leftPannelSlice,
     mainPannel: mainPannelSlice,
     rightPannel: rightPannelSlice,
-    
+
     contacts: contactSlice,
 
     userProfile: userProfileSlice,

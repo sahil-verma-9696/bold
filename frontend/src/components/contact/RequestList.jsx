@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import UserListItem from "../../ui/UserListItem";
+import UserListItem from "../ui/UserListItem";
 import { EmptyState } from "./EmptyState";
+import { setRightPannelUser } from "../../redux/slices/rightPannel";
 
 export function RequestList() {
   const requests = useSelector((store) => store.user.requests);
@@ -18,11 +19,12 @@ export function RequestList() {
   return (
     <main>
       <ul className="flex flex-col gap-2 mt-2">
-        {requests.map((pending) => (
+        {requests.map((request) => (
           <UserListItem
+            onClick={() => dispatch(setRightPannelUser(request))}
             type="request"
-            key={pending._id}
-            user={pending}
+            key={request._id}
+            user={request}
             css="hover:bg-gray-800 p-2 rounded"
           />
         ))}

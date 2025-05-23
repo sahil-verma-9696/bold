@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { PendingList } from "../../components/mainPannel/contact/PendingList";
-import { FriendsList } from "../../components/mainPannel/contact/FriendsList";
-import { RequestList } from "../../components/mainPannel/contact/RequestList";
-import { BlockedList } from "../../components/mainPannel/contact/BlockList";
+import { PendingList } from "../../components/contact/PendingList";
+import { FriendsList } from "../../components/contact/FriendsList";
+import { RequestList } from "../../components/contact/RequestList";
+import { BlockedList } from "../../components/contact/BlockList";
 
 export const currWindow = {
   pending: PendingList,

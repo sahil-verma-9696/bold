@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { windowMap } from "../mainPannel/mainSlice";
+import { windowMap } from "../../redux/slices/mainSlice";
 
 function Main() {
   const window = useSelector((store) => store.mainPannel.window);

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveHeader } from "../../../redux/slices/contactSlice";
+import { setActiveHeader } from "../../redux/slices/contactSlice";
 
 export function Header() {
   const headers = ["pending", "friends", "blocked", "requests"];

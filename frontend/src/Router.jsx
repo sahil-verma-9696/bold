@@ -10,6 +10,7 @@ import { AuthPage } from "./pages/public/authentication/AuthPage";
 import { PublicLayout } from "./pages/public/layout";
 import ProtectedLayout from "./pages/protected/layout";
 import { ProtectedRoute } from "./components/auth/Protected";
+import Setting from "./pages/protected/settings/Setting";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Lobby />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "setting",
+        element: (
+          <ProtectedRoute>
+            <Setting />
           </ProtectedRoute>
         ),
       },

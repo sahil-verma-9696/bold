@@ -17,14 +17,14 @@ const UserListItem = ({ user, mode = "normal", type, css, ...props }) => {
           size="sm"
           showOnline={onlineUsers.includes(user._id)}
         />
-        <UserMeta user={user} />
+        <UserMeta user={user} mode={mode} onlineUsers={onlineUsers} />
       </div>
       <UserActions type={type} user={user} />
     </li>
   );
 };
 
-function UserMeta({ user }) {
+function UserMeta({ user, mode, onlineUsers }) {
   if (!user) return null;
   return (
     <div className="flex flex-col">

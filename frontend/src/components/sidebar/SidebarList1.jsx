@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { toggleContext } from "../../redux/slices/sidebar";
 import { setLeftPannel } from "../../redux/slices/leftPannel";
-import { setWindow } from "../mainPannel/mainSlice";
 import { SidebarItem } from "./SidebarItem";
 import { BookUser, Menu, MessageCircleMore, Users } from "lucide-react";
+import { setWindow } from "../../redux/slices/mainSlice";
 
 export function SidebarList1() {
   const dispatch = useDispatch();

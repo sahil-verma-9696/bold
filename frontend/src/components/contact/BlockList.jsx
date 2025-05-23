@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { EmptyState } from "./EmptyState";
-import UserListItem from "../../ui/UserListItem";
+import UserListItem from "../ui/UserListItem";
 
 export function BlockedList() {
   const blocked = useSelector((store) => store.user.blocked);

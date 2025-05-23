@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleMeProfile } from "../../redux/slices/sidebar";
 import { ButtonEditProfile } from "../ui/Button";
 import Avatar from "../ui/Avatar";
+import { useNavigate } from "react-router-dom";
 
 export function Me() {
   const { user } = useSelector((store) => store.auth);
   const showProfile = useSelector((store) => store.sidebar.openMeProfile);
   const onlineUsers = useSelector((store) => store.user.onlineUsers);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   if (!user || !showProfile) return null;
@@ -21,7 +23,7 @@ export function Me() {
   };
 
   const handleEditProfile = () => {
-    alert("Edit profile clicked!");
+    navigate("/setting");
   };
 
   return (

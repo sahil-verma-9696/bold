@@ -33,7 +33,9 @@ CLOUDINARY_API_SECRET=your_api_secret
 ```
 
 ---
+
 ## 🚀 run project
+
 project
 
 - open terminal at project root c://...bolt>
@@ -49,12 +51,15 @@ npm run dev
 cd frontend
 npm run dev
 ```
+
 ---
+
 ## project doc [Doc link click me](https://docs.google.com/document/d/1KMCiy9pPE9w5rWlH_ixEmNZsRcJs2ZURbCPnKp8pcBo/edit?usp=sharing)
 
 ---
 
 open browser with `http://localhost:5137/`
+
 # 🛠️ Project Roadmap: Bolt
 
 ## Backend
@@ -155,7 +160,7 @@ open browser with `http://localhost:5137/`
 - [ ] Redis integration
 - [x] Socket.IO setup
 - [x] Environment config & validation
-- [x] Logging 
+- [x] Logging
 
 ---
 
