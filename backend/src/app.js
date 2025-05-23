@@ -20,13 +20,15 @@ const httpServer = createServer(app);
 const allowedOrigins = [
   "https://bolt-iota-smoky.vercel.app",
   "http://localhost:5173",
-  /\.vercel\.app$/ // allow preview deployments too
+  /\.vercel\.app$/, // allow preview deployments too
 ];
 
 const io = new Server(httpServer, {
   cors: {
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.some((allowed) =>
+      if (
+        !origin ||
+        allowedOrigins.some((allowed) =>
           allowed instanceof RegExp ? allowed.test(origin) : allowed === origin
         )
       ) {
@@ -39,13 +41,14 @@ const io = new Server(httpServer, {
   },
 });
 
-
 app.use(injectIO(io)); // injects io to all routes
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.some((allowed) =>
+      if (
+        !origin ||
+        allowedOrigins.some((allowed) =>
           allowed instanceof RegExp ? allowed.test(origin) : allowed === origin
         )
       ) {
@@ -70,6 +73,7 @@ app.use(
     },
   })
 );
+
 app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
@@ -78,8 +82,7 @@ app.use("/api/message", chatRouter);
 
 app.use(errorHandler);
 
-app.get("/", function (req, res) {
-  // console.log(req.io);
+app.get("/", function (res) {
   res.status(200).send(
     `<div style="width:calc(100vw-8px);height:98vh;border-radius:1rem;margin:0;display:flex;justify-content:center;align-items:center;font-size:6rem;font-family:system-ui;background-color:black;color:white;">
       <span style="text-align:center;">Welcome <br> to <br> ⚡BOLT <br> Backend Home</span></div>`
@@ -88,28 +91,34 @@ app.get("/", function (req, res) {
 
 // used to store online users
 const onlineUsers = {};
+
 export function getSocketId(userId) {
   return onlineUsers[userId];
 }
 
-io.on("connection", async (socket) => {
-  logInfo(import.meta.url, "🔌✅  User connected ID: " + socket.id);
+io.on("connection", (socket) => {
+  console.log("hello");
+  
+  logInfo(import.meta.url, `🔌User connected ID: ${socket.id}`);
   const userId = socket.handshake.query.userId;
+  
   if (!userId) {
     socket.disconnect();
     return;
   }
 
-  // Check if this user is already connected
-  const existingSocketId = onlineUsers[userId];
-  if (existingSocketId && existingSocketId !== socket.id) {
-    logWarning(
-      import.meta.url,
-      `🟡 Duplicate socket detected for user ${userId}.`
-    );
-  }
+  // const existingSocketId = onlineUsers[userId];
+  // if (existingSocketId && existingSocketId !== socket.id) {
+  //   logWarning(
+  //     import.meta.url,
+  //     `🟡 Duplicate socket detected for user ${userId}.`
+  //   );
+  // }
 
   if (userId) onlineUsers[userId] = socket.id;
+
+  console.log("Online users:", onlineUsers);
+  
 
   io.emit("users:online", Object.keys(onlineUsers));
 

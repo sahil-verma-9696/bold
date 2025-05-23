@@ -1,10 +1,12 @@
-import React from "react";
-import ChatWindow from "../chat/ChatWindow";
+import { useSelector } from "react-redux";
+import { windowMap } from "../../redux/slices/mainSlice";
 
 function Main() {
+  const window = useSelector((store) => store.mainPannel.window);
+  const Window = windowMap[window];
   return (
-    <section className="sm:block flex-1 h-screen bg-gray-100 dark:bg-gray-700">
-      <ChatWindow />
+    <section className=" h-screen sm:block flex-1 bg-gray-100 dark:bg-black">
+      <Window />
     </section>
   );
 }

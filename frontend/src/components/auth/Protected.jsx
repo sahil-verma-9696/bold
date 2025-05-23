@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
 import { clearUser, me } from "../../features/auth/authSlice";
@@ -9,9 +9,11 @@ import { createSocketMiddleware } from "../../redux/middlewares/socket";
 
 export const ProtectedRoute = ({ children }) => {
   const dispatch = useDispatch();
-  const { user, loading } = useSelector((state) => state.auth);
+  const { user, loading, error } = useSelector((state) => state.auth);
   const [checked, setChecked] = useState(false);
   const location = useLocation();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -32,7 +34,6 @@ export const ProtectedRoute = ({ children }) => {
           dispatch(clearUser());
         }
       } catch (err) {
-        toast.error(err.message || "Authentication failed");
         dispatch(clearUser());
       } finally {
         setChecked(true);
@@ -42,7 +43,20 @@ export const ProtectedRoute = ({ children }) => {
     verify();
   }, [dispatch]);
 
-  if (!checked || loading) return <p>Loading...</p>;
+  useEffect(() => {
+    if (error) {
+      navigate("/");
+    }
+  }, [error, navigate]);
+
+  if (!checked || loading)
+    return (
+      <div className="flex items-center size-screen p-4 gap-2 dark:bg-black">
+        <section className="w-1/5 h-screen animate-pulse shadow rounded-xl dark:bg-[#131416]"></section>
+        <section className=" animate-pulse w-[40%] h-screen shadow rounded-xl dark:bg-[#131416]"></section>
+        <section className="animate-pulse flex-1 h-screen shadow rounded-xl dark:bg-[#131416]"></section>
+      </div>
+    );
 
   if (!user) return <Navigate to="/auth" state={{ from: location }} replace />;
 

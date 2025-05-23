@@ -7,8 +7,6 @@ export function AuthPage() {
   const [mode, setMode] = useState("login");
   const navigate = useNavigate();
 
-  const handleModeChange = (newMode) => setMode(newMode);
-
   useEffect(() => {
     localStorage.getItem("userId") ? navigate("/lobby") : null;
   });

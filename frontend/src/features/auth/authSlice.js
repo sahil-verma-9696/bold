@@ -43,7 +43,7 @@ export const me = createAsyncThunk(
     try {
       const data = await getMe();
       return data;
-    } catch (err) {
+    } catch (err) {      
       return rejectWithValue(err.response?.data?.message || "getMe failed");
     }
   }

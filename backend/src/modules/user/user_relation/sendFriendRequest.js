@@ -54,20 +54,44 @@ export async function sendFriendRequest(req, res) {
       sender.pending.push(receiverId);
       await sender.save();
       await receiver.save();
+      await sender.populate(
+        "pending",
+        "-password -role -lastSeen -pending -requests -blocked -friends -__v"
+      );
+      await receiver.populate(
+        "requests",
+        "-password -role -lastSeen -pending -requests -blocked -friends -__v"
+      );
 
       const io = getSocket();
 
       const receiverSocketId = getSocketId(receiver._id);
       const senderSocketId = getSocketId(sender._id);
-      io.to(receiverSocketId).emit("user:update", {
-        payload: receiver,
+
+      io.to(senderSocketId).emit("FR:sended", {
+        event: "FR:sended",
+        message: "friend requeste sended to " + receiver.name,
+        payload: {
+          pendings: sender.pending,
+        },
       });
-      io.to(receiverSocketId).emit("user:friend-request", {
-        payload: receiver.requests,
+      io.to(receiverSocketId).emit("FR:received", {
+        event: "FR:received",
+        message: receiver.name + " friend requeste received",
+        payload: {
+          requests: receiver.requests,
+        },
       });
-      io.to(senderSocketId).emit("user:update", {
-        payload: sender,
-      });
+
+      // io.to(receiverSocketId).emit("user:update", {
+      //   payload: receiver,
+      // });
+
+      // io.to(senderSocketId).emit("user:update", {
+      //   type: "socket",
+      //   message: "friend request",
+      //   payload: sender,
+      // });
 
       return sendResponse(
         res,

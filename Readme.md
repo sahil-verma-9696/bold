@@ -33,7 +33,9 @@ CLOUDINARY_API_SECRET=your_api_secret
 ```
 
 ---
+
 ## 🚀 run project
+
 project
 
 - open terminal at project root c://...bolt>
@@ -49,15 +51,7 @@ npm run dev
 cd frontend
 npm run dev
 ```
+
 ---
+
 ## project doc [Doc link click me](https://docs.google.com/document/d/1KMCiy9pPE9w5rWlH_ixEmNZsRcJs2ZURbCPnKp8pcBo/edit?usp=sharing)
-
----
-
-open browser with `http://localhost:5137/`
-
-# Features
-
-1. **JWT + http only cookie** based authentication
-2. **Real time** messaging | friend requests using **socket.io**
-3. **Password forgot/reset** using **email** via **nodemailer**

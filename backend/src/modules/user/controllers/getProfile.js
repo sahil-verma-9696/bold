@@ -1,5 +1,4 @@
-import { logInfo, logSuccess, logError } from "../../../utils/logger.js";
-import { MESSAGES } from "../constants.js";
+import { logInfo } from "../../../utils/logger.js";
 import { STATUS_CODES, RESPONSE_TYPES } from "../../../constants/script.js";
 import { User } from "../models/user.js";
 import mongoose from "mongoose";
@@ -8,7 +7,7 @@ import { sendResponse } from "../../../utils/response.js";
 
 // The handler function
 export const getProfile = asyncHandler(async (req, res) => {
-  logInfo(import.meta.url, MESSAGES.LOGS.GetProfile_HIT);
+  logInfo(import.meta.url, "getProfile() endpoint hit");
   const id = req.params.id;
 
   if (!id) {

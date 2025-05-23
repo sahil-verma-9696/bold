@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { ROUTES } from "../constants.js";
 import { isAuthenticated } from "../../auth/middleware/isAuthenticated.js";
 import upload from "../../../config/multer.js";
 import { asyncHandler } from "../../../utils/asyncHandler.js";
@@ -16,51 +15,72 @@ import { acceptFriendRequest } from "../user_relation/acceptFriendRequest.js";
 import { rejectFriendRequest } from "../user_relation/rejectFriendRequest.js";
 import { removeFriend } from "../user_relation/removeFriend.js";
 import { searchController } from "../controllers/search.js";
+import { getFriends } from "../controllers/getFriends.js";
+import { getPendings } from "../controllers/getPendings.js";
+import { getFriendRequests } from "../controllers/getFriendRequests.js";
 
 export const router = Router();
 
 const routes = [
   {
     method: "get",
-    path: ROUTES.USER.ALL,
+    path: "/",
     middleware: [isAuthenticated],
     handler: getAllUsers,
   },
   {
     method: "get",
-    path: ROUTES.USER.ME,
+    path: "/friends",
+    middleware: [isAuthenticated],
+    handler: getFriends,
+  },
+  {
+    method: "get",
+    path: "/pending",
+    middleware: [isAuthenticated],
+    handler: getPendings,
+  },
+  {
+    method: "get",
+    path: "/requests",
+    middleware: [isAuthenticated],
+    handler: getFriendRequests,
+  },
+  {
+    method: "get",
+    path: "/me",
     middleware: [isAuthenticated],
     handler: getMe,
   },
   {
     method: "patch",
-    path: ROUTES.USER.ME,
+    path: "/me",
     middleware: [isAuthenticated, upload.single("avatar")],
     handler: updateMe,
   },
   {
     method: "delete",
-    path: ROUTES.USER.ME,
+    path: "/me",
     middleware: [isAuthenticated],
     handler: deleteMe,
   },
 
   {
     method: "get",
-    path: ROUTES.USER.PROFILE,
+    path: "/profile/:id",
     middleware: [],
     handler: getProfile,
   },
 
   {
     method: "get",
-    path: ROUTES.USER.SETTING,
+    path: "/setting",
     middleware: [isAuthenticated],
     handler: getSettings,
   },
   {
     method: "post",
-    path: ROUTES.USER.SETTING,
+    path: "/setting",
     middleware: [isAuthenticated],
     handler: updateSettings,
   },

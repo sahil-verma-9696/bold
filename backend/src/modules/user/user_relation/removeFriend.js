@@ -37,19 +37,21 @@ export async function removeFriend(req, res) {
 
       await user.save();
       await friend.save();
+      await user.populate(
+        "friends",
+        "-password -role -lastSeen -pending -requests -blocked -friends -__v"
+      );
 
       const io = getSocket();
       const userSocketId = getSocketId(user._id);
       const friendSocketId = getSocketId(friend._id);
-      io.to(userSocketId).emit("user:update", { payload: user });
-      io.to(friendSocketId).emit("user:update", { payload: friend });
 
       return sendResponse(
         res,
         STATUS_CODES.OK,
         RESPONSE_TYPES.SUCCESS,
         `${user.name} remove ${friend.name} as friend`,
-        { user: friend }
+        { friends: user.friends }
       );
   }
 }

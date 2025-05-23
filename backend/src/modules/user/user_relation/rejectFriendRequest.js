@@ -39,15 +39,32 @@ export async function rejectFriendRequest(req, res) {
 
       await receiver.save();
       await sender.save();
+      await sender.populate(
+        "pending",
+        "-password -role -lastSeen -pending -requests -blocked -friends -__v"
+      );
+      await receiver.populate(
+        "requests",
+        "-password -role -lastSeen -pending -requests -blocked -friends -__v"
+      );
 
       const io = getSocket();
       const receiverSocketId = getSocketId(receiver._id);
       const senderSocketId = getSocketId(sender._id);
-      io.to(receiverSocketId).emit("user:update", {
-        payload: receiver,
+
+      io.to(receiverSocketId).emit("FR:reject", {
+        event: "FR:reject",
+        message: "You reject Friend Request of " + receiver.name,
+        payload: {
+          requests: receiver.requests,
+        },
       });
-      io.to(senderSocketId).emit("user:update", {
-        payload: sender,
+      io.to(senderSocketId).emit("FR:rejected", {
+        event: "FR:rejected",
+        message: "Friend request rejected by " + sender.name,
+        payload: {
+          pendings: sender.pending,
+        },
       });
 
       return sendResponse(
@@ -57,6 +74,5 @@ export async function rejectFriendRequest(req, res) {
         `${receiver.name} rejected Friend request of ${sender.name}.`,
         { user: receiver }
       );
-
   }
 }

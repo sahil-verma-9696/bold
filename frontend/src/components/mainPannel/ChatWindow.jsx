@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ChartArea, MessageSquareOff, Users } from "lucide-react";
+import { MessageSquareOff, Users } from "lucide-react";
 import { getSocket } from "../../redux/middlewares/socket";
 import {
   markMessagesAsRead,
@@ -8,9 +8,9 @@ import {
   setReceiver,
 } from "../../features/chat/chatAreaSlice";
 
-import ChatHeader from "./ChatHeader";
-import ChatMessages from "./ChatMessages";
-import ChatInput from "./ChatInput";
+import ChatHeader from "../chat/ChatHeader";
+import ChatMessages from "../chat/ChatMessages";
+import ChatInput from "../chat/ChatInput";
 import { messages as loadMessages } from "../../features/chat/chatAreaSlice";
 
 function ChatWindow() {
@@ -20,15 +20,14 @@ function ChatWindow() {
   const receiver = useSelector((state) => state.chat.receiver);
   const messages = useSelector((state) => state.chat.messages);
   const user = useSelector((state) => state.auth.user); // Assuming logged-in user info is in auth slice
-  const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    const reciver = JSON.parse(localStorage.getItem("receiver"));
-    if (reciver._id) {
-      dispatch(setReceiver(reciver));
-      dispatch(loadMessages(reciver._id));
+    const receiver = JSON.parse(localStorage.getItem("receiver"));
+    if (receiver?._id) {
+      dispatch(setReceiver(receiver));
+      dispatch(loadMessages(receiver._id));
     }
-  }, []);
+  }, [receiver?._id]);
 
   useEffect(() => {
     const socket = getSocket();
@@ -97,6 +96,7 @@ function ChatWindow() {
   return (
     <div className="flex flex-col h-full">
       <ChatHeader receiver={receiver} />
+
       {messages.length === 0 ? (
         <div className="size-full flex justify-center items-center dark:text-white">
           <div>

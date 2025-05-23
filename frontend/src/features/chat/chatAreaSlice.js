@@ -30,6 +30,7 @@ const chatAreaSlice = createSlice({
   reducers: {
     setReceiver: (state, action) => {
       state.receiver = action.payload;
+      localStorage.setItem("receiver", JSON.stringify(action.payload));
     },
     setMessages: (state, action) => {
       state.messages = [...state.messages, action.payload];
@@ -64,7 +65,6 @@ const chatAreaSlice = createSlice({
           .filter((msg) => !msg.isRead)
           .map((msg) => msg._id);
 
-        console.log(unSeenMessages);
         socket.emit("message:recived", {
           type: "socket:success",
           message: "message Received successfully",

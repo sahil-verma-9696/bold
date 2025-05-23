@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
-  acceptFriendRequest,
   getAllUsers,
-  rejectFriendRequest,
+  getFriends,
+  getPendings,
+  getRequests,
   search,
-  sendFriendRequest,
 } from "./userService";
-import { setUser } from "../auth/authSlice";
+import { apiRequest } from "../../utils/apiHelper";
 
 export const getUsers = createAsyncThunk(
   "user/getUsers",
@@ -21,17 +21,75 @@ export const getUsers = createAsyncThunk(
     }
   }
 );
-export const searchUsers = createAsyncThunk(
-  "user/searchUsers",
+
+export const loadSearchResults = createAsyncThunk(
+  "user/loadSearchResults",
   async (query, { rejectWithValue }) => {
     try {
       const data = await search(query);
-      console.log(data);
-      
       return data;
     } catch (error) {
       return rejectWithValue(
-        err.response?.data?.message || "Fetching users failed"
+        err.response?.data?.message || "Fetching search users failed"
+      );
+    }
+  }
+);
+
+export const loadFriends = createAsyncThunk(
+  "user/friends",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getFriends();
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        err.response?.data?.message || "Fetching user's friends failed"
+      );
+    }
+  }
+);
+
+export const loadPendings = createAsyncThunk(
+  "user/pending",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getPendings();
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        err.response?.data?.message || "Fetching user's pending failed"
+      );
+    }
+  }
+);
+
+export const loadRequests = createAsyncThunk(
+  "user/requests",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getRequests();
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        err.response?.data?.message || "Fetching user's pending failed"
+      );
+    }
+  }
+);
+
+export const removeFriend = createAsyncThunk(
+  "user/remove-friend",
+  async (receiverId, { rejectWithValue }) => {
+    try {
+      const response = await apiRequest(
+        `/api/user/remove-friend/${receiverId}`,
+        "GET"
+      );
+      return response.payload;
+    } catch (error) {
+      return rejectWithValue(
+        err.response?.data?.message || "Fetching user's pending failed"
       );
     }
   }
@@ -43,11 +101,24 @@ const userSlice = createSlice({
     users: [],
     onlineUsers: [],
     filteredUsers: [],
+    friends: [],
+    pendings: [],
+    requests: [],
+    isFriendsLoaded: false,
     searchQuery: "",
     loading: false,
     error: null,
   },
   reducers: {
+    updatePending: (state, action) => {
+      state.pendings = action.payload;
+    },
+    updateRequests: (state, action) => {
+      state.requests = action.payload;
+    },
+    updateFriends: (state, action) => {
+      state.friends = action.payload;
+    },
     setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;
     },
@@ -60,7 +131,6 @@ const userSlice = createSlice({
     },
     updateUserStatus: function (state, action) {
       const { userId, lastSeen } = action.payload;
-
       const index = state.users.findIndex((user) => user._id === userId);
       if (index !== -1 && lastSeen) {
         state.users[index].lastSeen = lastSeen;
@@ -82,14 +152,67 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload || "Something went wrong";
       })
-      .addCase(searchUsers.fulfilled, (state, action) => {
-        console.log(action.payload);
-        
+      .addCase(loadSearchResults.fulfilled, (state, action) => {
         state.filteredUsers = action.payload;
+      })
+      .addCase(loadSearchResults.rejected, (state, action) => {
+        state.error = action.payload.message;
+        state.loading = false;
+      })
+      .addCase(loadFriends.pending, (state) => {
+        state.loading = true;
+        state.isFriendsLoaded = false;
+        state.error = null;
+      })
+      .addCase(loadFriends.fulfilled, (state, action) => {
+        state.friends = action.payload.friends;
+        state.loading = false;
+        state.isFriendsLoaded = true;
+      })
+      .addCase(loadFriends.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message;
+      })
+      .addCase(loadPendings.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loadPendings.fulfilled, (state, action) => {
+        state.pendings = action.payload.pending;
+        state.loading = false;
+      })
+      .addCase(loadPendings.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(loadRequests.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loadRequests.fulfilled, (state, action) => {
+        state.requests = action.payload.requests;
+        state.loading = false;
+      })
+      .addCase(loadRequests.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(removeFriend.fulfilled, (state, action) => {
+        state.friends = action.payload.friends;
+      })
+      .addCase(removeFriend.rejected, (state, action) => {
+        state.error = action.payload;
       });
   },
 });
 
-export const { setSearchQuery, clearSearch, setOnlineUser, updateUserStatus } =
-  userSlice.actions;
+export const {
+  updatePending,
+  updateFriends,
+  updateRequests,
+  setSearchQuery,
+  clearSearch,
+  setOnlineUser,
+  updateUserStatus,
+} = userSlice.actions;
 export default userSlice.reducer;

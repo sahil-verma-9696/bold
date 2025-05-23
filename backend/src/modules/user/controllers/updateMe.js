@@ -1,5 +1,4 @@
-import { logError, logInfo, logSuccess } from "../../../utils/logger.js";
-import { MESSAGES } from "../constants.js";
+import { logInfo, logSuccess } from "../../../utils/logger.js";
 import { STATUS_CODES, RESPONSE_TYPES } from "../../../constants/script.js";
 import { User } from "../models/user.js";
 import { uploadToCloudinary } from "../../../services/uploadToCloudinary.js";
@@ -7,7 +6,7 @@ import { sendResponse } from "../../../utils/response.js";
 
 // tested on POSTMAN ✅
 export async function updateMe(req, res) {
-  logInfo(import.meta.url, MESSAGES.LOGS.UpdateMe_HIT);
+  logInfo(import.meta.url, "updateMe() endpoint hit");
 
   const { name, bio } = req.body;
   const file = req.file;
@@ -23,7 +22,7 @@ export async function updateMe(req, res) {
     // console.log(result);
 
     updateData.avatar = result.secure_url;
-    logSuccess(import.meta.url,`✅ Avatar uploaded: ${result.secure_url}`);
+    logSuccess(import.meta.url, `✅ Avatar uploaded: ${result.secure_url}`);
   }
 
   const updatedUser = await User.findByIdAndUpdate(user._id, updateData, {

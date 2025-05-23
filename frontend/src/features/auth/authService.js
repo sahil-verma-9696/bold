@@ -4,6 +4,7 @@ export async function loginUser(credentials) {
   const response = await apiRequest("/api/auth/login", "POST", credentials);
   return response.payload;
 }
+
 export async function logoutUser() {
   const response = await apiRequest("/api/auth/logout", "GET");
   return response.payload;
@@ -28,3 +29,4 @@ export async function resetPassword(data) {
   const response = await apiRequest("/api/auth/reset-password", "POST", data);
   return response;
 }
+

@@ -1,12 +1,9 @@
 import { logError, logInfo, logSuccess } from "../../../utils/logger.js";
-import { MESSAGES } from "../constants.js";
 import { STATUS_CODES, RESPONSE_TYPES } from "../../../constants/script.js";
 import { UserSettings } from "../models/userSetting.js";
 
 export async function getSettings(req, res) {
-  console.log("getSettings");
-
-  logInfo(import.meta.url, MESSAGES.LOGS.GetSettings_HIT);
+  logInfo(import.meta.url, "getSettings() endpoint hit");
   try {
     const { _id } = req.user;
 
@@ -17,19 +14,16 @@ export async function getSettings(req, res) {
       throw new Error("User settings not found");
     }
 
-    logSuccess(
-      import.meta.url,
-      MESSAGES.LOGS.SETTINGS_FETCHED.replace("{}", _id)
-    );
+    logSuccess(import.meta.url, "User settings fetched successfully");
 
     res.status(STATUS_CODES.OK).json({
       type: RESPONSE_TYPES.SUCCESS,
-      message: MESSAGES.RESPONSE.SETTINGS_FETCHED,
+      message: "User settings fetched successfully",
       payload: { settings },
     });
   } catch (error) {
     let statusCode = STATUS_CODES.INTERNAL_SERVER_ERROR;
-    let message = MESSAGES.RESPONSE.ERROR_OCCURED;
+    let message = "Something went wrong";
 
     switch (true) {
       case error.message.includes("settings not found"):
@@ -42,10 +36,7 @@ export async function getSettings(req, res) {
         break;
     }
 
-    logError(
-      import.meta.url,
-      MESSAGES.LOGS.ERROR_OCCURED?.replace("{}", message) || message
-    );
+    logError(import.meta.url, "Error in getSettings() endpoint" || message);
 
     res.status(statusCode).json({
       type: RESPONSE_TYPES.ERROR,
