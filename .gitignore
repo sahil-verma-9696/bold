@@ -3,3 +3,4 @@ backend/.env
 backend/.env.test
 *.css.map
 frontend/.env
+frontend/node_modules
